@@ -23,7 +23,7 @@ The final application should help a security analyst or instructor quickly under
 
 - Upload or paste raw security logs through a Flask web interface.
 - Parse or normalize log events into a consistent event structure.
-- Use the OpenAI API with the tested project model `gpt-5.4-nano-2026-03-17`.
+- Use the OpenAI API with the model tested in the OpenAI API key assignment, configured through `.env` and `app.py`.
 - Generate an executive summary of likely security activity.
 - Identify risk level, attack type, affected assets, and indicators of compromise.
 - Generate key findings and recommended analyst actions.
@@ -56,6 +56,15 @@ CapstoneProject/
     .gitkeep
 ```
 
+## Weekly Progress Summary
+
+| Week | Status | Work Completed |
+| --- | --- | --- |
+| Week 1 | Complete | Project scope, initial Flask prototype, OpenAI API plan, setup instructions, and team role alignment |
+| Week 2 | Complete | LLM prompt/output structure, backend event schema planning, sample parser data, and frontend report planning |
+| Week 3 | Complete | Parser output validation checklist, first backend parser prototype review, normalized JSON review, and starter report validation |
+| Week 4 | Planned | Improve structured OpenAI summarization and connect normalized parser output more directly into the report workflow |
+
 ## Timeline
 
 | Done | Dates | Milestone | Scheduled Work |
@@ -69,6 +78,18 @@ CapstoneProject/
 | [ ] | July 13-19 | Week 7 | Integration testing, quality improvement, frontend polish, error handling |
 | [ ] | July 20-26 | Week 8 | Final hardening, documentation, demo data, presentation preparation |
 | [ ] | July 27-28 | Final Presentation | Final project presentation and live or recorded demonstration |
+
+The timeline above gives a quick project overview. The detailed milestone task plan below breaks the same work into team member responsibilities, outputs, and measurements.
+
+## Project Screenshots
+
+Screenshots should be added to `docs/screenshots/` as the interface is finalized.
+
+Recommended screenshots:
+
+- Flask homepage showing the log input form.
+- Sample parsed events or normalized JSON output.
+- Example generated report showing summary, risk level, indicators, timeline, evidence, and recommended actions.
 
 ## Milestone Task Plan
 
@@ -252,7 +273,7 @@ Create a local `.env` file from `.env.example`.
 
 ```text
 OPENAI_API_KEY=your_api_key_here
-OPENAI_MODEL=gpt-5.4-nano-2026-03-17
+OPENAI_MODEL=the_model_tested_in_the_openai_api_key_assignment
 PORT=5000
 ```
 
