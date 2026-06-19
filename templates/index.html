@@ -1,0 +1,378 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Security Log Threat Timeline</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --bg: #f5f7fb;
+      --panel: #ffffff;
+      --ink: #18202f;
+      --muted: #617087;
+      --line: #d9e0ea;
+      --accent: #0f766e;
+      --danger: #b42318;
+      --warn: #b54708;
+      --ok: #067647;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      background: var(--bg);
+      color: var(--ink);
+      line-height: 1.5;
+    }
+
+    header {
+      background: #172033;
+      color: white;
+      padding: 28px 5vw;
+    }
+
+    header h1 {
+      margin: 0 0 8px;
+      font-size: clamp(1.6rem, 3vw, 2.4rem);
+      letter-spacing: 0;
+    }
+
+    header p {
+      margin: 0;
+      color: #c9d4e5;
+      max-width: 900px;
+    }
+
+    main {
+      width: min(1180px, 90vw);
+      margin: 28px auto 56px;
+      display: grid;
+      gap: 22px;
+    }
+
+    .panel {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 22px;
+      box-shadow: 0 12px 30px rgba(23, 32, 51, 0.07);
+    }
+
+    h2 {
+      margin: 0 0 14px;
+      font-size: 1.2rem;
+    }
+
+    label {
+      display: block;
+      margin: 14px 0 8px;
+      font-weight: 700;
+    }
+
+    textarea {
+      width: 100%;
+      min-height: 260px;
+      resize: vertical;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 14px;
+      font-family: Consolas, "Courier New", monospace;
+      font-size: 0.94rem;
+      color: var(--ink);
+      background: #fbfcfe;
+    }
+
+    input[type="file"] {
+      width: 100%;
+      padding: 12px;
+      border: 1px dashed #9aa8bb;
+      border-radius: 8px;
+      background: #fbfcfe;
+    }
+
+    .actions {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      flex-wrap: wrap;
+      margin-top: 18px;
+    }
+
+    button {
+      border: 0;
+      border-radius: 8px;
+      background: var(--accent);
+      color: white;
+      font-weight: 700;
+      padding: 12px 18px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      filter: brightness(0.95);
+    }
+
+    .hint {
+      color: var(--muted);
+      font-size: 0.92rem;
+      margin: 0;
+    }
+
+    .error {
+      border-color: #f2a8a1;
+      color: var(--danger);
+      background: #fff3f2;
+    }
+
+    .summary-grid {
+      display: grid;
+      grid-template-columns: 1fr 220px;
+      gap: 18px;
+      align-items: start;
+    }
+
+    .risk {
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 16px;
+      text-align: center;
+      background: #fbfcfe;
+    }
+
+    .risk strong {
+      display: block;
+      font-size: 1.5rem;
+      margin-top: 8px;
+    }
+
+    .risk-critical,
+    .risk-high {
+      color: var(--danger);
+    }
+
+    .risk-medium {
+      color: var(--warn);
+    }
+
+    .risk-low {
+      color: var(--ok);
+    }
+
+    ul {
+      margin: 0;
+      padding-left: 20px;
+    }
+
+    .timeline {
+      display: grid;
+      gap: 14px;
+    }
+
+    .event {
+      border-left: 4px solid var(--accent);
+      background: #fbfcfe;
+      border-radius: 0 8px 8px 0;
+      padding: 14px 16px;
+    }
+
+    .event-meta {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      color: var(--muted);
+      font-size: 0.9rem;
+      margin-bottom: 6px;
+    }
+
+    .event h3 {
+      margin: 0 0 8px;
+      font-size: 1rem;
+    }
+
+    .badge {
+      display: inline-block;
+      border-radius: 999px;
+      padding: 2px 9px;
+      background: #e8eef7;
+      color: #334155;
+      font-size: 0.82rem;
+      font-weight: 700;
+    }
+
+    .detail-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 18px;
+    }
+
+    .detail-box {
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 16px;
+      background: #fbfcfe;
+    }
+
+    .detail-box h3 {
+      margin: 0 0 10px;
+      font-size: 1rem;
+    }
+
+    .evidence {
+      margin-top: 8px;
+      color: var(--muted);
+      font-size: 0.9rem;
+    }
+
+    @media (max-width: 760px) {
+      main {
+        width: min(94vw, 1180px);
+      }
+
+      .summary-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .detail-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .panel {
+        padding: 18px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Intelligent Security Log Summarization</h1>
+    <p>Upload or paste security logs to generate an executive summary, key findings, recommended actions, and a chronological threat timeline.</p>
+  </header>
+
+  <main>
+    <section class="panel">
+      <h2>Analyze Logs</h2>
+      <form method="post" enctype="multipart/form-data">
+        <label for="log_text">Paste log text</label>
+        <textarea id="log_text" name="log_text" placeholder="Paste Windows Event Logs, auth logs, firewall logs, EDR alerts, or Sysmon entries here...">{{ log_text }}</textarea>
+
+        <label for="log_file">Upload log file</label>
+        <input id="log_file" name="log_file" type="file" accept=".txt,.log,.csv,.json,.xml,.evtx">
+
+        <div class="actions">
+          <button type="submit">Analyze Logs</button>
+          <p class="hint">Model: {{ model_name }}. First {{ max_chars }} characters are analyzed.</p>
+        </div>
+      </form>
+    </section>
+
+    {% if error %}
+      <section class="panel error">
+        <strong>Analysis failed:</strong> {{ error }}
+      </section>
+    {% endif %}
+
+    {% if report.executive_summary %}
+      <section class="panel">
+        <h2>Report Summary</h2>
+        <div class="summary-grid">
+          <div>
+            <p>{{ report.executive_summary }}</p>
+            {% if report.attack_type %}
+              <p><strong>Attack Type:</strong> {{ report.attack_type }}</p>
+            {% endif %}
+          </div>
+          <div class="risk risk-{{ report.risk_level|lower }}">
+            Risk Level
+            <strong>{{ report.risk_level }}</strong>
+          </div>
+        </div>
+      </section>
+
+      <section class="panel">
+        <h2>Assets and Indicators</h2>
+        <div class="detail-grid">
+          <div class="detail-box">
+            <h3>Affected Assets</h3>
+            {% if report.affected_assets %}
+              <ul>
+                {% for asset in report.affected_assets %}
+                  <li>{{ asset }}</li>
+                {% endfor %}
+              </ul>
+            {% else %}
+              <p class="hint">No affected assets returned.</p>
+            {% endif %}
+          </div>
+          <div class="detail-box">
+            <h3>Indicators of Compromise</h3>
+            {% if report.indicators_of_compromise %}
+              <ul>
+                {% for indicator in report.indicators_of_compromise %}
+                  <li>{{ indicator }}</li>
+                {% endfor %}
+              </ul>
+            {% else %}
+              <p class="hint">No indicators returned.</p>
+            {% endif %}
+          </div>
+        </div>
+      </section>
+
+      <section class="panel">
+        <h2>Key Findings</h2>
+        {% if report.key_findings %}
+          <ul>
+            {% for finding in report.key_findings %}
+              <li>{{ finding }}</li>
+            {% endfor %}
+          </ul>
+        {% else %}
+          <p class="hint">No key findings returned.</p>
+        {% endif %}
+      </section>
+
+      <section class="panel">
+        <h2>Threat Timeline</h2>
+        {% if report.timeline %}
+          <div class="timeline">
+            {% for item in report.timeline %}
+              <article class="event">
+                <div class="event-meta">
+                  <span>{{ item.timestamp }}</span>
+                  <span>{{ item.source }}</span>
+                  <span class="badge">{{ item.severity }}</span>
+                </div>
+                <h3>{{ item.event }}</h3>
+                <p>{{ item.details }}</p>
+                {% if item.evidence %}
+                  <p class="evidence"><strong>Evidence:</strong> {{ item.evidence }}</p>
+                {% endif %}
+              </article>
+            {% endfor %}
+          </div>
+        {% else %}
+          <p class="hint">No timeline events returned.</p>
+        {% endif %}
+      </section>
+
+      <section class="panel">
+        <h2>Recommended Actions</h2>
+        {% if report.recommended_actions %}
+          <ul>
+            {% for action in report.recommended_actions %}
+              <li>{{ action }}</li>
+            {% endfor %}
+          </ul>
+        {% else %}
+          <p class="hint">No recommended actions returned.</p>
+        {% endif %}
+      </section>
+    {% endif %}
+  </main>
+</body>
+</html>
