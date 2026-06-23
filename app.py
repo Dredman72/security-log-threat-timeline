@@ -6,6 +6,7 @@ from pathlib import Path
 from flask import Flask, render_template, request
 from openai import OpenAI
 from dotenv import load_dotenv
+from werkzeug.exceptions import RequestEntityTooLarge
 from werkzeug.utils import secure_filename
 
 
@@ -15,13 +16,24 @@ load_dotenv(APP_DIR / ".env")
 UPLOAD_DIR = APP_DIR / "uploads"
 UPLOAD_DIR.mkdir(exist_ok=True)
 
-ALLOWED_EXTENSIONS = {".txt", ".log", ".csv", ".json", ".evtx", ".xml"}
+ALLOWED_EXTENSIONS = {".txt", ".log", ".csv", ".json", ".xml"}
 MAX_LOG_CHARS = 60000
+MAX_UPLOAD_BYTES = 8 * 1024 * 1024
 MODEL_NAME = os.getenv("OPENAI_MODEL", "gpt-5.4-nano-2026-03-17")
+REQUIRED_REPORT_KEYS = {
+    "executive_summary",
+    "risk_level",
+    "attack_type",
+    "affected_assets",
+    "indicators_of_compromise",
+    "key_findings",
+    "timeline",
+    "recommended_actions",
+}
 
 app = Flask(__name__)
 app.config["UPLOAD_FOLDER"] = str(UPLOAD_DIR)
-app.config["MAX_CONTENT_LENGTH"] = 8 * 1024 * 1024
+app.config["MAX_CONTENT_LENGTH"] = MAX_UPLOAD_BYTES
 
 
 def allowed_file(filename: str) -> bool:
@@ -33,9 +45,15 @@ def read_uploaded_file(file_storage) -> str:
         return ""
 
     filename = secure_filename(file_storage.filename)
+    if Path(filename).suffix.lower() == ".evtx":
+        raise ValueError(
+            "Raw .evtx files are not supported in this prototype yet. "
+            "Export Windows Event Logs as .xml or .txt before uploading."
+        )
+
     if not allowed_file(filename):
         raise ValueError(
-            "Unsupported file type. Use .txt, .log, .csv, .json, .xml, or .evtx."
+            "Unsupported file type. Use .txt, .log, .csv, .json, or .xml."
         )
 
     saved_path = UPLOAD_DIR / f"{datetime.utcnow().strftime('%Y%m%d%H%M%S')}_{filename}"
@@ -90,6 +108,10 @@ Return ONLY valid JSON with this exact shape:
 Rules:
 - Do not invent facts not supported by the logs.
 - If timestamps are missing, order events by appearance and use "Unknown".
+- If a required top-level field has no supported value, use "Unknown" for strings
+  or an empty list for arrays.
+- Every timeline item must include timestamp, source, event, severity, details,
+  and evidence.
 - Highlight authentication failures, privilege changes, malware indicators,
   suspicious IP addresses, firewall blocks, unusual process execution, and
   lateral movement clues.
@@ -116,8 +138,77 @@ def parse_model_json(output_text: str) -> dict:
         start = cleaned.find("{")
         end = cleaned.rfind("}")
         if start != -1 and end != -1 and end > start:
-            return json.loads(cleaned[start : end + 1])
+            try:
+                return json.loads(cleaned[start : end + 1])
+            except json.JSONDecodeError:
+                pass
         raise
+
+
+def normalize_text_list(value) -> list[str]:
+    if value is None:
+        return []
+    if isinstance(value, list):
+        return [str(item).strip() for item in value if str(item).strip()]
+    if isinstance(value, str) and value.strip():
+        return [value.strip()]
+    return []
+
+
+def normalize_timeline_item(item) -> dict:
+    if not isinstance(item, dict):
+        return {
+            "timestamp": "Unknown",
+            "source": "Unknown",
+            "event": str(item).strip() or "Unknown event",
+            "severity": "Unknown",
+            "details": "",
+            "evidence": "",
+        }
+
+    return {
+        "timestamp": str(item.get("timestamp") or "Unknown").strip(),
+        "source": str(item.get("source") or "Unknown").strip(),
+        "event": str(item.get("event") or "Unknown event").strip(),
+        "severity": str(item.get("severity") or "Unknown").strip(),
+        "details": str(item.get("details") or "").strip(),
+        "evidence": str(item.get("evidence") or "").strip(),
+    }
+
+
+def normalize_report(report: dict) -> dict:
+    if not isinstance(report, dict):
+        report = {"executive_summary": str(report)}
+
+    normalized = empty_report()
+    normalized["executive_summary"] = str(
+        report.get("executive_summary") or ""
+    ).strip()
+    normalized["risk_level"] = str(report.get("risk_level") or "Unknown").strip()
+    normalized["attack_type"] = str(report.get("attack_type") or "Unknown").strip()
+    normalized["affected_assets"] = normalize_text_list(report.get("affected_assets"))
+    normalized["indicators_of_compromise"] = normalize_text_list(
+        report.get("indicators_of_compromise")
+    )
+    normalized["key_findings"] = normalize_text_list(report.get("key_findings"))
+    normalized["recommended_actions"] = normalize_text_list(
+        report.get("recommended_actions")
+    )
+
+    timeline = report.get("timeline")
+    normalized["timeline"] = (
+        [normalize_timeline_item(item) for item in timeline]
+        if isinstance(timeline, list)
+        else []
+    )
+
+    missing_keys = sorted(REQUIRED_REPORT_KEYS - set(report.keys()))
+    if missing_keys:
+        normalized["recommended_actions"].append(
+            f"Review output: missing expected field(s): {', '.join(missing_keys)}."
+        )
+
+    return normalized
 
 
 def analyze_logs_with_openai(log_text: str) -> dict:
@@ -140,22 +231,24 @@ def analyze_logs_with_openai(log_text: str) -> dict:
         temperature=0.3,
     )
 
-    output_text = response.choices[0].message.content.strip()
+    output_text = (response.choices[0].message.content or "").strip()
     try:
-        return parse_model_json(output_text)
+        return normalize_report(parse_model_json(output_text))
     except json.JSONDecodeError:
-        return {
-            "executive_summary": output_text,
-            "risk_level": "Unknown",
-            "attack_type": "Unknown",
-            "affected_assets": [],
-            "indicators_of_compromise": [],
-            "key_findings": [],
-            "timeline": [],
-            "recommended_actions": [
-                "Review the raw model output because it was not valid JSON."
-            ],
-        }
+        return normalize_report(
+            {
+                "executive_summary": output_text,
+                "risk_level": "Unknown",
+                "attack_type": "Unknown",
+                "affected_assets": [],
+                "indicators_of_compromise": [],
+                "key_findings": [],
+                "timeline": [],
+                "recommended_actions": [
+                    "Review the raw model output because it was not valid JSON."
+                ],
+            }
+        )
 
 
 def empty_report() -> dict:
@@ -203,5 +296,22 @@ def index():
     )
 
 
+@app.errorhandler(RequestEntityTooLarge)
+def handle_large_upload(_error):
+    report = empty_report()
+    return (
+        render_template(
+            "index.html",
+            report=report,
+            error="Uploaded file is too large. Use a file smaller than 8 MB.",
+            log_text=request.form.get("log_text", ""),
+            model_name=MODEL_NAME,
+            max_chars=MAX_LOG_CHARS,
+        ),
+        413,
+    )
+
+
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=int(os.getenv("PORT", "5000")), debug=True)
+    debug_mode = os.getenv("FLASK_DEBUG", "false").lower() == "true"
+    app.run(host="0.0.0.0", port=int(os.getenv("PORT", "5000")), debug=debug_mode)
