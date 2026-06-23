@@ -138,8 +138,8 @@ Recommended screenshots:
 
 | Done | Member | Task | Outputs Produced | Measurement |
 | --- | --- | --- | --- | --- |
-| [ ] | Derrick | Refine OpenAI summarization prompt | Improved prompt instructions for concise, structured security reporting | Model returns consistent JSON sections |
-| [ ] | Derrick | Improve fallback handling for model output | Clear behavior when model output is invalid or incomplete | App does not crash when output is imperfect |
+| [x] | Derrick | Refine OpenAI summarization prompt | Improved prompt instructions for concise, structured security reporting | Model returns consistent JSON sections |
+| [x] | Derrick | Improve fallback handling for model output | Clear behavior when model output is invalid or incomplete | App does not crash when output is imperfect |
 | [ ] | Zion | Connect parser output to AI-ready input | Backend function that sends normalized events to the LLM workflow | Parsed events can be summarized without manual copying |
 | [ ] | Oriah | Design summary/report sections | Frontend layout for executive summary, risk, findings, timeline, and recommendations | Report output is easy to read in the browser |
 

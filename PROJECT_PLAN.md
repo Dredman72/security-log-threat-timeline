@@ -121,6 +121,13 @@ Derrick's parser output validation checklist is documented in `PARSER_OUTPUT_VAL
 - Add fallback behavior for invalid or incomplete LLM responses.
 - Test summarization against sample logs and revise prompts.
 
+**Week 4 Accomplishments:**
+
+- Derrick refined the OpenAI summarization prompt so the model is instructed to return concise, structured JSON report output.
+- Derrick strengthened the expected report structure for executive summary, risk level, attack type, affected assets, indicators of compromise, key findings, timeline evidence, and recommended actions.
+- Derrick improved fallback handling so the app cleans common JSON formatting issues, fills safe defaults for missing fields, and does not crash when model output is incomplete or invalid.
+- Derrick updated upload handling and error messaging so unsupported files, raw `.evtx` files, and oversized uploads return clear user-facing messages.
+
 ### Week 5: June 29 - July 5, 2026
 
 **Focus:** Threat timeline generation.
