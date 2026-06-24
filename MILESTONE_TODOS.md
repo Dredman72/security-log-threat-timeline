@@ -55,7 +55,7 @@ This file tracks the team's weekly milestones, task ownership, and progress. It 
 | [x] | Zion | Build first parser prototype | Parser reads sample CSV security log | Parser reads test events successfully |
 | [x] | Zion | Generate normalized JSON output | Parsed events converted into canonical event schema | Output includes timestamp, source, host, user, event type, severity, description, evidence, and raw event |
 | [x] | Zion | Generate starter report output | Starter HTML security report with executive summary, validation warnings, and threat timeline table | Backend can produce report-ready output |
-| [ ] | Oriah | Add basic parsed-event frontend placeholder | Initial browser area for parsed event data and report sections | Frontend can display backend/report fields |
+| [X] | Oriah | Add basic parsed-event frontend placeholder | Initial browser area for parsed event data and report sections | Frontend can display backend/report fields |
 
 ## Week 4: LLM Integration and Structured Summarization
 
