@@ -102,6 +102,11 @@ Derrick's parser output validation checklist is documented in `PARSER_OUTPUT_VAL
 - Zion generated a starter HTML security report with an executive summary, validation warnings, and a threat timeline table.
 - Derrick completed `PARSER_OUTPUT_VALIDATION_CHECKLIST.md` and used it to review Zion's parser output.
 - Derrick's review confirmed Zion's parser output includes the major checklist fields and recommended adding `source_ip` and `destination_ip` when available, standardizing event type names, and preserving the original CSV row or raw log line in `raw_event`.
+- Oriah's focus was on creating the foundation for the frontend display of parsed security events.
+- Oraih received sample parser output from Zion and reviewed the data to make sure it matched the fields from my Week 2 report and timeline wireframe. The sample data included important event fields such as `timestamp`, `source`, `host`, `user`, `event_type`, `severity`, `description`, `evidence`, and `raw_event`. This helped confirm that the backend parser output can support the frontend report and timeline design.
+- Oriah completed the Week 3 task by using Zion’s parsed event sample to plan the basic frontend placeholder for displaying security events. The data can be shown in a table, event card layout, or timeline-style view.
+
+**Evidence to include:** screenshot of Zion’s JSON parser output and screenshot/mockup of the parsed event display layout.
 
 ### Week 4: June 22 - June 28, 2026
 
