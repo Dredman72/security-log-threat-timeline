@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Intelligent Security Log Summarization</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 2rem; line-height: 1.45; }
+    table { border-collapse: collapse; width: 100%; margin-top: 1rem; }
+    th, td { border: 1px solid #ccc; padding: 0.5rem; text-align: left; }
+    th { background: #f1f3f5; }
+    pre { background: #f7f7f7; padding: 1rem; white-space: pre-wrap; }
+  </style>
+</head>
+<body>
+  <h1>Intelligent Security Log Summarization</h1>
+  <h2>Executive Summary</h2>
+  <pre>Demo summary: backend parsing and structured AI handoff are working. The parser produced 4 normalized events, including 3 High/Critical events.
+
+Key findings:
+- Parsed events: 4
+- High/Critical events: 3
+- OpenAI API summaries will be enabled after the API key is configured.
+
+Recommendations:
+- Review High and Critical events first.
+- Confirm whether suspicious activity is expected or unauthorized.
+- Preserve raw log evidence for incident review.</pre>
+  <h2>Validation Warnings</h2>
+  <ul><li>No validation warnings.</li></ul>
+  <h2>Threat Timeline</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>Timestamp</th>
+        <th>Severity</th>
+        <th>Host</th>
+        <th>User</th>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody><tr><td>2026-06-09T13:00:00Z</td><td>High</td><td>WIN-SERVER-01</td><td>alice</td><td>process_start</td><td>PowerShell launched with unusual encoded command</td></tr>
+<tr><td>2026-06-09T13:05:00Z</td><td>High</td><td>WIN-SERVER-01</td><td>unknown</td><td>firewall_block</td><td>Outbound connection blocked to suspicious IP</td></tr>
+<tr><td>2026-06-09T13:11:00Z</td><td>Medium</td><td>WIN-SERVER-01</td><td>bob</td><td>login_failure</td><td>Multiple failed login attempts detected</td></tr>
+<tr><td>2026-06-09T13:20:00Z</td><td>Critical</td><td>WIN-SERVER-01</td><td>alice</td><td>malware_alert</td><td>EDR reported possible ransomware behavior</td></tr></tbody>
+  </table>
+</body>
+</html>
