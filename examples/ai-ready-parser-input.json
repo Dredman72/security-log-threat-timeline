@@ -1,0 +1,37 @@
+{
+  "project": "Intelligent Security Log Summarization",
+  "input_type": "normalized_security_events",
+  "summary_goal": "Generate a concise security summary from parsed log events.",
+  "events": [
+    {
+      "timestamp": "2026-06-09T13:00:00Z",
+      "source": "demo-sysmon",
+      "host": "WIN-SERVER-01",
+      "user": "alice",
+      "event_type": "process_start",
+      "severity": "High",
+      "description": "PowerShell launched with unusual encoded command",
+      "evidence": "CommandLine contains encoded command"
+    },
+    {
+      "timestamp": "2026-06-09T13:05:00Z",
+      "source": "demo-firewall",
+      "host": "WIN-SERVER-01",
+      "user": "unknown",
+      "event_type": "firewall_block",
+      "severity": "High",
+      "description": "Outbound connection blocked to suspicious IP",
+      "evidence": "Destination IP 203.0.113.10 blocked"
+    },
+    {
+      "timestamp": "2026-06-09T13:20:00Z",
+      "source": "demo-edr",
+      "host": "WIN-SERVER-01",
+      "user": "alice",
+      "event_type": "malware_alert",
+      "severity": "Critical",
+      "description": "EDR reported possible ransomware behavior",
+      "evidence": "Process attempted rapid file encryption"
+    }
+  ]
+}
