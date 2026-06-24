@@ -48,6 +48,11 @@ CapstoneProject/
   README.md
   PROJECT_PLAN.md
   PARSER_OUTPUT_VALIDATION_CHECKLIST.md
+  MILESTONE_TODOS.md
+  DEMO_WORKFLOW_INSTRUCTIONS.md
+  DEPLOYMENT_AND_SUBMISSION_GUIDE.md
+  TEAM_MIDTERM_REPORT.md
+  TEAM_WEEKLY_JOURNAL_WEEK4.md
   .env.example
   .gitignore
   templates/
@@ -63,7 +68,7 @@ CapstoneProject/
 | Week 1 | Complete | Project scope, initial Flask prototype, OpenAI API plan, setup instructions, and team role alignment |
 | Week 2 | Complete | LLM prompt/output structure, backend event schema planning, sample parser data, and frontend report planning |
 | Week 3 | Complete | Parser output validation checklist, first backend parser prototype review, normalized JSON review, and starter report validation |
-| Week 4 | Planned | Improve structured OpenAI summarization and connect normalized parser output more directly into the report workflow |
+| Week 4 | In Progress | Derrick completed OpenAI prompt refinement and fallback handling; remaining focus is parser-to-LLM connection and frontend report section design |
 
 ## Timeline
 
@@ -281,7 +286,7 @@ Do not commit `.env` to GitHub.
 
 ## Current Status
 
-As of June 19, 2026:
+As of June 24, 2026:
 
 - Public GitHub repository has been created.
 - Initial Flask/OpenAI prototype has been uploaded.
@@ -289,4 +294,6 @@ As of June 19, 2026:
 - Week 2 LLM output structure and backend schema planning are complete.
 - Week 3 parser output validation checklist is complete.
 - Zion's parser prototype has been reviewed against the validation checklist.
-- Next focus is Week 4: improving structured summarization and connecting parser output more directly into the OpenAI/report workflow.
+- Week 4 Derrick tasks are complete: OpenAI prompt refinement and fallback handling for incomplete or invalid model output.
+- `MILESTONE_TODOS.md`, `DEMO_WORKFLOW_INSTRUCTIONS.md`, and `DEPLOYMENT_AND_SUBMISSION_GUIDE.md` have been added for team tracking, demo preparation, and deployment/submission guidance.
+- Next focus is completing the Week 4 parser-to-LLM connection and frontend report section design.
