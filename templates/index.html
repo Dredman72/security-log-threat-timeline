@@ -261,11 +261,11 @@
         <textarea id="log_text" name="log_text" placeholder="Paste Windows Event Logs, auth logs, firewall logs, EDR alerts, or Sysmon entries here...">{{ log_text }}</textarea>
 
         <label for="log_file">Upload log file</label>
-        <input id="log_file" name="log_file" type="file" accept=".txt,.log,.csv,.json,.xml,.evtx">
+        <input id="log_file" name="log_file" type="file" accept=".txt,.log,.csv,.json,.xml">
 
         <div class="actions">
           <button type="submit">Analyze Logs</button>
-          <p class="hint">Model: {{ model_name }}. First {{ max_chars }} characters are analyzed.</p>
+          <p class="hint">Model: {{ model_name }}. First {{ max_chars }} characters are analyzed. Upload .txt, .log, .csv, .json, or exported .xml logs.</p>
         </div>
       </form>
     </section>
@@ -286,7 +286,7 @@
               <p><strong>Attack Type:</strong> {{ report.attack_type }}</p>
             {% endif %}
           </div>
-          <div class="risk risk-{{ report.risk_level|lower }}">
+          <div class="risk risk-{{ report.risk_level|lower|replace(' ', '-') }}">
             Risk Level
             <strong>{{ report.risk_level }}</strong>
           </div>
@@ -343,12 +343,14 @@
             {% for item in report.timeline %}
               <article class="event">
                 <div class="event-meta">
-                  <span>{{ item.timestamp }}</span>
-                  <span>{{ item.source }}</span>
-                  <span class="badge">{{ item.severity }}</span>
+                  <span>{{ item.timestamp or "Unknown" }}</span>
+                  <span>{{ item.source or "Unknown" }}</span>
+                  <span class="badge">{{ item.severity or "Unknown" }}</span>
                 </div>
-                <h3>{{ item.event }}</h3>
-                <p>{{ item.details }}</p>
+                <h3>{{ item.event or "Unknown event" }}</h3>
+                {% if item.details %}
+                  <p>{{ item.details }}</p>
+                {% endif %}
                 {% if item.evidence %}
                   <p class="evidence"><strong>Evidence:</strong> {{ item.evidence }}</p>
                 {% endif %}

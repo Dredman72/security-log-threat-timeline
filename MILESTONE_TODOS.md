@@ -64,8 +64,8 @@ This file tracks the team's weekly milestones, task ownership, and progress. It 
 
 | Done | Member | Task | Output | Measurement |
 | --- | --- | --- | --- | --- |
-| [ ] | Derrick | Refine OpenAI prompt and structured output | Improved prompt for consistent JSON report output | Output reliably includes summary, risk, attack type, assets, IOCs, findings, timeline, evidence, and actions |
-| [ ] | Derrick | Add or review fallback behavior | Graceful response when OpenAI output is incomplete or invalid JSON | App does not fail silently when model output needs cleanup |
+| [x] | Derrick | Refine OpenAI prompt and structured output | Improved prompt for consistent JSON report output | Output reliably includes summary, risk, attack type, assets, IOCs, findings, timeline, evidence, and actions |
+| [x] | Derrick | Add or review fallback behavior | Graceful response when OpenAI output is incomplete or invalid JSON | App does not fail silently when model output needs cleanup |
 | [ ] | Zion | Connect parser output to AI input format | Normalized event data ready for LLM summarization | Parser output can be passed into the LLM workflow |
 | [ ] | Oriah | Design summary/report sections | Frontend layout for executive summary, risk, findings, timeline, and recommendations | Report output is easy to read in the browser |
 
