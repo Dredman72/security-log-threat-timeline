@@ -1,0 +1,49 @@
+{
+  "generated_at": "2026-06-24T18:53:09.337877+00:00",
+  "events": [
+    {
+      "timestamp": "2026-06-09T13:00:00Z",
+      "source": "demo-sysmon",
+      "host": "WIN-SERVER-01",
+      "user": "alice",
+      "event_type": "process_start",
+      "severity": "High",
+      "description": "PowerShell launched with unusual encoded command",
+      "evidence": "CommandLine contains encoded command",
+      "raw_event": "{\"timestamp\": \"2026-06-09T13:00:00Z\", \"source\": \"demo-sysmon\", \"host\": \"WIN-SERVER-01\", \"user\": \"alice\", \"event_type\": \"process_start\", \"severity\": \"High\", \"description\": \"PowerShell launched with unusual encoded command\", \"evidence\": \"CommandLine contains encoded command\"}"
+    },
+    {
+      "timestamp": "2026-06-09T13:05:00Z",
+      "source": "demo-firewall",
+      "host": "WIN-SERVER-01",
+      "user": "unknown",
+      "event_type": "firewall_block",
+      "severity": "High",
+      "description": "Outbound connection blocked to suspicious IP",
+      "evidence": "Destination IP 203.0.113.10 blocked",
+      "raw_event": "{\"timestamp\": \"2026-06-09T13:05:00Z\", \"source\": \"demo-firewall\", \"host\": \"WIN-SERVER-01\", \"user\": \"unknown\", \"event_type\": \"firewall_block\", \"severity\": \"High\", \"description\": \"Outbound connection blocked to suspicious IP\", \"evidence\": \"Destination IP 203.0.113.10 blocked\"}"
+    },
+    {
+      "timestamp": "2026-06-09T13:11:00Z",
+      "source": "demo-windows-event",
+      "host": "WIN-SERVER-01",
+      "user": "bob",
+      "event_type": "login_failure",
+      "severity": "Medium",
+      "description": "Multiple failed login attempts detected",
+      "evidence": "Three failed attempts from same account",
+      "raw_event": "{\"timestamp\": \"2026-06-09T13:11:00Z\", \"source\": \"demo-windows-event\", \"host\": \"WIN-SERVER-01\", \"user\": \"bob\", \"event_type\": \"login_failure\", \"severity\": \"Medium\", \"description\": \"Multiple failed login attempts detected\", \"evidence\": \"Three failed attempts from same account\"}"
+    },
+    {
+      "timestamp": "2026-06-09T13:20:00Z",
+      "source": "demo-edr",
+      "host": "WIN-SERVER-01",
+      "user": "alice",
+      "event_type": "malware_alert",
+      "severity": "Critical",
+      "description": "EDR reported possible ransomware behavior",
+      "evidence": "Process attempted rapid file encryption",
+      "raw_event": "{\"timestamp\": \"2026-06-09T13:20:00Z\", \"source\": \"demo-edr\", \"host\": \"WIN-SERVER-01\", \"user\": \"alice\", \"event_type\": \"malware_alert\", \"severity\": \"Critical\", \"description\": \"EDR reported possible ransomware behavior\", \"evidence\": \"Process attempted rapid file encryption\"}"
+    }
+  ]
+}
