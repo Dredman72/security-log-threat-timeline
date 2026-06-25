@@ -55,18 +55,6 @@ CapstoneProject/
   TEAM_WEEKLY_JOURNAL_WEEK4.md
   .env.example
   .gitignore
-  prototype.py
-  data/
-    normalized_events.json
-  docs/
-    backend-health-check.md
-    csv-parser-test.md
-    week4-ai-ready-parser-input.md
-    screenshots/
-  examples/
-    ai-ready-parser-input.json
-  reports/
-    security_report.html
   templates/
     index.html
   uploads/
@@ -79,8 +67,8 @@ CapstoneProject/
 | --- | --- | --- |
 | Week 1 | Complete | Project scope, initial Flask prototype, OpenAI API plan, setup instructions, and team role alignment |
 | Week 2 | Complete | LLM prompt/output structure, backend event schema planning, sample parser data, and frontend report planning |
-| Week 3 | Complete | Parser output validation checklist, first backend parser prototype review, normalized JSON review, starter report validation, and parsed-event frontend placeholder planning |
-| Week 4 | In Progress | Derrick completed OpenAI prompt refinement and fallback handling; Zion completed AI-ready parser input documentation; remaining focus is frontend report section design |
+| Week 3 | Complete | Parser output validation checklist, first backend parser prototype review, normalized JSON review, and starter report validation |
+| Week 4 | In Progress | Derrick completed OpenAI prompt refinement and fallback handling; remaining focus is parser-to-LLM connection and frontend report section design |
 
 ## Timeline
 
@@ -146,7 +134,7 @@ Recommended screenshots:
 | [x] | Zion | Build first parser prototype | Backend health check and parser execution prototype | Health check returns `status: ok` |
 | [x] | Zion | Test parser with sample CSV log | Parser read 4 security events and identified 3 High/Critical events | Parser converts sample logs into normalized JSON |
 | [x] | Zion | Generate starter report output | Starter HTML security report with executive summary, validation warnings, and threat timeline table | Backend can produce report-ready output |
-| [x] | Oriah | Add basic parsed-event frontend placeholder | Initial browser area for parsed event data and report sections | Frontend can display backend/report fields |
+| [ ] | Oriah | Add basic parsed-event frontend placeholder | Initial browser area for parsed event data and report sections | Frontend can display backend/report fields |
 
 ## Week 4: LLM Integration and Structured Summarization
 
@@ -306,8 +294,6 @@ As of June 24, 2026:
 - Week 2 LLM output structure and backend schema planning are complete.
 - Week 3 parser output validation checklist is complete.
 - Zion's parser prototype has been reviewed against the validation checklist.
-- Oriah's Week 3 parsed-event frontend placeholder planning is complete.
 - Week 4 Derrick tasks are complete: OpenAI prompt refinement and fallback handling for incomplete or invalid model output.
-- Week 4 Zion task is complete: parser output has been documented in an AI-ready input format for the LLM workflow.
 - `MILESTONE_TODOS.md`, `DEMO_WORKFLOW_INSTRUCTIONS.md`, and `DEPLOYMENT_AND_SUBMISSION_GUIDE.md` have been added for team tracking, demo preparation, and deployment/submission guidance.
-- Next focus is completing the Week 4 frontend report section design and preparing the Week 4 journal/midterm submission evidence.
+- Next focus is completing the Week 4 parser-to-LLM connection and frontend report section design.
