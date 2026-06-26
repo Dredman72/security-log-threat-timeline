@@ -14,6 +14,15 @@ Our team project is a Flask-based security log analysis tool. The prototype allo
 
 The goal is to help a security analyst or instructor understand raw security logs faster by reducing log noise, organizing events, and presenting the most important findings in a report-style format.
 
+## Current Status as of June 26, 2026
+
+| Area | Status | Notes |
+| --- | --- | --- |
+| Derrick Week 4 LLM work | Complete | OpenAI prompt refinement, structured JSON output expectations, fallback handling, and upload handling review are complete. |
+| Zion Week 4 backend work | Complete | Parser output has been prepared in an AI-ready format so normalized events can support the OpenAI summarization workflow. |
+| Oriah Week 3 frontend planning | Complete | Frontend parsed-event planning and report/timeline layout planning are complete. |
+| Oriah Week 4 report-section design | Pending evidence | Oriah still needs to provide a screenshot, mockup, or frontend update showing executive summary, risk, findings, timeline, and recommendations in the browser/report layout. |
+
 ## Milestones Achieved
 
 | Done | Dates | Milestone | Brief Description |
@@ -76,7 +85,9 @@ The following tests were completed or prepared as evidence for the midterm repor
 **Expected Result:** The page displays the application title, paste-log text box, file upload control, and Analyze Logs button.  
 **Result:** Passed. The Flask homepage loaded successfully.
 
-**Screenshot Evidence:** Insert screenshot of Flask homepage.
+**Screenshot Evidence:** Flask app homepage loaded successfully.
+
+![Flask App Homepage](docs/screenshots/Flask%20App%20Homepage.png)
 
 ### Test 2: OpenAI API Key and Usage
 
@@ -85,7 +96,9 @@ The following tests were completed or prepared as evidence for the midterm repor
 **Expected Result:** OpenAI usage increases after analysis, and the application returns a report.  
 **Result:** Passed. OpenAI usage showed API activity, confirming the app sent requests successfully.
 
-**Screenshot Evidence:** Insert screenshot of OpenAI usage page with no API key shown.
+**Screenshot Evidence:** Insert screenshot of OpenAI Usage Dashboard.
+
+![OpenAI Usage Dashboard](docs/screenshots/OpenAI%20Usage%20Dashboard.png)
 
 ### Test 3: Sample SSH and Firewall Log Analysis
 
@@ -96,6 +109,8 @@ The following tests were completed or prepared as evidence for the midterm repor
 
 **Screenshot Evidence:** Insert screenshot showing sample logs pasted into the app and report output.
 
+![Sample logs pasted into app and report output](docs/screenshots/OpenAI%20Report%20Output.png)
+
 ### Test 4: Threat Timeline Evidence
 
 **Purpose:** Confirm timeline events include timestamp, source, severity, details, and supporting evidence.  
@@ -105,6 +120,8 @@ The following tests were completed or prepared as evidence for the midterm repor
 
 **Screenshot Evidence:** Insert screenshot of threat timeline section.
 
+![Threat Timeline section](docs/screenshots/OpenAI%20Report%20Output2.png)
+
 ### Test 5: Parser Output Validation
 
 **Purpose:** Confirm Zion's parser output matches the fields needed by the LLM and frontend.  
@@ -113,6 +130,9 @@ The following tests were completed or prepared as evidence for the midterm repor
 **Result:** Passed with improvement notes. Derrick recommended adding `source_ip` and `destination_ip` when available, standardizing event type names, and preserving the original raw event.
 
 **Screenshot Evidence:** Insert screenshot of parser output and checklist review.
+
+![Parser output Validation Checklist review](docs/screenshots/Parser%20Output%20Validation%20Checklist%20(2).png)
+![Zions parsed output file]()
 
 ### Test 6: Fallback Behavior Review
 
