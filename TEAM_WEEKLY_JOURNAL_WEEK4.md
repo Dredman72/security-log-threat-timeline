@@ -14,7 +14,8 @@
 | [x] | Refined OpenAI summarization prompt | Derrick improved the OpenAI prompt so the model is instructed to return concise, structured JSON report output for security logs. |
 | [x] | Improved fallback behavior | Derrick improved the application behavior when model output is incomplete, invalid, or missing expected fields. |
 | [x] | Confirmed report sections | The team confirmed the main report sections: executive summary, risk level, attack type, affected assets, indicators of compromise, key findings, threat timeline, evidence, and recommended actions. |
-| [x] | Continued backend/frontend alignment | The team continued aligning Zion's parser output and Oriah's frontend report layout with Derrick's structured LLM output. |
+| [x] | Connected parser output direction to LLM input | Zion prepared AI-ready parser output so normalized backend events can support Derrick's OpenAI summarization workflow. |
+| [ ] | Frontend report-section design | Oriah still needs to provide Week 4 evidence for the summary/report section design in the Flask/HTML direction. |
 
 ## Subtasks Completed
 
@@ -24,8 +25,8 @@
 | Derrick | Added report normalization | Improved app behavior so missing fields are filled with safe defaults such as `Unknown`, empty lists, or `Unknown event`. |
 | Derrick | Improved JSON cleanup | Added logic to handle common JSON formatting problems, including model output wrapped in code blocks or extra text around JSON. |
 | Derrick | Improved upload handling | Clarified supported file types and added clearer behavior for raw `.evtx` files and oversized uploads. |
-| Zion | Parser connection planning | Continued preparing normalized parser output so it can be connected to the LLM workflow. |
-| Oriah | Frontend report planning | Continued planning report sections and timeline layout based on the structured LLM output fields. |
+| Zion | Parser-to-LLM input preparation | Prepared normalized parser output in an AI-ready structure that can support OpenAI summarization and report generation. |
+| Oriah | Frontend report planning | Pending final Week 4 evidence. Oriah needs to provide a report-section layout, screenshot, mockup, or frontend update showing executive summary, risk, findings, timeline, and recommendations. |
 
 ## Testing of Subtasks With Demo Screenshot Evidence
 
@@ -74,6 +75,22 @@
 
 **Screenshot Evidence:** Insert screenshot of upload form or error message if tested.
 
+### Test 6: AI-Ready Parser Input Review
+
+**Purpose:** Confirm Zion's Week 4 parser output can support the LLM workflow.  
+**Procedure:** The team reviewed the AI-ready parser input structure against the report fields needed by Derrick's OpenAI prompt.  
+**Expected Result:** Parser output should contain enough normalized event detail to support summary, risk level, attack type, affected assets, IOCs, key findings, timeline evidence, and recommended actions.  
+**Result:** Passed. Zion's Week 4 parser-to-LLM input task is complete for the current project stage.
+
+**Screenshot Evidence:** Insert screenshot of the AI-ready parser input file or related documentation.
+
+### Pending Test: Frontend Report Section Design
+
+**Purpose:** Confirm Oriah's Week 4 report-section layout is ready for the shared Flask/HTML prototype.  
+**Procedure:** Oriah should provide a screenshot, mockup, or frontend update showing the report sections in browser/report form.  
+**Expected Result:** The report display should clearly show executive summary, risk, findings, timeline, and recommendations.  
+**Result:** Pending.
+
 ## Lessons Learned
 
 - The LLM prompt must be specific because the frontend depends on consistent output sections.
@@ -87,8 +104,8 @@
 | Team Member | Role | Week 4 Contribution |
 | --- | --- | --- |
 | Derrick Redman | Team Leader + AI/LLM Specialist | Refined the OpenAI prompt, improved structured JSON output handling, added fallback behavior, updated documentation, and continued coordinating backend/frontend alignment. |
-| Zion Moore | Backend & Log Processing Lead | Continued preparing parser output for integration with the LLM workflow and provided backend/parser direction based on the canonical event schema. |
-| Oriah Molton-Bowman | Frontend & Visualization Lead | Continued aligning frontend report sections and timeline design with the structured LLM output and requested parsed sample data needed for frontend work. |
+| Zion Moore | Backend & Log Processing Lead | Prepared AI-ready parser input and continued connecting normalized backend output to the LLM/report workflow. |
+| Oriah Molton-Bowman | Frontend & Visualization Lead | Completed Week 3 frontend planning and still needs to submit Week 4 evidence for the report-section design task. |
 
 ## Progress Compared to Plan
 
@@ -97,13 +114,13 @@ The team has progressed according to the project plan. Derrick's Week 4 LLM task
 - Refine OpenAI summarization prompt.
 - Improve fallback handling for model output.
 
-The remaining Week 4 work is to finish the connection between Zion's normalized parser output and the LLM workflow, and to continue Oriah's report section design based on the finalized structured output.
+Zion's Week 4 parser-to-LLM input preparation is also complete. The remaining Week 4 work is Oriah's report-section design based on the finalized structured output.
 
 ## Plan Adjustment
 
 No major adjustment is required. The team will continue using Flask/HTML as the shared prototype framework.
 
-The only adjustment is coordination-based: Zion should send sample normalized parser output to Oriah and Derrick, and Derrick should help verify that the parser output can be used as clean input for the OpenAI summarization workflow.
+The only adjustment is coordination-based: Oriah should use Zion's sample normalized parser output and Derrick's confirmed report labels to finish the Week 4 frontend/report section design.
 
 ## Team Sign-Off
 

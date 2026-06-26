@@ -55,7 +55,7 @@ This file tracks the team's weekly milestones, task ownership, and progress. It 
 | [x] | Zion | Build first parser prototype | Parser reads sample CSV security log | Parser reads test events successfully |
 | [x] | Zion | Generate normalized JSON output | Parsed events converted into canonical event schema | Output includes timestamp, source, host, user, event type, severity, description, evidence, and raw event |
 | [x] | Zion | Generate starter report output | Starter HTML security report with executive summary, validation warnings, and threat timeline table | Backend can produce report-ready output |
-| [ ] | Oriah | Add basic parsed-event frontend placeholder | Initial browser area for parsed event data and report sections | Frontend can display backend/report fields |
+| [x] | Oriah | Add basic parsed-event frontend placeholder | Initial browser area for parsed event data and report sections | Frontend planning confirms how backend/report fields will be displayed |
 
 ## Week 4: LLM Integration and Structured Summarization
 
@@ -66,7 +66,7 @@ This file tracks the team's weekly milestones, task ownership, and progress. It 
 | --- | --- | --- | --- | --- |
 | [x] | Derrick | Refine OpenAI prompt and structured output | Improved prompt for consistent JSON report output | Output reliably includes summary, risk, attack type, assets, IOCs, findings, timeline, evidence, and actions |
 | [x] | Derrick | Add or review fallback behavior | Graceful response when OpenAI output is incomplete or invalid JSON | App does not fail silently when model output needs cleanup |
-| [ ] | Zion | Connect parser output to AI input format | Normalized event data ready for LLM summarization | Parser output can be passed into the LLM workflow |
+| [x] | Zion | Connect parser output to AI input format | Normalized event data ready for LLM summarization | Parser output can be passed into the LLM workflow |
 | [ ] | Oriah | Design summary/report sections | Frontend layout for executive summary, risk, findings, timeline, and recommendations | Report output is easy to read in the browser |
 
 ## Week 5: Threat Timeline Generation

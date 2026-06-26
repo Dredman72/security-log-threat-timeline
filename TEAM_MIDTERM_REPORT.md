@@ -21,7 +21,7 @@ The goal is to help a security analyst or instructor understand raw security log
 | [x] | June 1-7 | Week 1: Project kickoff and requirements | The team confirmed the project topic, team roles, initial scope, target log types, and the need for a runnable prototype. |
 | [x] | June 8-14 | Week 2: Data model, sample logs, and output format | The team defined the shared backend, LLM, and frontend structure. Derrick created the LLM output format, Zion created the backend event schema and sample logs, and Oriah created the frontend report/timeline wireframe. |
 | [x] | June 15-21 | Week 3: Log ingestion and parser validation | Zion completed an initial parser prototype and normalized output. Derrick created the parser output validation checklist. The team reviewed the parser structure against the fields needed for the LLM and report display. |
-| [x] | June 22-28 | Week 4: LLM integration and structured summarization | Derrick refined the OpenAI prompt and fallback behavior so the model returns structured report sections and the app does not fail silently when output is incomplete or imperfect. |
+| [x] | June 22-28 | Week 4: LLM integration and structured summarization | Derrick refined the OpenAI prompt and fallback behavior. Zion prepared AI-ready parser input for the LLM workflow. Oriah's Week 4 frontend report-section design is still pending final evidence. |
 
 ## Subtasks Completed
 
@@ -53,7 +53,7 @@ The goal is to help a security analyst or instructor understand raw security log
 | Zion | CSV parser test | Tested the parser using sample CSV logs and confirmed it parsed 4 events and identified 3 High/Critical events. |
 | Zion | Normalized JSON output | Generated parser output using the canonical event schema. |
 | Zion | Starter report output | Generated a starter HTML security report with an executive summary, validation warnings, and a threat timeline table. |
-| Oriah | Frontend follow-up planning | Confirmed the need for sample parsed event data and the framework direction before building the Week 3/Week 4 placeholder. |
+| Oriah | Frontend parsed-event planning | Confirmed the needed parsed event fields, received the Flask/HTML framework direction, and completed Week 3 planning for a basic parsed-event frontend placeholder. |
 
 ### Week 4 Subtasks
 
@@ -62,8 +62,8 @@ The goal is to help a security analyst or instructor understand raw security log
 | Derrick | Refined OpenAI summarization prompt | Improved prompt instructions so the model returns concise, structured JSON report output. |
 | Derrick | Improved fallback handling | Added safer JSON parsing, report normalization, missing field defaults, and clear error messages for incomplete or invalid model output. |
 | Derrick | Upload handling review | Clarified supported uploaded file types and added clear handling for raw `.evtx` files and oversized uploads. |
-| Zion | Parser-to-LLM coordination | Continued preparing parser output so normalized events can be connected to the LLM workflow. |
-| Oriah | Report section planning | Continued aligning frontend report sections with the structured LLM output fields. |
+| Zion | Parser-to-LLM input preparation | Prepared normalized parser output in an AI-ready format so parsed events can be passed into the OpenAI summarization workflow. |
+| Oriah | Report section planning | Pending Week 4 evidence. Oriah still needs to provide a report-section design or frontend update showing executive summary, risk, findings, timeline, and recommendations in the browser/report layout. |
 
 ## Testing and Demo Evidence
 
@@ -123,6 +123,20 @@ The following tests were completed or prepared as evidence for the midterm repor
 
 **Screenshot Evidence:** Insert screenshot of successful report output or terminal check if used.
 
+### Test 7: AI-Ready Parser Input Review
+
+**Purpose:** Confirm Zion's normalized parser output can support Derrick's OpenAI summarization workflow.  
+**Procedure:** The team reviewed the AI-ready parser input structure against the expected LLM/report fields.  
+**Expected Result:** Parser output should include enough normalized event detail to support summary, risk level, key findings, timeline events, evidence, and recommended actions.  
+**Result:** Passed. Zion's Week 4 parser-to-LLM input work is complete for the current prototype stage.
+
+**Screenshot Evidence:** Insert screenshot of `examples/ai-ready-parser-input.json` or `docs/week4-ai-ready-parser-input.md`.
+
+### Pending Test: Week 4 Frontend Report Section Design
+
+**Purpose:** Confirm Oriah's Week 4 frontend/report section design is ready for the shared Flask/HTML prototype.  
+**Status:** Pending. Oriah needs to provide screenshot evidence, an updated mockup, or a frontend file showing the report sections for executive summary, risk, findings, timeline, and recommendations.
+
 ## Lessons Learned
 
 - The team learned that the backend parser, LLM prompt, and frontend report must share the same data structure.
@@ -137,18 +151,18 @@ The following tests were completed or prepared as evidence for the midterm repor
 | Team Member | Role | Contributions So Far |
 | --- | --- | --- |
 | Derrick Redman | Team Leader + AI/LLM Specialist | Created the Flask/OpenAI prototype, confirmed the tested OpenAI model, refined the LLM prompt, improved fallback handling, created the parser validation checklist, updated README/project documentation, created GitHub repository, coordinated team direction, and reviewed team deliverables. |
-| Zion Moore | Backend & Log Processing Lead | Created the canonical event schema, created sample CSV security logs, built the first parser prototype, ran backend health checks, parsed sample events, identified High/Critical events, generated normalized JSON output, and produced a starter HTML security report. |
-| Oriah Molton-Bowman | Frontend & Visualization Lead | Created the Week 2 PowerPoint report/timeline wireframe, planned frontend sections, identified frontend data fields, planned timeline display behavior, and requested parsed sample data to continue the frontend placeholder. |
+| Zion Moore | Backend & Log Processing Lead | Created the canonical event schema, created sample CSV security logs, built the first parser prototype, ran backend health checks, parsed sample events, identified High/Critical events, generated normalized JSON output, produced a starter HTML security report, and prepared AI-ready parser input for Week 4 LLM integration. |
+| Oriah Molton-Bowman | Frontend & Visualization Lead | Created the Week 2 PowerPoint report/timeline wireframe, planned frontend sections, identified frontend data fields, planned timeline display behavior, requested parsed sample data, and completed Week 3 parsed-event/frontend planning. Week 4 report-section design evidence is still pending. |
 
 ## Progress Compared to Plan
 
 The team has progressed mostly according to the project plan, timeline, and schedule.
 
-Weeks 1, 2, and 3 are complete. Derrick's Week 4 LLM prompt and fallback handling tasks are complete. Zion and Oriah still need to finish the Week 4 connection between parser output and the report display. This is consistent with the project plan because Week 4 focuses on connecting normalized events to the LLM workflow and preparing report sections.
+Weeks 1, 2, and 3 are complete. Derrick's Week 4 LLM prompt and fallback handling tasks are complete. Zion's Week 4 parser-to-LLM input preparation is complete. Oriah's Week 4 report-section design task remains pending until she provides a frontend mockup, screenshot, or file update showing the browser/report layout.
 
 ## Plan Adjustment
 
-No major plan adjustment is required. The team will continue using Flask and HTML as the shared framework. The next adjustment is a coordination step: Zion should provide sample normalized parser output to Oriah, and Derrick should help confirm that the parser output can be passed into the OpenAI workflow cleanly.
+No major plan adjustment is required. The team will continue using Flask and HTML as the shared framework. The next coordination step is for Oriah to use the confirmed report labels and Zion's sample normalized parser output to finish the Week 4 report-section design.
 
 The Week 5 focus remains threat timeline generation logic and interactive timeline prototype work.
 
