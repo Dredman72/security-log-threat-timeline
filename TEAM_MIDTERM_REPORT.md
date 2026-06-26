@@ -131,7 +131,7 @@ The following tests were completed or prepared as evidence for the midterm repor
 
 **Screenshot Evidence:** Insert screenshot of parser output and checklist review.
 
-![Parser output Validation Checklist review](docs/screenshots/Parser%20Output%20Validation%20Checklist%20(2).png)
+![Parser output Validation Checklist review](docs/screenshots/Parser%20Output%20Validation%20Checklist.png)
 ![Zions parsed output file]()
 
 ### Test 6: Fallback Behavior Review
@@ -139,9 +139,13 @@ The following tests were completed or prepared as evidence for the midterm repor
 **Purpose:** Confirm the app handles incomplete or imperfect OpenAI output gracefully.  
 **Procedure:** Derrick updated the app so model output is normalized before display and missing fields are filled with safe defaults.  
 **Expected Result:** The app does not crash when the model output is missing fields, incomplete, or wrapped in formatting.  
-**Result:** Passed by code review and local function checks.
+**Result:** Passed. The app includes JSON cleanup, report normalization, missing-field defaults, and an invalid-JSON fallback message. This prevents the app from silently failing when OpenAI output is incomplete or imperfect
 
 **Screenshot Evidence:** Insert screenshot of successful report output or terminal check if used.
+
+![Fallback Imperfect Output Code](docs/screenshots/Fallback%20Code.png)
+![Fallback Codes](docs/screenshots/Fallback%20codes%20.png)
+
 
 ### Test 7: AI-Ready Parser Input Review
 
@@ -150,7 +154,9 @@ The following tests were completed or prepared as evidence for the midterm repor
 **Expected Result:** Parser output should include enough normalized event detail to support summary, risk level, key findings, timeline events, evidence, and recommended actions.  
 **Result:** Passed. Zion's Week 4 parser-to-LLM input work is complete for the current prototype stage.
 
-**Screenshot Evidence:** Insert screenshot of `examples/ai-ready-parser-input.json` or `docs/week4-ai-ready-parser-input.md`.
+**Screenshot Evidence:** Zion's AI-ready parser input was reviewed and includes normalized event details needed for OpenAI summarization, including timestamp, source, host, user, event type, severity, description, evidence, and raw event.
+
+![]
 
 ### Pending Test: Week 4 Frontend Report Section Design
 
