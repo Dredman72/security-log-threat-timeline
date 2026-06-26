@@ -156,7 +156,7 @@ The following tests were completed or prepared as evidence for the midterm repor
 
 **Screenshot Evidence:** Zion's AI-ready parser input was reviewed and includes normalized event details needed for OpenAI summarization, including timestamp, source, host, user, event type, severity, description, evidence, and raw event.
 
-![]
+![Test 7: AI-Ready Parser Input Review](docs/screenshots/AI-Ready%20Parser%20Input%20Review.png)
 
 ### Pending Test: Week 4 Frontend Report Section Design
 
