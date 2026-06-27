@@ -132,7 +132,7 @@ The following tests were completed or prepared as evidence for the midterm repor
 **Screenshot Evidence:** Insert screenshot of parser output and checklist review.
 
 ![Parser output Validation Checklist review](docs/screenshots/Parser%20Output%20Validation%20Checklist.png)
-![Zions parsed output file]()
+![Zion's normalized parser output](docs/screenshots/Normalized%20JSON%20Output.png)
 
 ### Test 6: Fallback Behavior Review
 
