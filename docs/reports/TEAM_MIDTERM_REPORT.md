@@ -180,10 +180,13 @@ The following tests were completed or prepared as evidence for the midterm repor
 **Purpose:** Confirm Oriah's Week 4 frontend/report section design is ready for the shared Flask/HTML prototype.  
 **Procedure:** The team reviewed Oriah's report-section design evidence and confirmed that the layout includes the major report sections needed by the project.  
 **Expected Result:** The report design should clearly support executive summary, key findings, recommendations, threat timeline, and raw event details.  
-**Result:** Passed. Oriah's Week 4 frontend/report section design is complete for the current prototype stage.
+**Result:** Passed. Oriah completed the Week 4 frontend/report section design by creating a wireframe in PowerPoint. The Flask/HTML prototype now implements this design by displaying the LLM-generated report with all required sections.
 
-**Screenshot Evidence:** Oriah's structured report output planning shows how the frontend/report layout should organize summary, findings, timeline, and recommendations.
+**Screenshot Evidence:** Oriah's structured report output planning shows how the frontend/report layout should organize summary, findings, timeline, and recommendations. The Flask application now implements this design by generating and displaying a structured report with all major sections when logs are analyzed.
 
+![Structured PowerPoint WireFrame](docs/screenshots/WireFram%20PowerPoint.png)
+![Stuctured PowerPoint WireFrame2](docs/screeshots/WireFram%20PowerPoint2.png)
+![Frontend/report design](docs/screenshots/OpenAI%20Report%20Output2.png)
 ![Structured Report Output Planning](docs/screenshots/Structured%20Report%20Output%20Planning.png)
 
 ## Lessons Learned
