@@ -14,7 +14,7 @@ This file tracks the team's weekly milestones, task ownership, and progress. It 
 | [x] | June 1-7 | Week 1 | Project kickoff, scope definition, initial requirements, prototype setup |
 | [x] | June 8-14 | Week 2 | Data model, sample logs, LLM prompt structure, report/timeline planning |
 | [x] | June 15-21 | Week 3 | Log ingestion and parser prototype, parser validation checklist, basic parsed-event review |
-| [ ] | June 22-28 | Week 4 | OpenAI API integration refinement, structured summarization, backend-to-LLM workflow |
+| [X] | June 22-28 | Week 4 | OpenAI API integration refinement, structured summarization, backend-to-LLM workflow |
 | [ ] | June 29-July 5 | Week 5 | Threat timeline generation logic and interactive timeline prototype |
 | [ ] | July 6-12 | Week 6 | End-to-end report generation and full upload-to-report workflow |
 | [ ] | July 13-19 | Week 7 | Integration testing, quality improvement, frontend polish, error handling |
@@ -55,7 +55,7 @@ This file tracks the team's weekly milestones, task ownership, and progress. It 
 | [x] | Zion | Build first parser prototype | Parser reads sample CSV security log | Parser reads test events successfully |
 | [x] | Zion | Generate normalized JSON output | Parsed events converted into canonical event schema | Output includes timestamp, source, host, user, event type, severity, description, evidence, and raw event |
 | [x] | Zion | Generate starter report output | Starter HTML security report with executive summary, validation warnings, and threat timeline table | Backend can produce report-ready output |
-| [x] | Oriah | Add basic parsed-event frontend placeholder | Initial browser area for parsed event data and report sections | Frontend planning confirms how backend/report fields will be displayed |
+| [x] | Oriah | Add basic parsed-event frontend placeholder | Initial browser area for parsed event data and report sections | Frontend can display backend/report fields |
 
 ## Week 4: LLM Integration and Structured Summarization
 
@@ -67,7 +67,7 @@ This file tracks the team's weekly milestones, task ownership, and progress. It 
 | [x] | Derrick | Refine OpenAI prompt and structured output | Improved prompt for consistent JSON report output | Output reliably includes summary, risk, attack type, assets, IOCs, findings, timeline, evidence, and actions |
 | [x] | Derrick | Add or review fallback behavior | Graceful response when OpenAI output is incomplete or invalid JSON | App does not fail silently when model output needs cleanup |
 | [x] | Zion | Connect parser output to AI input format | Normalized event data ready for LLM summarization | Parser output can be passed into the LLM workflow |
-| [ ] | Oriah | Design summary/report sections | Frontend layout for executive summary, risk, findings, timeline, and recommendations | Report output is easy to read in the browser |
+| [X] | Oriah | Design summary/report sections | Frontend layout for executive summary, risk, findings, timeline, and recommendations | Report output is easy to read in the browser |
 
 ## Week 5: Threat Timeline Generation
 
