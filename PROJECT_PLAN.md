@@ -139,6 +139,7 @@ Derrick's parser output validation checklist is documented in `PARSER_OUTPUT_VAL
 - Oriah reviewed the OpenAI-generated report output and the normalized JSON event data uploaded by the team. Her focus was on the frontend/report design for the AI summary output.
 - Oriah confirmed that the report includes the major sections needed for the project: report summary, risk level, assets and indicators, key findings, threat timeline, and recommended actions.
 - Oriah can use the OpenAI report output screenshots showing the report summary, key findings, threat timeline, and recommended actions. These screenshots show that the AI-generated content can be organized into the report sections she designed.
+- Oriah's contribution was reviewing the AI report output, confirming that the report sections match the frontend design plan, and identifying how the summary output should be displayed for users.
 
 ### Week 5: June 29 - July 5, 2026
 
