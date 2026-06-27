@@ -14,7 +14,7 @@ This file tracks the team's weekly milestones, task ownership, and progress. It 
 | [x] | June 1-7 | Week 1 | Project kickoff, scope definition, initial requirements, prototype setup |
 | [x] | June 8-14 | Week 2 | Data model, sample logs, LLM prompt structure, report/timeline planning |
 | [x] | June 15-21 | Week 3 | Log ingestion and parser prototype, parser validation checklist, basic parsed-event review |
-| [ ] | June 22-28 | Week 4 | OpenAI API integration refinement, structured summarization, backend-to-LLM workflow |
+| [X] | June 22-28 | Week 4 | OpenAI API integration refinement, structured summarization, backend-to-LLM workflow |
 | [ ] | June 29-July 5 | Week 5 | Threat timeline generation logic and interactive timeline prototype |
 | [ ] | July 6-12 | Week 6 | End-to-end report generation and full upload-to-report workflow |
 | [ ] | July 13-19 | Week 7 | Integration testing, quality improvement, frontend polish, error handling |
