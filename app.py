@@ -112,6 +112,16 @@ Rules:
   or an empty list for arrays.
 - Every timeline item must include timestamp, source, event, severity, details,
   and evidence.
+- Timeline event titles must be short, specific, and action-focused.
+  Good examples: "SSH failed login for invalid admin user",
+  "Successful root SSH login from external IP", "Sensitive file accessed
+  through sudo", "Firewall blocked inbound SSH traffic", and
+  "PowerShell launched suspicious encoded command".
+- Timeline details must explain what happened and why it matters in 1-2
+  plain-English sentences.
+- Timeline evidence must include a specific supporting artifact from the logs,
+  such as an original log line, event ID, source IP, destination IP, username,
+  host, process, command, file path, firewall port, or alert name.
 - Highlight authentication failures, privilege changes, malware indicators,
   suspicious IP addresses, firewall blocks, unusual process execution, and
   lateral movement clues.

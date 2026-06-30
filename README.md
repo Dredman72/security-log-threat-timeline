@@ -155,7 +155,7 @@ Recommended screenshots:
 
 | Done | Member | Task | Outputs Produced | Measurement |
 | --- | --- | --- | --- | --- |
-| [ ] | Derrick | Define timeline event wording and evidence requirements | Timeline prompt rules and example output | Timeline events include timestamp, source, severity, details, and evidence |
+| [x] | Derrick | Define timeline event wording and evidence requirements | `docs/week5-timeline-event-requirements.md` with timeline prompt rules and example output | Timeline events include timestamp, source, severity, details, and evidence |
 | [ ] | Zion | Add sorting and grouping logic | Chronological event ordering and basic grouping by host, user, IP, or event type | Timeline is ordered and logically grouped |
 | [ ] | Oriah | Build interactive timeline prototype | Timeline display in HTML/JavaScript | User can visually review incident order |
 
