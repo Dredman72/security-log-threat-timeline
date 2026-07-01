@@ -156,7 +156,7 @@ Recommended screenshots:
 | Done | Member | Task | Outputs Produced | Measurement |
 | --- | --- | --- | --- | --- |
 | [ ] | Derrick | Define timeline event wording and evidence requirements | Timeline prompt rules and example output | Timeline events include timestamp, source, severity, details, and evidence |
-| [x] | Zion | Add sorting and grouping logic | Chronological event ordering and basic grouping by host, user, IP, or event type | Timeline is ordered and logically grouped |
+| [ ] | Zion | Add sorting and grouping logic | Chronological event ordering and basic grouping by host, user, IP, or event type | Timeline is ordered and logically grouped |
 | [ ] | Oriah | Build interactive timeline prototype | Timeline display in HTML/JavaScript | User can visually review incident order |
 
 ## Week 6: End-to-End Report Generation
@@ -299,3 +299,4 @@ As of June 24, 2026:
 - Week 4 Zion task is complete: parser output has been documented in an AI-ready input format for the LLM workflow.
 - `MILESTONE_TODOS.md`, `DEMO_WORKFLOW_INSTRUCTIONS.md`, and `DEPLOYMENT_AND_SUBMISSION_GUIDE.md` have been added for team tracking, demo preparation, and deployment/submission guidance.
 - Next focus is completing the Week 4 frontend report section design and preparing the Week 4 journal/midterm submission evidence.
+- Week 4 Oriah task is to complete: frontend/report design.

@@ -14,7 +14,7 @@ This file tracks the team's weekly milestones, task ownership, and progress. It 
 | [x] | June 1-7 | Week 1 | Project kickoff, scope definition, initial requirements, prototype setup |
 | [x] | June 8-14 | Week 2 | Data model, sample logs, LLM prompt structure, report/timeline planning |
 | [x] | June 15-21 | Week 3 | Log ingestion and parser prototype, parser validation checklist, basic parsed-event review |
-| [ ] | June 22-28 | Week 4 | OpenAI API integration refinement, structured summarization, backend-to-LLM workflow |
+| [X] | June 22-28 | Week 4 | OpenAI API integration refinement, structured summarization, backend-to-LLM workflow |
 | [ ] | June 29-July 5 | Week 5 | Threat timeline generation logic and interactive timeline prototype |
 | [ ] | July 6-12 | Week 6 | End-to-end report generation and full upload-to-report workflow |
 | [ ] | July 13-19 | Week 7 | Integration testing, quality improvement, frontend polish, error handling |
@@ -67,7 +67,7 @@ This file tracks the team's weekly milestones, task ownership, and progress. It 
 | [x] | Derrick | Refine OpenAI prompt and structured output | Improved prompt for consistent JSON report output | Output reliably includes summary, risk, attack type, assets, IOCs, findings, timeline, evidence, and actions |
 | [x] | Derrick | Add or review fallback behavior | Graceful response when OpenAI output is incomplete or invalid JSON | App does not fail silently when model output needs cleanup |
 | [x] | Zion | Connect parser output to AI input format | Normalized event data ready for LLM summarization | Parser output can be passed into the LLM workflow |
-| [ ] | Oriah | Design summary/report sections | Frontend layout for executive summary, risk, findings, timeline, and recommendations | Report output is easy to read in the browser |
+| [X] | Oriah | Design summary/report sections | Frontend layout for executive summary, risk, findings, timeline, and recommendations | Report output is easy to read in the browser |
 
 ## Week 5: Threat Timeline Generation
 
@@ -76,7 +76,7 @@ This file tracks the team's weekly milestones, task ownership, and progress. It 
 
 | Done | Member | Task | Output | Measurement |
 | --- | --- | --- | --- | --- |
-| [ ] | Derrick | Define timeline event wording and evidence requirements | Timeline prompt rules and example output | Timeline events include timestamp, source, severity, details, and evidence |
+| [x] | Derrick | Define timeline event wording and evidence requirements | `docs/week5-timeline-event-requirements.md` with timeline prompt rules and example output | Timeline events include timestamp, source, severity, details, and evidence |
 | [ ] | Zion | Add sorting and grouping logic | Chronological event ordering and basic grouping by host, user, IP, or event type | Timeline is ordered and logically grouped |
 | [ ] | Oriah | Build interactive timeline prototype | Timeline display in HTML/JavaScript | User can visually review incident order |
 
