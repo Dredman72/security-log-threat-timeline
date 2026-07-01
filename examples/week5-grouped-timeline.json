@@ -1,0 +1,87 @@
+{
+  "timeline_summary": {
+    "total_events": 4,
+    "high_or_critical_events": 3,
+    "sort_order": "timestamp_ascending",
+    "grouping_fields": [
+      "host",
+      "user",
+      "source_ip",
+      "destination_ip",
+      "event_type",
+      "severity"
+    ]
+  },
+  "timeline": [
+    {
+      "timestamp": "2026-06-09T13:00:00Z",
+      "event_type": "process_start",
+      "severity": "High",
+      "host": "WIN-SERVER-01",
+      "user": "alice",
+      "source_ip": "192.0.2.10",
+      "destination_ip": "",
+      "summary": "PowerShell launched with unusual encoded command"
+    },
+    {
+      "timestamp": "2026-06-09T13:05:00Z",
+      "event_type": "firewall_block",
+      "severity": "High",
+      "host": "WIN-SERVER-01",
+      "user": "unknown",
+      "source_ip": "",
+      "destination_ip": "203.0.113.10",
+      "summary": "Outbound connection blocked to suspicious IP"
+    },
+    {
+      "timestamp": "2026-06-09T13:11:00Z",
+      "event_type": "login_failure",
+      "severity": "Medium",
+      "host": "WIN-SERVER-01",
+      "user": "bob",
+      "source_ip": "192.0.2.25",
+      "destination_ip": "",
+      "summary": "Multiple failed login attempts detected"
+    },
+    {
+      "timestamp": "2026-06-09T13:20:00Z",
+      "event_type": "malware_alert",
+      "severity": "Critical",
+      "host": "WIN-SERVER-01",
+      "user": "alice",
+      "source_ip": "192.0.2.10",
+      "destination_ip": "",
+      "summary": "EDR reported possible ransomware behavior"
+    }
+  ],
+  "groups": {
+    "by_host": {
+      "WIN-SERVER-01": 4
+    },
+    "by_user": {
+      "alice": 2,
+      "unknown": 1,
+      "bob": 1
+    },
+    "by_source_ip": {
+      "192.0.2.10": 2,
+      "192.0.2.25": 1,
+      "unknown": 1
+    },
+    "by_destination_ip": {
+      "203.0.113.10": 1,
+      "none": 3
+    },
+    "by_event_type": {
+      "process_start": 1,
+      "firewall_block": 1,
+      "login_failure": 1,
+      "malware_alert": 1
+    },
+    "by_severity": {
+      "High": 2,
+      "Medium": 1,
+      "Critical": 1
+    }
+  }
+}
