@@ -222,6 +222,55 @@
       font-size: 1rem;
     }
 
+    .metric-list {
+      display: grid;
+      gap: 8px;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .metric-list li {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      border-bottom: 1px solid #edf1f7;
+      padding-bottom: 8px;
+    }
+
+    .metric-list li:last-child {
+      border-bottom: 0;
+      padding-bottom: 0;
+    }
+
+    .event-table-wrap {
+      overflow-x: auto;
+    }
+
+    .event-table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 820px;
+      font-size: 0.92rem;
+    }
+
+    .event-table th,
+    .event-table td {
+      border-bottom: 1px solid var(--line);
+      padding: 10px;
+      text-align: left;
+      vertical-align: top;
+    }
+
+    .event-table th {
+      background: #f0f4fa;
+      font-weight: 700;
+    }
+
+    .event-table td:last-child {
+      color: var(--muted);
+    }
+
     .evidence {
       margin-top: 8px;
       color: var(--muted);
@@ -336,6 +385,38 @@
         {% endif %}
       </section>
 
+      {% if timeline_groups.total_events %}
+        <section class="panel">
+          <h2>Timeline Activity Summary</h2>
+          <div class="detail-grid">
+            <div class="detail-box">
+              <h3>By Severity</h3>
+              {% if timeline_groups.by_severity %}
+                <ul class="metric-list">
+                  {% for item in timeline_groups.by_severity %}
+                    <li><span>{{ item.name }}</span><strong>{{ item.count }}</strong></li>
+                  {% endfor %}
+                </ul>
+              {% else %}
+                <p class="hint">No severity grouping available.</p>
+              {% endif %}
+            </div>
+            <div class="detail-box">
+              <h3>By Source</h3>
+              {% if timeline_groups.by_source %}
+                <ul class="metric-list">
+                  {% for item in timeline_groups.by_source %}
+                    <li><span>{{ item.name }}</span><strong>{{ item.count }}</strong></li>
+                  {% endfor %}
+                </ul>
+              {% else %}
+                <p class="hint">No source grouping available.</p>
+              {% endif %}
+            </div>
+          </div>
+        </section>
+      {% endif %}
+
       <section class="panel">
         <h2>Threat Timeline</h2>
         {% if report.timeline %}
@@ -361,6 +442,41 @@
           <p class="hint">No timeline events returned.</p>
         {% endif %}
       </section>
+
+      {% if parsed_events %}
+        <section class="panel">
+          <h2>Parsed Event Preview</h2>
+          <p class="hint">Local preview using the team parser schema. This helps confirm the backend fields support the LLM report and frontend timeline.</p>
+          <div class="event-table-wrap">
+            <table class="event-table">
+              <thead>
+                <tr>
+                  <th>Timestamp</th>
+                  <th>Source</th>
+                  <th>Host</th>
+                  <th>User</th>
+                  <th>Event Type</th>
+                  <th>Severity</th>
+                  <th>Evidence</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for item in parsed_events %}
+                  <tr>
+                    <td>{{ item.timestamp }}</td>
+                    <td>{{ item.source }}</td>
+                    <td>{{ item.host }}</td>
+                    <td>{{ item.user }}</td>
+                    <td>{{ item.event_type }}</td>
+                    <td><span class="badge">{{ item.severity }}</span></td>
+                    <td>{{ item.evidence }}</td>
+                  </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+        </section>
+      {% endif %}
 
       <section class="panel">
         <h2>Recommended Actions</h2>

@@ -1,5 +1,8 @@
+import csv
+import io
 import json
 import os
+from collections import Counter
 from datetime import datetime
 from pathlib import Path
 
@@ -67,6 +70,164 @@ def read_uploaded_file(file_storage) -> str:
             continue
 
     return raw_bytes.decode("utf-8", errors="replace")
+
+
+def infer_event_severity(text: str) -> str:
+    lowered = text.lower()
+    if any(
+        term in lowered
+        for term in [
+            "critical",
+            "malware",
+            "ransomware",
+            "/etc/shadow",
+            "accepted password for root",
+        ]
+    ):
+        return "Critical"
+    if any(
+        term in lowered
+        for term in [
+            "sudo",
+            "privilege",
+            "accepted password",
+            "blocked",
+            "suspicious",
+            "failed password",
+        ]
+    ):
+        return "High"
+    if any(term in lowered for term in ["failed", "denied", "warning", "unusual"]):
+        return "Medium"
+    return "Low"
+
+
+def normalize_parser_event(record: dict, raw_event: str = "", source: str = "input") -> dict:
+    text_for_severity = " ".join(str(value) for value in record.values()) or raw_event
+    event_name = record.get("event_type") or record.get("type") or record.get("event")
+
+    return {
+        "timestamp": str(record.get("timestamp") or record.get("time") or "Unknown").strip(),
+        "source": str(record.get("source") or source or "Unknown").strip(),
+        "host": str(record.get("host") or record.get("hostname") or "Unknown").strip(),
+        "user": str(record.get("user") or record.get("username") or "Unknown").strip(),
+        "source_ip": str(record.get("source_ip") or record.get("src_ip") or record.get("src") or "").strip(),
+        "destination_ip": str(
+            record.get("destination_ip") or record.get("dst_ip") or record.get("dst") or ""
+        ).strip(),
+        "event_type": str(event_name or "unknown").strip(),
+        "severity": str(record.get("severity") or infer_event_severity(text_for_severity)).strip(),
+        "description": str(
+            record.get("description") or record.get("message") or record.get("details") or raw_event
+        ).strip(),
+        "evidence": str(record.get("evidence") or raw_event).strip(),
+        "raw_event": str(record.get("raw_event") or raw_event).strip(),
+    }
+
+
+def parse_input_events(log_text: str) -> list[dict]:
+    """Create a lightweight local preview using Zion's canonical event fields."""
+    if not log_text.strip():
+        return []
+
+    try:
+        payload = json.loads(log_text)
+        if isinstance(payload, dict) and isinstance(payload.get("events"), list):
+            records = payload["events"]
+        elif isinstance(payload, list):
+            records = payload
+        elif isinstance(payload, dict):
+            records = [payload]
+        else:
+            records = []
+
+        return [
+            normalize_parser_event(record, json.dumps(record), "json")
+            for record in records
+            if isinstance(record, dict)
+        ]
+    except json.JSONDecodeError:
+        pass
+
+    first_line = log_text.strip().splitlines()[0] if log_text.strip().splitlines() else ""
+    if "," in first_line:
+        reader = csv.DictReader(io.StringIO(log_text))
+        known_fields = {"timestamp", "time", "source", "host", "user", "event_type", "severity"}
+        if reader.fieldnames and known_fields.intersection(set(reader.fieldnames)):
+            return [
+                normalize_parser_event(row, json.dumps(row), "csv")
+                for row in reader
+                if any(str(value).strip() for value in row.values())
+            ]
+
+    events = []
+    for line in [line.strip() for line in log_text.splitlines() if line.strip()][:100]:
+        events.append(
+            normalize_parser_event(
+                {
+                    "timestamp": "Unknown",
+                    "source": "raw-log",
+                    "event_type": "raw_log_line",
+                    "severity": infer_event_severity(line),
+                    "description": line,
+                    "evidence": line,
+                    "raw_event": line,
+                },
+                line,
+                "raw-log",
+            )
+        )
+    return events
+
+
+def build_analysis_input(raw_log_text: str, parsed_events: list[dict]) -> str:
+    if not parsed_events:
+        return raw_log_text
+
+    parser_preview = json.dumps(parsed_events[:50], indent=2)
+    return (
+        f"{raw_log_text}\n\n"
+        "Normalized parser preview using the team event schema. "
+        "Use this as supporting context, but cite raw log evidence when possible:\n"
+        f"{parser_preview}"
+    )
+
+
+def counter_rows(counter: Counter) -> list[dict]:
+    return [
+        {"name": name, "count": count}
+        for name, count in counter.most_common()
+        if name and name != "Unknown"
+    ]
+
+
+def build_timeline_groups(report_timeline: list[dict], parsed_events: list[dict]) -> dict:
+    items = []
+    if report_timeline:
+        items = [
+            {
+                "severity": item.get("severity", "Unknown"),
+                "source": item.get("source", "Unknown"),
+                "event": item.get("event", "Unknown"),
+            }
+            for item in report_timeline
+        ]
+    elif parsed_events:
+        items = [
+            {
+                "severity": item.get("severity", "Unknown"),
+                "source": item.get("source", "Unknown"),
+                "event": item.get("event_type", "Unknown"),
+            }
+            for item in parsed_events
+        ]
+
+    return {
+        "total_events": len(items),
+        "by_severity": counter_rows(Counter(item["severity"] for item in items)),
+        "by_source": counter_rows(Counter(item["source"] for item in items)),
+        "by_event": counter_rows(Counter(item["event"] for item in items)),
+    }
 
 
 def build_prompt(log_text: str) -> str:
@@ -281,6 +442,8 @@ def index():
     report = empty_report()
     error = None
     submitted_log_text = ""
+    parsed_events = []
+    timeline_groups = build_timeline_groups([], [])
 
     if request.method == "POST":
         try:
@@ -293,16 +456,24 @@ def index():
             if not submitted_log_text:
                 raise ValueError("Paste logs or upload a log file before analyzing.")
 
-            report = analyze_logs_with_openai(submitted_log_text)
+            parsed_events = parse_input_events(submitted_log_text)
+            report = analyze_logs_with_openai(
+                build_analysis_input(submitted_log_text, parsed_events)
+            )
+            timeline_groups = build_timeline_groups(report["timeline"], parsed_events)
         except Exception as exc:
             error = str(exc)
             submitted_log_text = request.form.get("log_text", "")
+            parsed_events = parse_input_events(submitted_log_text)
+            timeline_groups = build_timeline_groups([], parsed_events)
 
     return render_template(
         "index.html",
         report=report,
         error=error,
         log_text=submitted_log_text,
+        parsed_events=parsed_events[:10],
+        timeline_groups=timeline_groups,
         model_name=MODEL_NAME,
         max_chars=MAX_LOG_CHARS,
     )
@@ -317,6 +488,8 @@ def handle_large_upload(_error):
             report=report,
             error="Uploaded file is too large. Use a file smaller than 8 MB.",
             log_text=request.form.get("log_text", ""),
+            parsed_events=[],
+            timeline_groups=build_timeline_groups([], []),
             model_name=MODEL_NAME,
             max_chars=MAX_LOG_CHARS,
         ),
