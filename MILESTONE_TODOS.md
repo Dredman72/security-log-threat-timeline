@@ -77,7 +77,7 @@ This file tracks the team's weekly milestones, task ownership, and progress. It 
 | Done | Member | Task | Output | Measurement |
 | --- | --- | --- | --- | --- |
 | [x] | Derrick | Define timeline event wording and evidence requirements | `docs/week5-timeline-event-requirements.md` with timeline prompt rules and example output | Timeline events include timestamp, source, severity, details, and evidence |
-| [ ] | Zion | Add sorting and grouping logic | Chronological event ordering and basic grouping by host, user, IP, or event type | Timeline is ordered and logically grouped |
+| [x] | Zion | Add sorting and grouping logic | `docs/week5-sorting-grouping-logic.md` and `examples/week5-grouped-timeline.json` | Timeline is ordered and logically grouped |
 | [ ] | Oriah | Build interactive timeline prototype | Timeline display in HTML/JavaScript | User can visually review incident order |
 
 ## Week 6: End-to-End Report Generation
