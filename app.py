@@ -110,21 +110,23 @@ Rules:
 - If timestamps are missing, order events by appearance and use "Unknown".
 - If a required top-level field has no supported value, use "Unknown" for strings
   or an empty list for arrays.
-- Every timeline item must include timestamp, source, event, severity, details,
-  and evidence.
-- Timeline event titles must be short, specific, and action-focused.
-  Good examples: "SSH failed login for invalid admin user",
-  "Successful root SSH login from external IP", "Sensitive file accessed
-  through sudo", "Firewall blocked inbound SSH traffic", and
-  "PowerShell launched suspicious encoded command".
-- Timeline details must explain what happened and why it matters in 1-2
-  plain-English sentences.
-- Timeline evidence must include a specific supporting artifact from the logs,
-  such as an original log line, event ID, source IP, destination IP, username,
-  host, process, command, file path, firewall port, or alert name.
-- Highlight authentication failures, privilege changes, malware indicators,
-  suspicious IP addresses, firewall blocks, unusual process execution, and
-  lateral movement clues.
+- Rules for the Threat Timeline:
+  - Create a chronological threat timeline of the most important security events.
+  - Every timeline event must include: timestamp, source, event, severity,
+    details, and evidence.
+  - Make event titles short, clear, and descriptive (avoid long repetitive titles).
+  - Combine repeated similar events when possible (for example, multiple failed
+    login attempts from the same IP can be summarized into one event instead of
+    creating many duplicate entries).
+  - In the "details" field, explain what happened and why it matters in 1-2
+    sentences.
+  - In the "evidence" field, always cite the specific log line, command, IP
+    address, username, or artifact that supports the event.
+  - Use severity levels: Low, Medium, High, or Critical appropriately.
+  - Focus on high-impact events such as successful logins after failures,
+    privilege escalation (sudo), sensitive file access, and firewall blocks.
+  - Do not invent events that are not supported by the logs.
+  - Keep the timeline concise but useful for incident response review.
 - Identify affected assets and indicators of compromise only when supported by
   the logs. Use an empty list when none are present.
 - For timeline evidence, cite specific log details instead of broad summaries.
