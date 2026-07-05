@@ -47,7 +47,11 @@ The team updated the README and milestone tracking files so the repository refle
 **Expected Result:** The document should define required timeline fields and include example output.  
 **Result:** Passed. The document defines timestamp, source, event, severity, details, and evidence requirements, plus example timeline JSON.
 
-**Screenshot Evidence:** Insert screenshot of `docs/week5-timeline-event-requirements.md`.
+**Screenshot Evidence:**
+
+![Timeline Requirement Review](../screenshots/Timeline%20Requirment%20Review%20.png)
+
+![Timeline Requirement Review Continued](../screenshots/Timeline%20Requirment%20Review2.png)
 
 ### Test 2: OpenAI Prompt Timeline Rules Review
 
@@ -56,7 +60,9 @@ The team updated the README and milestone tracking files so the repository refle
 **Expected Result:** The prompt should tell OpenAI to return timeline events with timestamp, source, event, severity, details, and evidence.  
 **Result:** Passed. The prompt now includes stronger rules for timeline titles, details, and evidence.
 
-**Screenshot Evidence:** Insert screenshot of the Week 5 prompt rules in `app.py`.
+**Screenshot Evidence:**
+
+![OpenAI Prompt Timeline Rules](../screenshots/OpenAI%20Prompt%20Timeline%20Rules.png)
 
 ### Test 3: Sorting and Grouping Logic Review
 
@@ -65,7 +71,9 @@ The team updated the README and milestone tracking files so the repository refle
 **Expected Result:** The document should explain sorting by timestamp and grouping by investigation fields.  
 **Result:** Passed. The document explains sorting by timestamp and grouping by host, user, source IP, destination IP, event type, and severity.
 
-**Screenshot Evidence:** Insert screenshot of `docs/week5-sorting-grouping-logic.md`.
+**Screenshot Evidence:**
+
+![Sorting and Grouping Logic](../screenshots/Sorting%20and%20Grouping%20Logic.png)
 
 ### Test 4: Grouped Timeline JSON Review
 
@@ -74,7 +82,9 @@ The team updated the README and milestone tracking files so the repository refle
 **Expected Result:** The example should show timeline events in timestamp order and provide grouped counts.  
 **Result:** Passed. The example includes a `timeline_summary`, chronological `timeline` events, and grouped counts by host, user, source IP, destination IP, event type, and severity.
 
-**Screenshot Evidence:** Insert screenshot of `examples/week5-grouped-timeline.json`.
+**Screenshot Evidence:**
+
+![Grouped Timeline JSON](../screenshots/Grouped%20Timeline%20JSON.png)
 
 ### Test 5: Milestone Tracker Review
 
