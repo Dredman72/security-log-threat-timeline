@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Threat Timeline</title>
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial, Helvetica, sans-serif;
+}
+
+body{
+    background:#f4f6f8;
+    padding:40px;
+}
+
+.container{
+    max-width:1200px;
+    margin:auto;
+}
+
+h1{
+    margin-bottom:10px;
+    color:#222;
+}
+
+.subtitle{
+    margin-bottom:30px;
+    color:#666;
+}
+
+.controls{
+    display:flex;
+    gap:15px;
+    margin-bottom:30px;
+    flex-wrap:wrap;
+}
+
+.controls input{
+    flex:1;
+    min-width:250px;
+    padding:12px;
+    border:1px solid #ccc;
+    border-radius:8px;
+}
+
+.controls select{
+    padding:12px;
+    border-radius:8px;
+}
+
+.timeline{
+    display:flex;
+    flex-direction:column;
+    gap:20px;
+}
+
+.card{
+
+    background:white;
+    border-radius:10px;
+    padding:20px;
+    box-shadow:0 4px 10px rgba(0,0,0,.08);
+    transition:.25s;
+    border-left:8px solid #ccc;
+
+}
+
+.card:hover{
+    transform:translateY(-3px);
+}
+
+.medium{
+
+    border-left-color:#f4b400;
+    background:#fffdf4;
+
+}
+
+.high{
+
+    border-left-color:#ff6d00;
+    background:#fff8f2;
+
+}
+
+.critical{
+
+    border-left-color:#d32f2f;
+    background:#ffeaea;
+
+}
+
+.header{
+
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:15px;
+
+}
+
+.event-title{
+
+    font-size:22px;
+    font-weight:bold;
+
+}
+
+.timestamp{
+
+    color:#666;
+    font-size:14px;
+
+}
+
+.badge{
+
+    padding:5px 12px;
+    border-radius:30px;
+    color:white;
+    font-size:13px;
+    font-weight:bold;
+
+}
+
+.mediumBadge{
+
+    background:#f4b400;
+
+}
+
+.highBadge{
+
+    background:#ff6d00;
+
+}
+
+.criticalBadge{
+
+    background:#d32f2f;
+
+}
+
+.info{
+
+    display:grid;
+    grid-template-columns:150px auto;
+    gap:10px;
+    margin-top:15px;
+}
+
+.info strong{
+
+    color:#444;
+
+}
+
+.details{
+
+    display:none;
+    margin-top:20px;
+    padding-top:20px;
+    border-top:1px solid #ddd;
+
+}
+
+button{
+
+    margin-top:20px;
+    padding:10px 16px;
+    border:none;
+    background:#1976d2;
+    color:white;
+    border-radius:6px;
+    cursor:pointer;
+
+}
+
+button:hover{
+
+    background:#1259a8;
+
+}
+
+pre{
+
+    white-space:pre-wrap;
+    word-wrap:break-word;
+    background:#f3f3f3;
+    padding:10px;
+    border-radius:6px;
+    margin-top:8px;
+
+}
+
+.noEvents{
+
+    text-align:center;
+    color:#777;
+    margin-top:40px;
+    font-size:18px;
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>Threat Timeline</h1>
+
+<p class="subtitle">
+Interactive Security Incident Timeline
+</p>
+
+<div class="controls">
+
+<input
+id="searchBox"
+type="text"
+placeholder="Search Host, User, or Event Type">
+
+<select id="severityFilter">
+
+<option value="All">All Severities</option>
+<option value="Medium">Medium</option>
+<option value="High">High</option>
+<option value="Critical">Critical</option>
+
+</select>
+
+</div>
+
+<div id="timeline" class="timeline"></div>
+
+</div>
+
+<script>
+
+const events = {{ timeline_events|tojson|safe }};
+
+events.sort((a,b)=>
+    new Date(a.timestamp)-new Date(b.timestamp)
+);
+
+const timeline=document.getElementById("timeline");
+const searchBox=document.getElementById("searchBox");
+const severityFilter=document.getElementById("severityFilter");
+
+function badgeClass(level){
+
+    if(level==="Medium") return "mediumBadge";
+    if(level==="High") return "highBadge";
+    return "criticalBadge";
+
+}
+
+function renderTimeline(){
+
+    timeline.innerHTML="";
+
+    const search=searchBox.value.toLowerCase();
+    const severity=severityFilter.value;
+
+    const filtered=events.filter(e=>{
+
+        const matchesSearch=
+
+            e.host.toLowerCase().includes(search) ||
+
+            e.user.toLowerCase().includes(search) ||
+
+            e.event_type.toLowerCase().includes(search);
+
+        const matchesSeverity=
+
+            severity==="All" ||
+
+            e.severity===severity;
+
+        return matchesSearch && matchesSeverity;
+
+    });
+
+    if(filtered.length===0){
+
+        timeline.innerHTML='<div class="noEvents">No matching events found.</div>';
+        return;
+
+    }
+
+    filtered.forEach((event,index)=>{
+
+        const card=document.createElement("div");
+
+        card.className="card "+event.severity.toLowerCase();
+
+        card.innerHTML=`
+
+<div class="header">
+
+<div>
+
+<div class="event-title">
+
+${event.event_type}
+
+</div>
+
+<div class="timestamp">
+
+${new Date(event.timestamp).toLocaleString()}
+
+</div>
+
+</div>
+
+<div class="badge ${badgeClass(event.severity)}">
+
+${event.severity}
+
+</div>
+
+</div>
+
+<div class="info">
+
+<strong>Host</strong>
+
+<div>${event.host}</div>
+
+<strong>User</strong>
+
+<div>${event.user}</div>
+
+<strong>Source</strong>
+
+<div>${event.source}</div>
+
+<strong>Description</strong>
+
+<div>${event.description}</div>
+
+</div>
+
+<button onclick="toggleDetails(${index})">
+
+Show Details
+
+</button>
+
+<div class="details" id="details-${index}">
+
+<h3>Evidence</h3>
+
+<p>${event.evidence}</p>
+
+<br>
+
+<h3>Raw Event</h3>
+
+<pre>${event.raw_event}</pre>
+
+</div>
+
+`;
+
+        timeline.appendChild(card);
+
+    });
+
+}
+
+function toggleDetails(index){
+
+    const details=document.getElementById("details-"+index);
+
+    if(details.style.display==="block"){
+
+        details.style.display="none";
+
+    }else{
+
+        details.style.display="block";
+
+    }
+
+}
+
+searchBox.addEventListener("keyup",renderTimeline);
+
+severityFilter.addEventListener("change",renderTimeline);
+
+renderTimeline();
+
+</script>
+
+</body>
+</html>
