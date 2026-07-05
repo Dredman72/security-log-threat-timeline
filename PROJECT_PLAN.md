@@ -142,7 +142,8 @@ Derrick's parser output validation checklist is documented in `PARSER_OUTPUT_VAL
 - Oriah's contribution was reviewing the AI report output, confirming that the report sections match the frontend design plan, and identifying how the summary output should be displayed for users.
 
 ### Week 5: June 29 - July 5, 2026
-
+-Oriah has created the interactive threat timeline prototype.
+-Oriah used the normalized JSON event data to display security events in chronological order, added severity labels, and planned interactive features such as filtering, searching, and expanding event details.
 **Focus:** Threat timeline generation.
 
 | Deliverable | Owner |
@@ -158,6 +159,8 @@ Derrick's parser output validation checklist is documented in `PARSER_OUTPUT_VAL
 - Group related events by host, user, process, IP address, or event type where possible.
 - Assign severity labels such as Low, Medium, High, and Critical.
 - Build the first interactive timeline view in HTML and JavaScript.
+**Week 5 Accomplishments:**
+-
 
 ### Week 6: July 6 - July 12, 2026
 
