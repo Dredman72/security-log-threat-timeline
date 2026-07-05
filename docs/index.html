@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Threat Timeline</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:Arial,Helvetica,sans-serif}
+body{background:#f4f6f9;padding:40px}
+.container{max-width:1100px;margin:auto}
+h1{text-align:center;color:#222;margin-bottom:10px}
+.subtitle{text-align:center;color:#666;margin-bottom:30px}
+.controls{display:flex;gap:15px;flex-wrap:wrap;margin-bottom:30px}
+.controls input{flex:1;min-width:250px;padding:12px;border:1px solid #ccc;border-radius:8px}
+.controls select{padding:12px;border-radius:8px;border:1px solid #ccc}
+.timeline{display:flex;flex-direction:column;gap:20px}
+.card{background:#fff;border-radius:10px;padding:20px;border-left:8px solid gray;box-shadow:0 4px 12px rgba(0,0,0,.08)}
+.medium{border-left-color:#f4b400;background:#fffdf3}
+.high{border-left-color:#ff6d00;background:#fff5ef}
+.critical{border-left-color:#d32f2f;background:#ffeaea}
+.header{display:flex;justify-content:space-between;align-items:center}
+.event{font-size:22px;font-weight:bold}.time{color:#777;margin-top:5px}
+.badge{color:#fff;padding:6px 12px;border-radius:20px;font-size:13px;font-weight:bold}
+.mediumBadge{background:#f4b400}.highBadge{background:#ff6d00}.criticalBadge{background:#d32f2f}
+.info{margin-top:20px}.info p{margin-bottom:10px}
+button{margin-top:15px;background:#1976d2;color:#fff;border:none;padding:10px 18px;border-radius:6px;cursor:pointer}
+.details{display:none;margin-top:20px;border-top:1px solid #ddd;padding-top:15px}
+pre{white-space:pre-wrap;word-break:break-word;background:#f3f3f3;padding:10px;border-radius:6px}
+.no-results{text-align:center;color:#777;font-size:20px}
+</style>
+</head>
+<body>
+<div class="container">
+<h1>Interactive Threat Timeline</h1>
+<p class="subtitle">Security Incident Timeline</p>
+<div class="controls">
+<input id="searchBox" type="text" placeholder="Search source, event, or details">
+<select id="severityFilter">
+<option value="All">All Severities</option>
+<option value="Medium">Medium</option>
+<option value="High">High</option>
+<option value="Critical">Critical</option>
+</select>
+</div>
+<div id="timeline" class="timeline"></div>
+</div>
+<script>
+// Replace with: const events = {{ timeline_events | tojson | safe }};
+const events=[
+{"timestamp":"Jun 17 10:14:22","source":"webserver sshd[2214]","event":"SSH failed login for invalid admin user","severity":"Medium","details":"An external host attempted SSH authentication using the invalid username admin. This may indicate reconnaissance or brute-force behavior.","evidence":"Jun 17 10:14:22 webserver sshd[2214]: Failed password for invalid user admin from 203.0.113.45 port 51422 ssh2"},
+{"timestamp":"Jun 17 10:15:02","source":"webserver sshd[2288]","event":"Successful root SSH login from external IP","severity":"Critical","details":"The root account successfully authenticated from an external IP address. This is a strong indicator of unauthorized access if the login was not expected.","evidence":"Jun 17 10:15:02 webserver sshd[2288]: Accepted password for root from 203.0.113.45 port 51488 ssh2"},
+{"timestamp":"Jun 17 10:16:10","source":"webserver sudo","event":"Sensitive file accessed through sudo","severity":"Critical","details":"The root user executed a command to read /etc/shadow, which contains password hash data. This could support credential theft or offline password cracking.","evidence":"Jun 17 10:16:10 webserver sudo: root : TTY=pts/0 ; PWD=/root ; USER=root ; COMMAND=/usr/bin/cat /etc/shadow"}
+];
+const timeline=document.getElementById("timeline"),searchBox=document.getElementById("searchBox"),severityFilter=document.getElementById("severityFilter");
+function badgeClass(s){return s==="Medium"?"mediumBadge":s==="High"?"highBadge":"criticalBadge";}
+function renderTimeline(){timeline.innerHTML="";const s=searchBox.value.toLowerCase(),sev=severityFilter.value;const f=events.filter(e=>(e.source.toLowerCase().includes(s)||e.event.toLowerCase().includes(s)||e.details.toLowerCase().includes(s))&&(sev==="All"||e.severity===sev));if(!f.length){timeline.innerHTML="<div class='no-results'>No matching events found.</div>";return;}f.forEach((e,i)=>{const c=document.createElement("div");c.className="card "+e.severity.toLowerCase();c.innerHTML=`<div class="header"><div><div class="event">${e.event}</div><div class="time">${e.timestamp}</div></div><div class="badge ${badgeClass(e.severity)}">${e.severity}</div></div><div class="info"><p><strong>Source:</strong> ${e.source}</p><p><strong>Details:</strong> ${e.details}</p></div><button onclick="toggleDetails(${i})">Show / Hide Evidence</button><div class="details" id="details-${i}"><h3>Evidence</h3><pre>${e.evidence}</pre></div>`;timeline.appendChild(c);});}
+function toggleDetails(i){const d=document.getElementById("details-"+i);d.style.display=d.style.display==="block"?"none":"block";}
+searchBox.addEventListener("keyup",renderTimeline);severityFilter.addEventListener("change",renderTimeline);renderTimeline();
+</script>
+</body></html>
