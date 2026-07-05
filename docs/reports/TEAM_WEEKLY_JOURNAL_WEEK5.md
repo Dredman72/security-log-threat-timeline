@@ -117,9 +117,9 @@ Result: Passed. The updated templates/index.html supports the Week 5 interactive
 | Oriah Molton-Bowman | Frontend & Visualization Lead | Completed timeline includes important event information such as timestamp, source, event name, severity, details, and evidence.
 ## Progress Compared to Project Plan
 
-The team has progressed according to the Week 5 plan for Derrick and Zion's responsibilities. Derrick completed the timeline event wording and evidence requirements. Zion completed the sorting and grouping logic documentation with example grouped timeline output.
+The team has progressed according to the Week 5 plan for Derrick and Zion's responsibilities. Derrick completed the timeline event wording and evidence requirements. Zion completed the sorting and grouping logic documentation with an example grouped timeline output.
 
-Week 5 is n complete yet because Oriah's interactive timeline prototype is submitted or pushed to the shared repository. 
+Week 5 is complete the interactive timeline prototype is submitted or pushed to the shared repository. 
 
 ## Plan Adjustment
 
@@ -144,4 +144,4 @@ Each team member should sign before submission.
 | --- | --- | --- | --- |
 | Derrick Redman | Team Leader + AI/LLM Specialist |  |  |
 | Zion Moore | Backend & Log Processing Lead |  |  |
-| Oriah Molton-Bowman | Frontend & Visualization Lead |  |  |
+| Oriah Molton-Bowman | Frontend & Visualization Lead | oriah Molton-Bowman    | 7/5/2026  |
