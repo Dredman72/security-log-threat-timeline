@@ -90,7 +90,6 @@ Result: Passed. The updated templates/index.html supports the Week 5 interactive
 
 **Screenshot Evidence:**
 
-![Grouped Timeline JSON](../screenshots/Grouped%20Timeline%20JSON.png)
 
 ### Test 5: Milestone Tracker Review
 
@@ -99,7 +98,7 @@ Result: Passed. The updated templates/index.html supports the Week 5 interactive
 **Expected Result:** Week 4 should be marked complete, Derrick and Zion should be marked complete for Week 5, and Oriah should remain pending until her timeline prototype is submitted.  
 **Result:** Passed. The tracking files now reflect the current Week 5 status.
 
-**Screenshot Evidence:** Insert screenshot of the Week 5 section in `MILESTONE_TODOS.md`.
+**Screenshot Evidence:** Insert a screenshot of the Week 5 section in `MILESTONE_TODOS.md`.
 
 ## Lessons Learned
 
