@@ -81,7 +81,7 @@ The team updated the README and milestone tracking files so the repository refle
 **Procedure:** The team reviewed `examples/week5-grouped-timeline.json`.  
 **Expected Result:** The example should show timeline events in timestamp order and provide grouped counts.  
 **Result:** Passed. The example includes a `timeline_summary`, chronological `timeline` events, and grouped counts by host, user, source IP, destination IP, event type, and severity.
-![Group Timelne JSON](../screenshots/image.png)
+![Group Timeline JSON](../screenshots/Week5 Timeline JSON Review.png)
 
 ### Oriah's Week 5 timeline prototype
 Purpose: Confirm the updated templates/index.html can display timeline event data for the frontend prototype.
