@@ -89,8 +89,7 @@ Expected Result: The page should display events in chronological order and show 
 Result: Passed. The updated templates/index.html supports the Week 5 interactive timeline prototype by displaying timeline events with severity labels and event details. The layout prepares the frontend for future interaction features such as filtering, searching, and expanding event details.
 
 **Screenshot Evidence:**
-<img width="1280" height="900" alt="image" src="https://github.com/user-attachments/assets/6d5a74a0-dd9c-4750-a461-f8eed3674863" />
-
+![Week 5 Interactive Timeline](../screenshots/Week%205%20Interactive%20Timeline.png)
 
 ### Test 5: Milestone Tracker Review
 
