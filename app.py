@@ -33,6 +33,17 @@ REQUIRED_REPORT_KEYS = {
     "timeline",
     "recommended_actions",
 }
+ATTACK_TYPE_CATEGORIES = [
+    "Brute Force",
+    "Credential Access",
+    "Privilege Escalation",
+    "Malware",
+    "Reconnaissance",
+    "Lateral Movement",
+    "Data Exfiltration",
+    "Firewall/Network Block",
+    "Unknown",
+]
 
 app = Flask(__name__)
 app.config["UPLOAD_FOLDER"] = str(UPLOAD_DIR)
@@ -230,6 +241,86 @@ def build_timeline_groups(report_timeline: list[dict], parsed_events: list[dict]
     }
 
 
+def infer_attack_type_from_text(text: str) -> str:
+    lowered = text.lower()
+    has_failed_login = "failed password" in lowered or "login_failure" in lowered
+    has_successful_root = "accepted password for root" in lowered or "successful login as root" in lowered
+    has_sensitive_file = "/etc/shadow" in lowered or "credential" in lowered
+    has_sudo = "sudo" in lowered or "privilege" in lowered
+    has_firewall_block = "ufw" in lowered or "firewall" in lowered or " block " in lowered
+    has_malware = "malware" in lowered or "ransomware" in lowered
+
+    if has_malware:
+        return "Malware"
+    if has_failed_login and has_successful_root and has_sensitive_file:
+        return "Credential Access / Privilege Escalation"
+    if has_failed_login and has_successful_root:
+        return "Brute Force / Credential Access"
+    if has_sudo and has_sensitive_file:
+        return "Privilege Escalation / Credential Access"
+    if has_sensitive_file:
+        return "Credential Access"
+    if has_failed_login:
+        return "Brute Force"
+    if has_firewall_block:
+        return "Firewall/Network Block"
+    return "Unknown"
+
+
+def condense_repeated_timeline_events(timeline: list[dict]) -> list[dict]:
+    condensed = []
+    seen = {}
+
+    for item in timeline:
+        event_key = str(item.get("event", "")).lower()
+        if "failed" in event_key and "login" in event_key:
+            key = (
+                item.get("source", "Unknown"),
+                item.get("severity", "Unknown"),
+                "failed_login",
+            )
+        else:
+            condensed.append(item)
+            continue
+
+        if key not in seen:
+            clone = dict(item)
+            clone["_repeat_count"] = 1
+            seen[key] = clone
+            condensed.append(clone)
+            continue
+
+        existing = seen[key]
+        existing["_repeat_count"] += 1
+        if item.get("evidence") and item["evidence"] not in existing.get("evidence", ""):
+            existing["evidence"] = f"{existing.get('evidence', '')} | {item['evidence']}"
+
+    for item in condensed:
+        repeat_count = item.pop("_repeat_count", 1)
+        if repeat_count > 1:
+            item["event"] = "Repeated failed login attempts"
+            item["details"] = (
+                f"{repeat_count} similar failed login events were observed from the same source. "
+                f"{item.get('details', '')}"
+            ).strip()
+
+    return condensed
+
+
+def improve_report_quality(report: dict, source_text: str) -> dict:
+    report["timeline"] = condense_repeated_timeline_events(report.get("timeline", []))
+
+    if not report.get("attack_type") or report["attack_type"].lower() == "unknown":
+        report["attack_type"] = infer_attack_type_from_text(source_text)
+
+    if report.get("recommended_actions") and len(report["recommended_actions"]) < 3:
+        report["recommended_actions"].append(
+            "Continue reviewing surrounding authentication, sudo, and firewall logs to confirm scope and identify any persistence."
+        )
+
+    return report
+
+
 def build_prompt(log_text: str) -> str:
     return f"""
 You are a cybersecurity analyst helping a student capstone team.
@@ -237,7 +328,7 @@ Analyze the security logs below and produce a concise threat report.
 
 Return ONLY valid JSON with this exact shape:
 {{
-  "executive_summary": "2-4 sentence plain-English summary",
+  "executive_summary": "2-4 sentence plain-English summary that states what happened, what asset or account was affected, and why it matters",
   "risk_level": "Low | Medium | High | Critical",
   "attack_type": "best-fit attack category or Unknown",
   "affected_assets": [
@@ -271,6 +362,17 @@ Rules:
 - If timestamps are missing, order events by appearance and use "Unknown".
 - If a required top-level field has no supported value, use "Unknown" for strings
   or an empty list for arrays.
+- Use a specific attack_type when evidence supports it. Preferred categories:
+  Brute Force, Credential Access, Privilege Escalation, Malware,
+  Reconnaissance, Lateral Movement, Data Exfiltration, Firewall/Network Block,
+  or a clear combination such as "Brute Force / Credential Access".
+  Use "Unknown" only when the logs do not support a meaningful category.
+- The executive_summary should explain the likely incident in plain English:
+  who or what was involved, what happened, what the impact is, and why the risk
+  level was chosen.
+- Key findings should be 3-5 concise bullets supported by the logs.
+- Recommended actions should be 3-5 prioritized analyst actions, starting with
+  the most urgent containment, credential, or evidence-preservation step.
 - Rules for the Threat Timeline:
   - Create a chronological threat timeline of the most important security events.
   - Every timeline event must include: timestamp, source, event, severity,
@@ -406,21 +508,27 @@ def analyze_logs_with_openai(log_text: str) -> dict:
 
     output_text = (response.choices[0].message.content or "").strip()
     try:
-        return normalize_report(parse_model_json(output_text))
+        return improve_report_quality(
+            normalize_report(parse_model_json(output_text)),
+            trimmed_log_text,
+        )
     except json.JSONDecodeError:
-        return normalize_report(
-            {
-                "executive_summary": output_text,
-                "risk_level": "Unknown",
-                "attack_type": "Unknown",
-                "affected_assets": [],
-                "indicators_of_compromise": [],
-                "key_findings": [],
-                "timeline": [],
-                "recommended_actions": [
-                    "Review the raw model output because it was not valid JSON."
-                ],
-            }
+        return improve_report_quality(
+            normalize_report(
+                {
+                    "executive_summary": output_text,
+                    "risk_level": "Unknown",
+                    "attack_type": "Unknown",
+                    "affected_assets": [],
+                    "indicators_of_compromise": [],
+                    "key_findings": [],
+                    "timeline": [],
+                    "recommended_actions": [
+                        "Review the raw model output because it was not valid JSON."
+                    ],
+                }
+            ),
+            trimmed_log_text,
         )
 
 
