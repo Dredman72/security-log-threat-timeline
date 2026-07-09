@@ -2,6 +2,7 @@ import csv
 import io
 import json
 import os
+import re
 from collections import Counter
 from datetime import datetime
 from pathlib import Path
@@ -136,6 +137,68 @@ def normalize_parser_event(record: dict, raw_event: str = "", source: str = "inp
     }
 
 
+def parse_raw_log_line(line: str) -> dict:
+    parsed = {
+        "timestamp": "Unknown",
+        "source": "raw-log",
+        "host": "Unknown",
+        "user": "Unknown",
+        "source_ip": "",
+        "destination_ip": "",
+        "event_type": "raw_log_line",
+        "severity": infer_event_severity(line),
+        "description": line,
+        "evidence": line,
+        "raw_event": line,
+    }
+
+    syslog_match = re.match(
+        r"^(?P<timestamp>[A-Z][a-z]{2}\s+\d+\s+\d{2}:\d{2}:\d{2})\s+"
+        r"(?P<host>\S+)\s+(?P<process>[^:]+):\s+(?P<message>.*)$",
+        line,
+    )
+    message = line
+    if syslog_match:
+        parsed["timestamp"] = syslog_match.group("timestamp")
+        parsed["host"] = syslog_match.group("host")
+        parsed["source"] = f"{syslog_match.group('host')} {syslog_match.group('process')}"
+        message = syslog_match.group("message")
+
+    ip_match = re.search(r"\bfrom\s+(\d{1,3}(?:\.\d{1,3}){3})\b", message)
+    if ip_match:
+        parsed["source_ip"] = ip_match.group(1)
+
+    dst_match = re.search(r"\bDST=(\d{1,3}(?:\.\d{1,3}){3})\b", message)
+    if dst_match:
+        parsed["destination_ip"] = dst_match.group(1)
+
+    user_match = re.search(r"invalid user\s+(\S+)", message)
+    if not user_match:
+        user_match = re.search(r"password for\s+(\S+)", message)
+    if not user_match:
+        user_match = re.search(r"^(\S+)\s*:", message)
+    if user_match:
+        parsed["user"] = user_match.group(1)
+
+    lowered = message.lower()
+    if "failed password" in lowered:
+        parsed["event_type"] = "authentication_failure"
+        parsed["description"] = "Failed SSH authentication attempt"
+    elif "accepted password" in lowered:
+        parsed["event_type"] = "authentication_success"
+        parsed["description"] = "Successful SSH authentication"
+        parsed["severity"] = "Critical" if "root" in lowered else "High"
+    elif "command=" in lowered or "sudo" in parsed["source"].lower():
+        parsed["event_type"] = "privilege_command"
+        parsed["description"] = "Privileged command execution"
+        parsed["severity"] = "Critical" if "/etc/shadow" in lowered else "High"
+    elif "block" in lowered or "ufw" in parsed["source"].lower():
+        parsed["event_type"] = "firewall_block"
+        parsed["description"] = "Firewall blocked network traffic"
+
+    return parsed
+
+
 def parse_input_events(log_text: str) -> list[dict]:
     """Create a lightweight local preview using Zion's canonical event fields."""
     if not log_text.strip():
@@ -173,21 +236,7 @@ def parse_input_events(log_text: str) -> list[dict]:
 
     events = []
     for line in [line.strip() for line in log_text.splitlines() if line.strip()][:100]:
-        events.append(
-            normalize_parser_event(
-                {
-                    "timestamp": "Unknown",
-                    "source": "raw-log",
-                    "event_type": "raw_log_line",
-                    "severity": infer_event_severity(line),
-                    "description": line,
-                    "evidence": line,
-                    "raw_event": line,
-                },
-                line,
-                "raw-log",
-            )
-        )
+        events.append(normalize_parser_event(parse_raw_log_line(line), line, "raw-log"))
     return events
 
 
@@ -267,6 +316,50 @@ def infer_attack_type_from_text(text: str) -> str:
     return "Unknown"
 
 
+def improve_attack_type(current_attack_type: str, source_text: str) -> str:
+    inferred = infer_attack_type_from_text(source_text)
+    current = (current_attack_type or "Unknown").strip()
+    if current.lower() == "unknown":
+        return inferred
+
+    lowered = source_text.lower()
+    if (
+        current == "Credential Access"
+        and ("sudo" in lowered or "privilege" in lowered)
+        and "/etc/shadow" in lowered
+    ):
+        return "Credential Access / Privilege Escalation"
+
+    if current == "Brute Force" and "accepted password" in lowered:
+        return "Brute Force / Credential Access"
+
+    return current
+
+
+def infer_risk_level_from_text(text: str) -> str:
+    lowered = text.lower()
+    if "malware" in lowered or "ransomware" in lowered:
+        return "Critical"
+    if "accepted password for root" in lowered and "/etc/shadow" in lowered:
+        return "Critical"
+    if "accepted password for root" in lowered:
+        return "Critical"
+    if "/etc/shadow" in lowered or "credential" in lowered:
+        return "High"
+    if "failed password" in lowered and ("block" in lowered or "ufw" in lowered):
+        return "High"
+    if "failed password" in lowered:
+        return "Medium"
+    return "Low"
+
+
+def improve_risk_level(current_risk_level: str, source_text: str) -> str:
+    severity_rank = {"Unknown": 0, "Low": 1, "Medium": 2, "High": 3, "Critical": 4}
+    current = (current_risk_level or "Unknown").strip().title()
+    inferred = infer_risk_level_from_text(source_text)
+    return inferred if severity_rank.get(inferred, 0) > severity_rank.get(current, 0) else current
+
+
 def condense_repeated_timeline_events(timeline: list[dict]) -> list[dict]:
     condensed = []
     seen = {}
@@ -293,7 +386,7 @@ def condense_repeated_timeline_events(timeline: list[dict]) -> list[dict]:
         existing = seen[key]
         existing["_repeat_count"] += 1
         if item.get("evidence") and item["evidence"] not in existing.get("evidence", ""):
-            existing["evidence"] = f"{existing.get('evidence', '')} | {item['evidence']}"
+            existing["evidence"] = f"{existing.get('evidence', '')}; {item['evidence']}"
 
     for item in condensed:
         repeat_count = item.pop("_repeat_count", 1)
@@ -309,9 +402,8 @@ def condense_repeated_timeline_events(timeline: list[dict]) -> list[dict]:
 
 def improve_report_quality(report: dict, source_text: str) -> dict:
     report["timeline"] = condense_repeated_timeline_events(report.get("timeline", []))
-
-    if not report.get("attack_type") or report["attack_type"].lower() == "unknown":
-        report["attack_type"] = infer_attack_type_from_text(source_text)
+    report["attack_type"] = improve_attack_type(report.get("attack_type", "Unknown"), source_text)
+    report["risk_level"] = improve_risk_level(report.get("risk_level", "Unknown"), source_text)
 
     if report.get("recommended_actions") and len(report["recommended_actions"]) < 3:
         report["recommended_actions"].append(
