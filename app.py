@@ -1,12 +1,14 @@
 import csv
+import html
 import io
 import json
 import os
+import re
 from collections import Counter
 from datetime import datetime
 from pathlib import Path
 
-from flask import Flask, render_template, request
+from flask import Flask, Response, render_template, request
 from openai import OpenAI
 from dotenv import load_dotenv
 from werkzeug.exceptions import RequestEntityTooLarge
@@ -26,6 +28,7 @@ MODEL_NAME = os.getenv("OPENAI_MODEL", "gpt-5.4-nano-2026-03-17")
 REQUIRED_REPORT_KEYS = {
     "executive_summary",
     "risk_level",
+    "risk_rationale",
     "attack_type",
     "affected_assets",
     "indicators_of_compromise",
@@ -33,6 +36,17 @@ REQUIRED_REPORT_KEYS = {
     "timeline",
     "recommended_actions",
 }
+ATTACK_TYPE_CATEGORIES = [
+    "Brute Force",
+    "Credential Access",
+    "Privilege Escalation",
+    "Malware",
+    "Reconnaissance",
+    "Lateral Movement",
+    "Data Exfiltration",
+    "Firewall/Network Block",
+    "Unknown",
+]
 
 app = Flask(__name__)
 app.config["UPLOAD_FOLDER"] = str(UPLOAD_DIR)
@@ -125,6 +139,68 @@ def normalize_parser_event(record: dict, raw_event: str = "", source: str = "inp
     }
 
 
+def parse_raw_log_line(line: str) -> dict:
+    parsed = {
+        "timestamp": "Unknown",
+        "source": "raw-log",
+        "host": "Unknown",
+        "user": "Unknown",
+        "source_ip": "",
+        "destination_ip": "",
+        "event_type": "raw_log_line",
+        "severity": infer_event_severity(line),
+        "description": line,
+        "evidence": line,
+        "raw_event": line,
+    }
+
+    syslog_match = re.match(
+        r"^(?P<timestamp>[A-Z][a-z]{2}\s+\d+\s+\d{2}:\d{2}:\d{2})\s+"
+        r"(?P<host>\S+)\s+(?P<process>[^:]+):\s+(?P<message>.*)$",
+        line,
+    )
+    message = line
+    if syslog_match:
+        parsed["timestamp"] = syslog_match.group("timestamp")
+        parsed["host"] = syslog_match.group("host")
+        parsed["source"] = f"{syslog_match.group('host')} {syslog_match.group('process')}"
+        message = syslog_match.group("message")
+
+    ip_match = re.search(r"\bfrom\s+(\d{1,3}(?:\.\d{1,3}){3})\b", message)
+    if ip_match:
+        parsed["source_ip"] = ip_match.group(1)
+
+    dst_match = re.search(r"\bDST=(\d{1,3}(?:\.\d{1,3}){3})\b", message)
+    if dst_match:
+        parsed["destination_ip"] = dst_match.group(1)
+
+    user_match = re.search(r"invalid user\s+(\S+)", message)
+    if not user_match:
+        user_match = re.search(r"password for\s+(\S+)", message)
+    if not user_match:
+        user_match = re.search(r"^(\S+)\s*:", message)
+    if user_match:
+        parsed["user"] = user_match.group(1)
+
+    lowered = message.lower()
+    if "failed password" in lowered:
+        parsed["event_type"] = "authentication_failure"
+        parsed["description"] = "Failed SSH authentication attempt"
+    elif "accepted password" in lowered:
+        parsed["event_type"] = "authentication_success"
+        parsed["description"] = "Successful SSH authentication"
+        parsed["severity"] = "Critical" if "root" in lowered else "High"
+    elif "command=" in lowered or "sudo" in parsed["source"].lower():
+        parsed["event_type"] = "privilege_command"
+        parsed["description"] = "Privileged command execution"
+        parsed["severity"] = "Critical" if "/etc/shadow" in lowered else "High"
+    elif "block" in lowered or "ufw" in parsed["source"].lower():
+        parsed["event_type"] = "firewall_block"
+        parsed["description"] = "Firewall blocked network traffic"
+
+    return parsed
+
+
 def parse_input_events(log_text: str) -> list[dict]:
     """Create a lightweight local preview using Zion's canonical event fields."""
     if not log_text.strip():
@@ -162,21 +238,7 @@ def parse_input_events(log_text: str) -> list[dict]:
 
     events = []
     for line in [line.strip() for line in log_text.splitlines() if line.strip()][:100]:
-        events.append(
-            normalize_parser_event(
-                {
-                    "timestamp": "Unknown",
-                    "source": "raw-log",
-                    "event_type": "raw_log_line",
-                    "severity": infer_event_severity(line),
-                    "description": line,
-                    "evidence": line,
-                    "raw_event": line,
-                },
-                line,
-                "raw-log",
-            )
-        )
+        events.append(normalize_parser_event(parse_raw_log_line(line), line, "raw-log"))
     return events
 
 
@@ -230,6 +292,174 @@ def build_timeline_groups(report_timeline: list[dict], parsed_events: list[dict]
     }
 
 
+def infer_attack_type_from_text(text: str) -> str:
+    lowered = text.lower()
+    has_failed_login = "failed password" in lowered or "login_failure" in lowered
+    has_successful_root = "accepted password for root" in lowered or "successful login as root" in lowered
+    has_sensitive_file = "/etc/shadow" in lowered or "credential" in lowered
+    has_sudo = "sudo" in lowered or "privilege" in lowered
+    has_firewall_block = "ufw" in lowered or "firewall" in lowered or " block " in lowered
+    has_malware = "malware" in lowered or "ransomware" in lowered
+
+    if has_malware:
+        return "Malware"
+    if has_failed_login and has_successful_root and has_sensitive_file:
+        return "Credential Access / Privilege Escalation"
+    if has_failed_login and has_successful_root:
+        return "Brute Force / Credential Access"
+    if has_sudo and has_sensitive_file:
+        return "Privilege Escalation / Credential Access"
+    if has_sensitive_file:
+        return "Credential Access"
+    if has_failed_login:
+        return "Brute Force"
+    if has_firewall_block:
+        return "Firewall/Network Block"
+    return "Unknown"
+
+
+def improve_attack_type(current_attack_type: str, source_text: str) -> str:
+    inferred = infer_attack_type_from_text(source_text)
+    current = (current_attack_type or "Unknown").strip()
+    if current.lower() == "unknown":
+        return inferred
+
+    lowered = source_text.lower()
+    if (
+        current == "Credential Access"
+        and ("sudo" in lowered or "privilege" in lowered)
+        and "/etc/shadow" in lowered
+    ):
+        return "Credential Access / Privilege Escalation"
+
+    if current == "Brute Force" and "accepted password" in lowered:
+        return "Brute Force / Credential Access"
+
+    return current
+
+
+def infer_risk_level_from_text(text: str) -> str:
+    lowered = text.lower()
+    if "malware" in lowered or "ransomware" in lowered:
+        return "Critical"
+    if "accepted password for root" in lowered and "/etc/shadow" in lowered:
+        return "Critical"
+    if "accepted password for root" in lowered:
+        return "Critical"
+    if "/etc/shadow" in lowered or "credential" in lowered:
+        return "High"
+    if "failed password" in lowered and ("block" in lowered or "ufw" in lowered):
+        return "High"
+    if "failed password" in lowered:
+        return "Medium"
+    return "Low"
+
+
+def improve_risk_level(current_risk_level: str, source_text: str) -> str:
+    severity_rank = {"Unknown": 0, "Low": 1, "Medium": 2, "High": 3, "Critical": 4}
+    current = (current_risk_level or "Unknown").strip().title()
+    inferred = infer_risk_level_from_text(source_text)
+    return inferred if severity_rank.get(inferred, 0) > severity_rank.get(current, 0) else current
+
+
+def build_risk_rationale(risk_level: str, source_text: str) -> str:
+    lowered = source_text.lower()
+    risk = (risk_level or "Unknown").strip()
+
+    if "accepted password for root" in lowered and "/etc/shadow" in lowered:
+        return (
+            f"Risk is {risk} because the logs show a successful root SSH login followed by access "
+            "to /etc/shadow, which indicates possible full system compromise and credential exposure."
+        )
+    if "accepted password for root" in lowered:
+        return (
+            f"Risk is {risk} because the logs show successful root authentication over SSH, "
+            "which can indicate unauthorized privileged access if not expected."
+        )
+    if "/etc/shadow" in lowered:
+        return (
+            f"Risk is {risk} because the logs show access to /etc/shadow, a sensitive credential file."
+        )
+    if "failed password" in lowered and ("block" in lowered or "ufw" in lowered):
+        return (
+            f"Risk is {risk} because repeated authentication failures and firewall blocks suggest "
+            "active probing or brute-force behavior."
+        )
+    if "failed password" in lowered:
+        return f"Risk is {risk} because the logs show failed authentication attempts."
+    return f"Risk is {risk} based on the severity and evidence present in the submitted logs."
+
+
+def condense_repeated_timeline_events(timeline: list[dict]) -> list[dict]:
+    condensed = []
+    seen = {}
+
+    for item in timeline:
+        event_key = str(item.get("event", "")).lower()
+        details_key = str(item.get("details", "")).lower()
+        evidence_key = str(item.get("evidence", "")).lower()
+        combined_text = f"{event_key} {details_key} {evidence_key}"
+
+        is_auth_failure = (
+            ("failed" in combined_text and ("login" in combined_text or "auth" in combined_text or "password" in combined_text))
+            or "auth failure" in combined_text
+            or "authentication failure" in combined_text
+            or "authentication_failure" in combined_text
+            or "failed password" in combined_text
+        )
+
+        if is_auth_failure:
+            key = (
+                item.get("source", "Unknown"),
+                item.get("severity", "Unknown"),
+                "authentication_failure",
+            )
+        else:
+            condensed.append(item)
+            continue
+
+        if key not in seen:
+            clone = dict(item)
+            clone["_repeat_count"] = 1
+            seen[key] = clone
+            condensed.append(clone)
+            continue
+
+        existing = seen[key]
+        existing["_repeat_count"] += 1
+        if item.get("evidence") and item["evidence"] not in existing.get("evidence", ""):
+            existing["evidence"] = f"{existing.get('evidence', '')}; {item['evidence']}"
+
+    for item in condensed:
+        repeat_count = item.pop("_repeat_count", 1)
+        if repeat_count > 1:
+            item["event"] = "Repeated authentication failures"
+            item["details"] = (
+                f"{repeat_count} similar authentication failure events were observed from the same source. "
+                f"{item.get('details', '')}"
+            ).strip()
+
+    return condensed
+
+
+def improve_report_quality(report: dict, source_text: str) -> dict:
+    if not report.get("generated_at"):
+        report["generated_at"] = datetime.now().strftime("%Y-%m-%d %I:%M %p")
+
+    report["timeline"] = condense_repeated_timeline_events(report.get("timeline", []))
+    report["attack_type"] = improve_attack_type(report.get("attack_type", "Unknown"), source_text)
+    report["risk_level"] = improve_risk_level(report.get("risk_level", "Unknown"), source_text)
+    if not report.get("risk_rationale"):
+        report["risk_rationale"] = build_risk_rationale(report["risk_level"], source_text)
+
+    if report.get("recommended_actions") and len(report["recommended_actions"]) < 3:
+        report["recommended_actions"].append(
+            "Continue reviewing surrounding authentication, sudo, and firewall logs to confirm scope and identify any persistence."
+        )
+
+    return report
+
+
 def build_prompt(log_text: str) -> str:
     return f"""
 You are a cybersecurity analyst helping a student capstone team.
@@ -237,8 +467,9 @@ Analyze the security logs below and produce a concise threat report.
 
 Return ONLY valid JSON with this exact shape:
 {{
-  "executive_summary": "2-4 sentence plain-English summary",
+  "executive_summary": "2-4 sentence plain-English summary that states what happened, what asset or account was affected, and why it matters",
   "risk_level": "Low | Medium | High | Critical",
+  "risk_rationale": "1-2 sentences explaining why this risk level was selected using evidence from the logs",
   "attack_type": "best-fit attack category or Unknown",
   "affected_assets": [
     "hostnames, usernames, IP addresses, systems, or files affected"
@@ -271,6 +502,20 @@ Rules:
 - If timestamps are missing, order events by appearance and use "Unknown".
 - If a required top-level field has no supported value, use "Unknown" for strings
   or an empty list for arrays.
+- Use a specific attack_type when evidence supports it. Preferred categories:
+  Brute Force, Credential Access, Privilege Escalation, Malware,
+  Reconnaissance, Lateral Movement, Data Exfiltration, Firewall/Network Block,
+  or a clear combination such as "Brute Force / Credential Access".
+  Use "Unknown" only when the logs do not support a meaningful category.
+- The executive_summary should explain the likely incident in plain English:
+  who or what was involved, what happened, what the impact is, and why the risk
+  level was chosen.
+- The risk_rationale should briefly explain the risk level using concrete log
+  evidence such as successful root login, sensitive file access, malware
+  indicators, repeated failed logins, or firewall blocks.
+- Key findings should be 3-5 concise bullets supported by the logs.
+- Recommended actions should be 3-5 prioritized analyst actions, starting with
+  the most urgent containment, credential, or evidence-preservation step.
 - Rules for the Threat Timeline:
   - Create a chronological threat timeline of the most important security events.
   - Every timeline event must include: timestamp, source, event, severity,
@@ -357,7 +602,9 @@ def normalize_report(report: dict) -> dict:
     normalized["executive_summary"] = str(
         report.get("executive_summary") or ""
     ).strip()
+    normalized["generated_at"] = str(report.get("generated_at") or "").strip()
     normalized["risk_level"] = str(report.get("risk_level") or "Unknown").strip()
+    normalized["risk_rationale"] = str(report.get("risk_rationale") or "").strip()
     normalized["attack_type"] = str(report.get("attack_type") or "Unknown").strip()
     normalized["affected_assets"] = normalize_text_list(report.get("affected_assets"))
     normalized["indicators_of_compromise"] = normalize_text_list(
@@ -406,28 +653,37 @@ def analyze_logs_with_openai(log_text: str) -> dict:
 
     output_text = (response.choices[0].message.content or "").strip()
     try:
-        return normalize_report(parse_model_json(output_text))
+        return improve_report_quality(
+            normalize_report(parse_model_json(output_text)),
+            trimmed_log_text,
+        )
     except json.JSONDecodeError:
-        return normalize_report(
-            {
-                "executive_summary": output_text,
-                "risk_level": "Unknown",
-                "attack_type": "Unknown",
-                "affected_assets": [],
-                "indicators_of_compromise": [],
-                "key_findings": [],
-                "timeline": [],
-                "recommended_actions": [
-                    "Review the raw model output because it was not valid JSON."
-                ],
-            }
+        return improve_report_quality(
+            normalize_report(
+                {
+                    "executive_summary": output_text,
+                    "risk_level": "Unknown",
+                    "risk_rationale": "",
+                    "attack_type": "Unknown",
+                    "affected_assets": [],
+                    "indicators_of_compromise": [],
+                    "key_findings": [],
+                    "timeline": [],
+                    "recommended_actions": [
+                        "Review the raw model output because it was not valid JSON."
+                    ],
+                }
+            ),
+            trimmed_log_text,
         )
 
 
 def empty_report() -> dict:
     return {
         "executive_summary": "",
+        "generated_at": "",
         "risk_level": "",
+        "risk_rationale": "",
         "attack_type": "",
         "affected_assets": [],
         "indicators_of_compromise": [],
@@ -435,6 +691,107 @@ def empty_report() -> dict:
         "timeline": [],
         "recommended_actions": [],
     }
+
+
+def build_downloadable_report_html(report: dict) -> str:
+    def esc(value) -> str:
+        return html.escape(str(value or ""))
+
+    def list_items(values: list[str]) -> str:
+        if not values:
+            return "<p>No items returned.</p>"
+        return "<ul>" + "".join(f"<li>{esc(value)}</li>" for value in values) + "</ul>"
+
+    timeline_items = []
+    for item in report.get("timeline", []):
+        timeline_items.append(
+            f"""
+            <article class="event">
+              <p><strong>{esc(item.get("timestamp", "Unknown"))}</strong> |
+              {esc(item.get("source", "Unknown"))} |
+              {esc(item.get("severity", "Unknown"))}</p>
+              <h3>{esc(item.get("event", "Unknown event"))}</h3>
+              <p>{esc(item.get("details", ""))}</p>
+              <p><strong>Evidence:</strong> {esc(item.get("evidence", ""))}</p>
+            </article>
+            """
+        )
+
+    timeline_html = "\n".join(timeline_items) or "<p>No timeline events returned.</p>"
+    return f"""<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Security Log Threat Report</title>
+  <style>
+    body {{ font-family: Arial, sans-serif; line-height: 1.5; margin: 32px; color: #18202f; }}
+    h1, h2 {{ color: #172033; }}
+    section {{ border-top: 1px solid #d9e0ea; padding-top: 16px; margin-top: 22px; }}
+    .risk {{ font-size: 1.2rem; font-weight: bold; }}
+    .event {{ border-left: 4px solid #0f766e; padding: 10px 14px; margin: 12px 0; background: #f8fafc; }}
+  </style>
+</head>
+<body>
+  <h1>Security Log Threat Report</h1>
+  <p><strong>Report generated:</strong> {esc(report.get("generated_at", "Unknown"))}</p>
+
+  <section>
+    <h2>Executive Summary</h2>
+    <p>{esc(report.get("executive_summary", ""))}</p>
+    <p><strong>Risk Level:</strong> <span class="risk">{esc(report.get("risk_level", "Unknown"))}</span></p>
+    <p><strong>Risk Rationale:</strong> {esc(report.get("risk_rationale", ""))}</p>
+    <p><strong>Attack Type:</strong> {esc(report.get("attack_type", "Unknown"))}</p>
+  </section>
+
+  <section>
+    <h2>Affected Assets</h2>
+    {list_items(report.get("affected_assets", []))}
+  </section>
+
+  <section>
+    <h2>Indicators of Compromise</h2>
+    {list_items(report.get("indicators_of_compromise", []))}
+  </section>
+
+  <section>
+    <h2>Key Findings</h2>
+    {list_items(report.get("key_findings", []))}
+  </section>
+
+  <section>
+    <h2>Threat Timeline</h2>
+    {timeline_html}
+  </section>
+
+  <section>
+    <h2>Recommended Actions</h2>
+    {list_items(report.get("recommended_actions", []))}
+  </section>
+</body>
+</html>
+"""
+
+
+@app.route("/download-report", methods=["POST"])
+def download_report():
+    try:
+        report = normalize_report(json.loads(request.form.get("report_json", "{}")))
+    except json.JSONDecodeError:
+        report = empty_report()
+
+    file_format = request.form.get("format", "json")
+    if file_format == "html":
+        return Response(
+            build_downloadable_report_html(report),
+            mimetype="text/html",
+            headers={"Content-Disposition": "attachment; filename=security_log_report.html"},
+        )
+
+    return Response(
+        json.dumps(report, indent=2),
+        mimetype="application/json",
+        headers={"Content-Disposition": "attachment; filename=security_log_report.json"},
+    )
 
 
 @app.route("/", methods=["GET", "POST"])

@@ -69,7 +69,7 @@ CapstoneProject/
 | Week 2 | Complete | LLM prompt/output structure, backend event schema planning, sample parser data, and frontend report planning |
 | Week 3 | Complete | Parser output validation checklist, first backend parser prototype review, normalized JSON review, starter report validation, and parsed-event frontend placeholder planning |
 | Week 4 | Complete | OpenAI prompt refinement, fallback handling, AI-ready parser input documentation, and frontend report section design |
-| Week 5 | In Progress | Derrick completed timeline wording/evidence requirements; Zion completed sorting/grouping logic documentation; Oriah's interactive timeline prototype remains pending |
+| Week 5 | Complete | Threat timeline wording/evidence rules, sorting/grouping logic, grouped timeline example output, and frontend timeline prototype evidence |
 
 ## Timeline
 
@@ -79,7 +79,7 @@ CapstoneProject/
 | [x] | June 8-14 | Week 2 | Data model, sample logs, LLM prompt structure, report/timeline planning |
 | [x] | June 15-21 | Week 3 | Log ingestion and parser prototype, parser validation checklist, basic parsed-event review |
 | [x] | June 22-28 | Week 4 | OpenAI API integration refinement, structured summarization, backend-to-LLM workflow |
-| [ ] | June 29-July 5 | Week 5 | Threat timeline generation logic and interactive timeline prototype |
+| [x] | June 29-July 5 | Week 5 | Threat timeline generation logic and interactive timeline prototype |
 | [ ] | July 6-12 | Week 6 | End-to-end report generation and full upload-to-report workflow |
 | [ ] | July 13-19 | Week 7 | Integration testing, quality improvement, frontend polish, error handling |
 | [ ] | July 20-26 | Week 8 | Final hardening, documentation, demo data, presentation preparation |
@@ -156,14 +156,9 @@ Recommended screenshots:
 
 | Done | Member | Task | Outputs Produced | Measurement |
 | --- | --- | --- | --- | --- |
-<<<<<<< HEAD
-| [ ] | Derrick | Define timeline event wording and evidence requirements | Timeline prompt rules and example output | Timeline events include timestamp, source, severity, details, and evidence |
-| [x] | Zion | Add sorting and grouping logic | Chronological event ordering and basic grouping by host, user, IP, or event type | Timeline is ordered and logically grouped |
-=======
 | [x] | Derrick | Define timeline event wording and evidence requirements | `docs/week5-timeline-event-requirements.md` with timeline prompt rules and example output | Timeline events include timestamp, source, severity, details, and evidence |
 | [x] | Zion | Add sorting and grouping logic | `docs/week5-sorting-grouping-logic.md` and `examples/week5-grouped-timeline.json` | Timeline is ordered and logically grouped |
->>>>>>> 51a8fdd66073fa013b2bf1812fc6fe19cf5f9123
-| [ ] | Oriah | Build interactive timeline prototype | Timeline display in HTML/JavaScript | User can visually review incident order |
+| [x] | Oriah | Build interactive timeline prototype | Timeline display in HTML/JavaScript and screenshot evidence | User can visually review incident order |
 
 ## Week 6: End-to-End Report Generation
 
@@ -292,7 +287,7 @@ Do not commit `.env` to GitHub.
 
 ## Current Status
 
-As of July 4, 2026:
+As of July 9, 2026:
 
 - Public GitHub repository has been created.
 - Initial Flask/OpenAI prototype has been uploaded.
@@ -307,5 +302,7 @@ As of July 4, 2026:
 - Week 4 Oriah task is complete: frontend/report section design for executive summary, risk, findings, timeline, and recommendations.
 - Week 5 Derrick task is complete: timeline event wording and evidence requirements are documented in `docs/week5-timeline-event-requirements.md`.
 - Week 5 Zion task is complete: sorting/grouping logic is documented in `docs/week5-sorting-grouping-logic.md` with example output in `examples/week5-grouped-timeline.json`.
+- Week 5 Oriah task is complete: frontend timeline prototype evidence and report/timeline display work have been added to the project files.
+- Week 5 journal evidence has been added in `docs/reports/TEAM_WEEKLY_JOURNAL_WEEK5.md`.
 - `MILESTONE_TODOS.md`, `DEMO_WORKFLOW_INSTRUCTIONS.md`, and `DEPLOYMENT_AND_SUBMISSION_GUIDE.md` have been added for team tracking, demo preparation, and deployment/submission guidance.
-- Next focus is completing Oriah's Week 5 interactive timeline prototype and preparing Week 5 journal evidence.
+- Next focus is Week 6 end-to-end report generation: connecting upload, parser output, OpenAI summarization, timeline generation, and report rendering into one workflow.

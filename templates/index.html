@@ -117,6 +117,10 @@
       filter: brightness(0.95);
     }
 
+    .button-secondary {
+      background: #334155;
+    }
+
     .hint {
       color: var(--muted);
       font-size: 0.92rem;
@@ -250,7 +254,7 @@
     .event-table {
       width: 100%;
       border-collapse: collapse;
-      min-width: 820px;
+      min-width: 1040px;
       font-size: 0.92rem;
     }
 
@@ -328,11 +332,17 @@
     {% if report.executive_summary %}
       <section class="panel">
         <h2>Report Summary</h2>
+        {% if report.generated_at %}
+          <p class="hint">Report generated: {{ report.generated_at }}</p>
+        {% endif %}
         <div class="summary-grid">
           <div>
             <p>{{ report.executive_summary }}</p>
             {% if report.attack_type %}
               <p><strong>Attack Type:</strong> {{ report.attack_type }}</p>
+            {% endif %}
+            {% if report.risk_rationale %}
+              <p><strong>Risk Rationale:</strong> {{ report.risk_rationale }}</p>
             {% endif %}
           </div>
           <div class="risk risk-{{ report.risk_level|lower|replace(' ', '-') }}">
@@ -455,6 +465,8 @@
                   <th>Source</th>
                   <th>Host</th>
                   <th>User</th>
+                  <th>Source IP</th>
+                  <th>Destination IP</th>
                   <th>Event Type</th>
                   <th>Severity</th>
                   <th>Evidence</th>
@@ -467,6 +479,8 @@
                     <td>{{ item.source }}</td>
                     <td>{{ item.host }}</td>
                     <td>{{ item.user }}</td>
+                    <td>{{ item.source_ip or "Unknown" }}</td>
+                    <td>{{ item.destination_ip or "Unknown" }}</td>
                     <td>{{ item.event_type }}</td>
                     <td><span class="badge">{{ item.severity }}</span></td>
                     <td>{{ item.evidence }}</td>
@@ -489,6 +503,18 @@
         {% else %}
           <p class="hint">No recommended actions returned.</p>
         {% endif %}
+      </section>
+
+      <section class="panel">
+        <h2>Download Report</h2>
+        <p class="hint">Save the generated report for submission notes, testing evidence, or later review.</p>
+        <form method="post" action="{{ url_for('download_report') }}">
+          <input type="hidden" name="report_json" value='{{ report|tojson }}'>
+          <div class="actions">
+            <button type="submit" name="format" value="json" class="button-secondary">Download JSON</button>
+            <button type="submit" name="format" value="html">Download HTML</button>
+          </div>
+        </form>
       </section>
     {% endif %}
   </main>
