@@ -328,6 +328,9 @@
     {% if report.executive_summary %}
       <section class="panel">
         <h2>Report Summary</h2>
+        {% if report.generated_at %}
+          <p class="hint">Report generated: {{ report.generated_at }}</p>
+        {% endif %}
         <div class="summary-grid">
           <div>
             <p>{{ report.executive_summary }}</p>

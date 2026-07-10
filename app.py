@@ -430,6 +430,9 @@ def condense_repeated_timeline_events(timeline: list[dict]) -> list[dict]:
 
 
 def improve_report_quality(report: dict, source_text: str) -> dict:
+    if not report.get("generated_at"):
+        report["generated_at"] = datetime.now().strftime("%Y-%m-%d %I:%M %p")
+
     report["timeline"] = condense_repeated_timeline_events(report.get("timeline", []))
     report["attack_type"] = improve_attack_type(report.get("attack_type", "Unknown"), source_text)
     report["risk_level"] = improve_risk_level(report.get("risk_level", "Unknown"), source_text)
@@ -586,6 +589,7 @@ def normalize_report(report: dict) -> dict:
     normalized["executive_summary"] = str(
         report.get("executive_summary") or ""
     ).strip()
+    normalized["generated_at"] = str(report.get("generated_at") or "").strip()
     normalized["risk_level"] = str(report.get("risk_level") or "Unknown").strip()
     normalized["risk_rationale"] = str(report.get("risk_rationale") or "").strip()
     normalized["attack_type"] = str(report.get("attack_type") or "Unknown").strip()
@@ -664,6 +668,7 @@ def analyze_logs_with_openai(log_text: str) -> dict:
 def empty_report() -> dict:
     return {
         "executive_summary": "",
+        "generated_at": "",
         "risk_level": "",
         "risk_rationale": "",
         "attack_type": "",
