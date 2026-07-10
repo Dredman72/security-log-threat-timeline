@@ -117,6 +117,10 @@
       filter: brightness(0.95);
     }
 
+    .button-secondary {
+      background: #334155;
+    }
+
     .hint {
       color: var(--muted);
       font-size: 0.92rem;
@@ -495,6 +499,18 @@
         {% else %}
           <p class="hint">No recommended actions returned.</p>
         {% endif %}
+      </section>
+
+      <section class="panel">
+        <h2>Download Report</h2>
+        <p class="hint">Save the generated report for submission notes, testing evidence, or later review.</p>
+        <form method="post" action="{{ url_for('download_report') }}">
+          <input type="hidden" name="report_json" value='{{ report|tojson }}'>
+          <div class="actions">
+            <button type="submit" name="format" value="json" class="button-secondary">Download JSON</button>
+            <button type="submit" name="format" value="html">Download HTML</button>
+          </div>
+        </form>
       </section>
     {% endif %}
   </main>

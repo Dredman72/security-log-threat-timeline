@@ -1,4 +1,5 @@
 import csv
+import html
 import io
 import json
 import os
@@ -7,7 +8,7 @@ from collections import Counter
 from datetime import datetime
 from pathlib import Path
 
-from flask import Flask, render_template, request
+from flask import Flask, Response, render_template, request
 from openai import OpenAI
 from dotenv import load_dotenv
 from werkzeug.exceptions import RequestEntityTooLarge
@@ -678,6 +679,107 @@ def empty_report() -> dict:
         "timeline": [],
         "recommended_actions": [],
     }
+
+
+def build_downloadable_report_html(report: dict) -> str:
+    def esc(value) -> str:
+        return html.escape(str(value or ""))
+
+    def list_items(values: list[str]) -> str:
+        if not values:
+            return "<p>No items returned.</p>"
+        return "<ul>" + "".join(f"<li>{esc(value)}</li>" for value in values) + "</ul>"
+
+    timeline_items = []
+    for item in report.get("timeline", []):
+        timeline_items.append(
+            f"""
+            <article class="event">
+              <p><strong>{esc(item.get("timestamp", "Unknown"))}</strong> |
+              {esc(item.get("source", "Unknown"))} |
+              {esc(item.get("severity", "Unknown"))}</p>
+              <h3>{esc(item.get("event", "Unknown event"))}</h3>
+              <p>{esc(item.get("details", ""))}</p>
+              <p><strong>Evidence:</strong> {esc(item.get("evidence", ""))}</p>
+            </article>
+            """
+        )
+
+    timeline_html = "\n".join(timeline_items) or "<p>No timeline events returned.</p>"
+    return f"""<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Security Log Threat Report</title>
+  <style>
+    body {{ font-family: Arial, sans-serif; line-height: 1.5; margin: 32px; color: #18202f; }}
+    h1, h2 {{ color: #172033; }}
+    section {{ border-top: 1px solid #d9e0ea; padding-top: 16px; margin-top: 22px; }}
+    .risk {{ font-size: 1.2rem; font-weight: bold; }}
+    .event {{ border-left: 4px solid #0f766e; padding: 10px 14px; margin: 12px 0; background: #f8fafc; }}
+  </style>
+</head>
+<body>
+  <h1>Security Log Threat Report</h1>
+  <p><strong>Report generated:</strong> {esc(report.get("generated_at", "Unknown"))}</p>
+
+  <section>
+    <h2>Executive Summary</h2>
+    <p>{esc(report.get("executive_summary", ""))}</p>
+    <p><strong>Risk Level:</strong> <span class="risk">{esc(report.get("risk_level", "Unknown"))}</span></p>
+    <p><strong>Risk Rationale:</strong> {esc(report.get("risk_rationale", ""))}</p>
+    <p><strong>Attack Type:</strong> {esc(report.get("attack_type", "Unknown"))}</p>
+  </section>
+
+  <section>
+    <h2>Affected Assets</h2>
+    {list_items(report.get("affected_assets", []))}
+  </section>
+
+  <section>
+    <h2>Indicators of Compromise</h2>
+    {list_items(report.get("indicators_of_compromise", []))}
+  </section>
+
+  <section>
+    <h2>Key Findings</h2>
+    {list_items(report.get("key_findings", []))}
+  </section>
+
+  <section>
+    <h2>Threat Timeline</h2>
+    {timeline_html}
+  </section>
+
+  <section>
+    <h2>Recommended Actions</h2>
+    {list_items(report.get("recommended_actions", []))}
+  </section>
+</body>
+</html>
+"""
+
+
+@app.route("/download-report", methods=["POST"])
+def download_report():
+    try:
+        report = normalize_report(json.loads(request.form.get("report_json", "{}")))
+    except json.JSONDecodeError:
+        report = empty_report()
+
+    file_format = request.form.get("format", "json")
+    if file_format == "html":
+        return Response(
+            build_downloadable_report_html(report),
+            mimetype="text/html",
+            headers={"Content-Disposition": "attachment; filename=security_log_report.html"},
+        )
+
+    return Response(
+        json.dumps(report, indent=2),
+        mimetype="application/json",
+        headers={"Content-Disposition": "attachment; filename=security_log_report.json"},
+    )
 
 
 @app.route("/", methods=["GET", "POST"])
