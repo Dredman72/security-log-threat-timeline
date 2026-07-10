@@ -36,7 +36,7 @@ The team updated the README and milestone tracking files so the repository refle
 | Zion | Documented chronological sorting logic | Added documentation explaining that events should be sorted by timestamp from oldest to newest. |
 | Zion | Documented grouping logic | Added grouping fields for host, user, source IP, destination IP, event type, and severity. |
 | Zion | Added grouped timeline example | Added an example grouped timeline JSON file to show how sorted/grouped timeline output can look. |
-| Oriah | Interactive timeline prototype |  Oriah the Week 5 interactive timeline prototype evidence is upload. |
+| Oriah | Interactive timeline prototype | Pending. Oriah still needs to submit or push the Week 5 interactive timeline prototype evidence. |
 
 ## Testing of Subtasks With Evidence
 
@@ -48,7 +48,9 @@ The team updated the README and milestone tracking files so the repository refle
 **Result:** Passed. The document defines timestamp, source, event, severity, details, and evidence requirements, plus example timeline JSON.
 
 **Screenshot Evidence:**
-
+Screenshot 1: The docs/week5-timeline-event-requirements.md file showing the defined structure for timeline events. It clearly lists the required fields (timestamp, source, event, severity, details, and evidence) along with rules and an example JSON output.
+Screenshot 2:
+A continuation of the same document, showing additional rules and examples for how timeline events should be written.
 ![Timeline Requirement Review](../screenshots/Timeline%20Requirment%20Review%20.png)
 
 ![Timeline Requirement Review Continued](../screenshots/Timeline%20Requirment%20Review2.png)
@@ -61,7 +63,8 @@ The team updated the README and milestone tracking files so the repository refle
 **Result:** Passed. The prompt now includes stronger rules for timeline titles, details, and evidence.
 
 **Screenshot Evidence:**
-
+Screenshot 1:
+The build_prompt() function in app.py showing the updated timeline rules section. The prompt now includes instructions for short event titles, combining repeated events when possible, and requiring specific evidence for each timeline item.
 ![OpenAI Prompt Timeline Rules](../screenshots/OpenAI%20Prompt%20Timeline%20Rules.png)
 
 ### Test 3: Sorting and Grouping Logic Review
@@ -72,7 +75,8 @@ The team updated the README and milestone tracking files so the repository refle
 **Result:** Passed. The document explains sorting by timestamp and grouping by host, user, source IP, destination IP, event type, and severity.
 
 **Screenshot Evidence:**
-
+Screenshot 1:
+The docs/week5-sorting-grouping-logic.md file open in VS Code. It documents how parsed events should be sorted chronologically and grouped by fields such as host, user, source IP, destination IP, event type, and severity to help identify patterns in security activity.
 ![Sorting and Grouping Logic](../screenshots/Sorting%20and%20Grouping%20Logic.png)
 
 ### Test 4: Grouped Timeline JSON Review
@@ -81,15 +85,10 @@ The team updated the README and milestone tracking files so the repository refle
 **Procedure:** The team reviewed `examples/week5-grouped-timeline.json`.  
 **Expected Result:** The example should show timeline events in timestamp order and provide grouped counts.  
 **Result:** Passed. The example includes a `timeline_summary`, chronological `timeline` events, and grouped counts by host, user, source IP, destination IP, event type, and severity.
-![Group Timeline JSON](../screenshots/Week5 Timeline JSON Review.png)
-### Oriah's Week 5 timeline prototype
-Purpose: Confirm the updated templates/index.html can display timeline event data for the frontend prototype.
-Procedure: I reviewed the provided JSON timeline data and used it to create/update templates/index.html with a threat timeline layout.
-Expected Result: The page should display events in chronological order and show important fields such as timestamp, source, event, severity, details, and evidence.
-Result: Passed. The updated templates/index.html supports the Week 5 interactive timeline prototype by displaying timeline events with severity labels and event details. The layout prepares the frontend for future interaction features such as filtering, searching, and expanding event details.
 
 **Screenshot Evidence:**
-![Week 5 Interactive Timeline](../screenshots/index-preview.png)
+The examples/week5-grouped-timeline.json file showing the structured output. It includes a timeline summary with total events and high/critical counts, a chronologically sorted list of events, and grouped statistics by host, user, source IP, destination IP, event type, and severity.
+![Grouped Timeline JSON](../screenshots/Grouped%20Timeline%20JSON.png)
 
 ### Test 5: Milestone Tracker Review
 
@@ -98,7 +97,8 @@ Result: Passed. The updated templates/index.html supports the Week 5 interactive
 **Expected Result:** Week 4 should be marked complete, Derrick and Zion should be marked complete for Week 5, and Oriah should remain pending until her timeline prototype is submitted.  
 **Result:** Passed. The tracking files now reflect the current Week 5 status.
 
-**Screenshot Evidence:** Insert a screenshot of the Week 5 section in `MILESTONE_TODOS.md`.
+**Screenshot Evidence:** Insert screenshot of the Week 5 section in `MILESTONE_TODOS.md`.
+The Week 5 section in MILESTONE_TODOS.md showing updated task status. Derrick’s timeline requirements task and Zion’s sorting/grouping task are marked complete, while Oriah’s interactive timeline prototype task remains pending.
 
 ## Lessons Learned
 
@@ -114,12 +114,13 @@ Result: Passed. The updated templates/index.html supports the Week 5 interactive
 | --- | --- | --- |
 | Derrick Redman | Team Leader + AI/LLM Specialist | Completed the Week 5 timeline event wording and evidence requirements, updated the OpenAI prompt rules for timeline output, reviewed current team progress, and updated README/milestone status. |
 | Zion Moore | Backend & Log Processing Lead | Completed Week 5 sorting and grouping logic documentation and added an example grouped timeline JSON file showing chronological events and grouped counts. |
-| Oriah Molton-Bowman | Frontend & Visualization Lead | Completed timeline includes important event information such as timestamp, source, event name, severity, details, and evidence.
+| Oriah Molton-Bowman | Frontend & Visualization Lead | Week 5 interactive timeline prototype is still pending based on the local repository files currently available. Her next step is to submit or push the interactive timeline prototype and screenshot evidence. |
+
 ## Progress Compared to Project Plan
 
-The team has progressed according to the Week 5 plan for Derrick and Zion's responsibilities. Derrick completed the timeline event wording and evidence requirements. Zion completed the sorting and grouping logic documentation with an example grouped timeline output.
+The team has progressed according to the Week 5 plan for Derrick and Zion's responsibilities. Derrick completed the timeline event wording and evidence requirements. Zion completed the sorting and grouping logic documentation with example grouped timeline output.
 
-Week 5 is complete the interactive timeline prototype is submitted or pushed to the shared repository. 
+Week 5 is not fully complete yet because Oriah's interactive timeline prototype still needs to be submitted or pushed to the shared repository. Until that is complete, the overall Week 5 milestone should remain in progress.
 
 ## Plan Adjustment
 
@@ -144,4 +145,4 @@ Each team member should sign before submission.
 | --- | --- | --- | --- |
 | Derrick Redman | Team Leader + AI/LLM Specialist |  |  |
 | Zion Moore | Backend & Log Processing Lead |  |  |
-| Oriah Molton-Bowman | Frontend & Visualization Lead | oriah Molton-Bowman    | 7/5/2026  |
+| Oriah Molton-Bowman | Frontend & Visualization Lead |  |  |
