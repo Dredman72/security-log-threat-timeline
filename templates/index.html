@@ -117,6 +117,20 @@
       filter: brightness(0.95);
     }
 
+    .button-link {
+      display: inline-block;
+      border-radius: 8px;
+      background: #334155;
+      color: #ffffff;
+      font-weight: 700;
+      padding: 12px 18px;
+      text-decoration: none;
+    }
+
+    .button-link:hover {
+      filter: brightness(0.95);
+    }
+
     .button-secondary {
       background: #334155;
     }
@@ -318,6 +332,7 @@
 
         <div class="actions">
           <button type="submit">Analyze Logs</button>
+          <a class="button-link" href="{{ url_for('index') }}">Reset</a>
           <p class="hint">Model: {{ model_name }}. First {{ max_chars }} characters are analyzed. Upload .txt, .log, .csv, .json, or exported .xml logs.</p>
         </div>
       </form>
