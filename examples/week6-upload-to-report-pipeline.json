@@ -1,0 +1,37 @@
+{
+  "pipeline": "upload_to_report",
+  "status": "complete",
+  "input": {
+    "uploaded_file": "week2_security_events.csv",
+    "file_type": ".csv"
+  },
+  "processing_steps": [
+    "upload_received",
+    "log_file_parsed",
+    "events_normalized",
+    "events_sorted_by_timestamp",
+    "events_grouped_for_investigation",
+    "summary_data_prepared",
+    "timeline_data_prepared",
+    "report_data_ready"
+  ],
+  "results": {
+    "parsed_events": 4,
+    "high_or_critical_events": 3,
+    "timeline_order": "chronological",
+    "grouping_fields": [
+      "host",
+      "user",
+      "source_ip",
+      "destination_ip",
+      "event_type",
+      "severity"
+    ]
+  },
+  "report_ready_data": {
+    "executive_summary": "Backend pipeline successfully prepared parsed security events for report generation.",
+    "timeline_available": true,
+    "grouped_findings_available": true,
+    "recommendations_available": true
+  }
+}

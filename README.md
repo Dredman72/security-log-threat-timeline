@@ -173,7 +173,7 @@ Recommended screenshots:
 | Done | Member | Task | Outputs Produced | Measurement |
 | --- | --- | --- | --- | --- |
 | [ ] | Derrick | Review report narrative and prompt quality | Improved summary wording and analyst recommendations | Report is clear and useful for incident review |
-| [ ] | Zion | Build backend pipeline from upload to report data | Upload-to-parser-to-summary workflow | User can generate a report from a sample file |
+| [x] | Zion | Build backend pipeline from upload to report data | Upload-to-parser-to-summary workflow | User can generate a report from a sample file |
 | [ ] | Oriah | Build HTML report generator layout | Report sections for summary, findings, IOCs, timeline, and actions | Final report is readable and organized |
 
 ## Week 7: Integration Testing and Quality Improvement
