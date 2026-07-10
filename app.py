@@ -396,11 +396,23 @@ def condense_repeated_timeline_events(timeline: list[dict]) -> list[dict]:
 
     for item in timeline:
         event_key = str(item.get("event", "")).lower()
-        if "failed" in event_key and "login" in event_key:
+        details_key = str(item.get("details", "")).lower()
+        evidence_key = str(item.get("evidence", "")).lower()
+        combined_text = f"{event_key} {details_key} {evidence_key}"
+
+        is_auth_failure = (
+            ("failed" in combined_text and ("login" in combined_text or "auth" in combined_text or "password" in combined_text))
+            or "auth failure" in combined_text
+            or "authentication failure" in combined_text
+            or "authentication_failure" in combined_text
+            or "failed password" in combined_text
+        )
+
+        if is_auth_failure:
             key = (
                 item.get("source", "Unknown"),
                 item.get("severity", "Unknown"),
-                "failed_login",
+                "authentication_failure",
             )
         else:
             condensed.append(item)
@@ -421,9 +433,9 @@ def condense_repeated_timeline_events(timeline: list[dict]) -> list[dict]:
     for item in condensed:
         repeat_count = item.pop("_repeat_count", 1)
         if repeat_count > 1:
-            item["event"] = "Repeated failed login attempts"
+            item["event"] = "Repeated authentication failures"
             item["details"] = (
-                f"{repeat_count} similar failed login events were observed from the same source. "
+                f"{repeat_count} similar authentication failure events were observed from the same source. "
                 f"{item.get('details', '')}"
             ).strip()
 
