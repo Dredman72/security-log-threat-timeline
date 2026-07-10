@@ -27,6 +27,7 @@ MODEL_NAME = os.getenv("OPENAI_MODEL", "gpt-5.4-nano-2026-03-17")
 REQUIRED_REPORT_KEYS = {
     "executive_summary",
     "risk_level",
+    "risk_rationale",
     "attack_type",
     "affected_assets",
     "indicators_of_compromise",
@@ -360,6 +361,34 @@ def improve_risk_level(current_risk_level: str, source_text: str) -> str:
     return inferred if severity_rank.get(inferred, 0) > severity_rank.get(current, 0) else current
 
 
+def build_risk_rationale(risk_level: str, source_text: str) -> str:
+    lowered = source_text.lower()
+    risk = (risk_level or "Unknown").strip()
+
+    if "accepted password for root" in lowered and "/etc/shadow" in lowered:
+        return (
+            f"Risk is {risk} because the logs show a successful root SSH login followed by access "
+            "to /etc/shadow, which indicates possible full system compromise and credential exposure."
+        )
+    if "accepted password for root" in lowered:
+        return (
+            f"Risk is {risk} because the logs show successful root authentication over SSH, "
+            "which can indicate unauthorized privileged access if not expected."
+        )
+    if "/etc/shadow" in lowered:
+        return (
+            f"Risk is {risk} because the logs show access to /etc/shadow, a sensitive credential file."
+        )
+    if "failed password" in lowered and ("block" in lowered or "ufw" in lowered):
+        return (
+            f"Risk is {risk} because repeated authentication failures and firewall blocks suggest "
+            "active probing or brute-force behavior."
+        )
+    if "failed password" in lowered:
+        return f"Risk is {risk} because the logs show failed authentication attempts."
+    return f"Risk is {risk} based on the severity and evidence present in the submitted logs."
+
+
 def condense_repeated_timeline_events(timeline: list[dict]) -> list[dict]:
     condensed = []
     seen = {}
@@ -404,6 +433,8 @@ def improve_report_quality(report: dict, source_text: str) -> dict:
     report["timeline"] = condense_repeated_timeline_events(report.get("timeline", []))
     report["attack_type"] = improve_attack_type(report.get("attack_type", "Unknown"), source_text)
     report["risk_level"] = improve_risk_level(report.get("risk_level", "Unknown"), source_text)
+    if not report.get("risk_rationale"):
+        report["risk_rationale"] = build_risk_rationale(report["risk_level"], source_text)
 
     if report.get("recommended_actions") and len(report["recommended_actions"]) < 3:
         report["recommended_actions"].append(
@@ -422,6 +453,7 @@ Return ONLY valid JSON with this exact shape:
 {{
   "executive_summary": "2-4 sentence plain-English summary that states what happened, what asset or account was affected, and why it matters",
   "risk_level": "Low | Medium | High | Critical",
+  "risk_rationale": "1-2 sentences explaining why this risk level was selected using evidence from the logs",
   "attack_type": "best-fit attack category or Unknown",
   "affected_assets": [
     "hostnames, usernames, IP addresses, systems, or files affected"
@@ -462,6 +494,9 @@ Rules:
 - The executive_summary should explain the likely incident in plain English:
   who or what was involved, what happened, what the impact is, and why the risk
   level was chosen.
+- The risk_rationale should briefly explain the risk level using concrete log
+  evidence such as successful root login, sensitive file access, malware
+  indicators, repeated failed logins, or firewall blocks.
 - Key findings should be 3-5 concise bullets supported by the logs.
 - Recommended actions should be 3-5 prioritized analyst actions, starting with
   the most urgent containment, credential, or evidence-preservation step.
@@ -552,6 +587,7 @@ def normalize_report(report: dict) -> dict:
         report.get("executive_summary") or ""
     ).strip()
     normalized["risk_level"] = str(report.get("risk_level") or "Unknown").strip()
+    normalized["risk_rationale"] = str(report.get("risk_rationale") or "").strip()
     normalized["attack_type"] = str(report.get("attack_type") or "Unknown").strip()
     normalized["affected_assets"] = normalize_text_list(report.get("affected_assets"))
     normalized["indicators_of_compromise"] = normalize_text_list(
@@ -610,6 +646,7 @@ def analyze_logs_with_openai(log_text: str) -> dict:
                 {
                     "executive_summary": output_text,
                     "risk_level": "Unknown",
+                    "risk_rationale": "",
                     "attack_type": "Unknown",
                     "affected_assets": [],
                     "indicators_of_compromise": [],
@@ -628,6 +665,7 @@ def empty_report() -> dict:
     return {
         "executive_summary": "",
         "risk_level": "",
+        "risk_rationale": "",
         "attack_type": "",
         "affected_assets": [],
         "indicators_of_compromise": [],

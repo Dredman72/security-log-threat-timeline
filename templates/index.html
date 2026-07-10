@@ -334,6 +334,9 @@
             {% if report.attack_type %}
               <p><strong>Attack Type:</strong> {{ report.attack_type }}</p>
             {% endif %}
+            {% if report.risk_rationale %}
+              <p><strong>Risk Rationale:</strong> {{ report.risk_rationale }}</p>
+            {% endif %}
           </div>
           <div class="risk risk-{{ report.risk_level|lower|replace(' ', '-') }}">
             Risk Level
