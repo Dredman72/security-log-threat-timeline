@@ -254,7 +254,7 @@
     .event-table {
       width: 100%;
       border-collapse: collapse;
-      min-width: 820px;
+      min-width: 1040px;
       font-size: 0.92rem;
     }
 
@@ -465,6 +465,8 @@
                   <th>Source</th>
                   <th>Host</th>
                   <th>User</th>
+                  <th>Source IP</th>
+                  <th>Destination IP</th>
                   <th>Event Type</th>
                   <th>Severity</th>
                   <th>Evidence</th>
@@ -477,6 +479,8 @@
                     <td>{{ item.source }}</td>
                     <td>{{ item.host }}</td>
                     <td>{{ item.user }}</td>
+                    <td>{{ item.source_ip or "Unknown" }}</td>
+                    <td>{{ item.destination_ip or "Unknown" }}</td>
                     <td>{{ item.event_type }}</td>
                     <td><span class="badge">{{ item.severity }}</span></td>
                     <td>{{ item.evidence }}</td>
