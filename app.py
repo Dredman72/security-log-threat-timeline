@@ -390,6 +390,22 @@ def build_risk_rationale(risk_level: str, source_text: str) -> str:
     return f"Risk is {risk} based on the severity and evidence present in the submitted logs."
 
 
+def align_risk_language(text: str, risk_level: str) -> str:
+    if not text:
+        return ""
+
+    risk = (risk_level or "Unknown").strip().title()
+    if risk not in {"Low", "Medium", "High", "Critical"}:
+        return text
+
+    return re.sub(
+        r"\b(risk\s+(?:is|level\s+is|level:)\s+)(Low|Medium|High|Critical)\b",
+        lambda match: f"{match.group(1)}{risk}",
+        text,
+        flags=re.IGNORECASE,
+    )
+
+
 def condense_repeated_timeline_events(timeline: list[dict]) -> list[dict]:
     condensed = []
     seen = {}
@@ -449,8 +465,14 @@ def improve_report_quality(report: dict, source_text: str) -> dict:
     report["timeline"] = condense_repeated_timeline_events(report.get("timeline", []))
     report["attack_type"] = improve_attack_type(report.get("attack_type", "Unknown"), source_text)
     report["risk_level"] = improve_risk_level(report.get("risk_level", "Unknown"), source_text)
+    report["executive_summary"] = align_risk_language(
+        report.get("executive_summary", ""),
+        report["risk_level"],
+    )
     if not report.get("risk_rationale"):
         report["risk_rationale"] = build_risk_rationale(report["risk_level"], source_text)
+    else:
+        report["risk_rationale"] = align_risk_language(report["risk_rationale"], report["risk_level"])
 
     if report.get("recommended_actions") and len(report["recommended_actions"]) < 3:
         report["recommended_actions"].append(
@@ -513,6 +535,8 @@ Rules:
 - The risk_rationale should briefly explain the risk level using concrete log
   evidence such as successful root login, sensitive file access, malware
   indicators, repeated failed logins, or firewall blocks.
+- The executive_summary, risk_level, and risk_rationale must not contradict
+  each other.
 - Key findings should be 3-5 concise bullets supported by the logs.
 - Recommended actions should be 3-5 prioritized analyst actions, starting with
   the most urgent containment, credential, or evidence-preservation step.
