@@ -16,7 +16,7 @@ This file tracks the team's weekly milestones, task ownership, and progress. It 
 | [x] | June 15-21 | Week 3 | Log ingestion and parser prototype, parser validation checklist, basic parsed-event review |
 | [x] | June 22-28 | Week 4 | OpenAI API integration refinement, structured summarization, backend-to-LLM workflow |
 | [x] | June 29-July 5 | Week 5 | Threat timeline generation logic and interactive timeline prototype |
-| [ ] | July 6-12 | Week 6 | End-to-end report generation and full upload-to-report workflow |
+| [x] | July 6-12 | Week 6 | End-to-end report generation and full upload-to-report workflow |
 | [ ] | July 13-19 | Week 7 | Integration testing, quality improvement, frontend polish, error handling |
 | [ ] | July 20-26 | Week 8 | Final hardening, documentation, demo data, presentation preparation |
 | [ ] | July 27-28 | Final Presentation | Final project presentation and live or recorded demonstration |
@@ -87,7 +87,7 @@ This file tracks the team's weekly milestones, task ownership, and progress. It 
 
 | Done | Member | Task | Output | Measurement |
 | --- | --- | --- | --- | --- |
-| [ ] | Derrick | Review report narrative and prompt quality | Improved summary wording and analyst recommendations | Report is clear and useful for incident review |
+| [x] | Derrick | Review report narrative and prompt quality | Improved summary wording, risk rationale, report timestamp, reset workflow, downloadable report output, parsed event preview, and analyst recommendations | Report is clear, consistent, and useful for incident review |
 | [ ] | Zion | Connect upload, parser, and normalized output | Backend flow from uploaded file to normalized events | Uploaded sample logs are parsed correctly |
 | [ ] | Oriah | Build HTML report generator layout | Report sections for summary, findings, IOCs, timeline, and actions | Final report is readable and organized |
 
