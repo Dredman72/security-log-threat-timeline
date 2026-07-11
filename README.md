@@ -80,7 +80,7 @@ CapstoneProject/
 | [x] | June 15-21 | Week 3 | Log ingestion and parser prototype, parser validation checklist, basic parsed-event review |
 | [x] | June 22-28 | Week 4 | OpenAI API integration refinement, structured summarization, backend-to-LLM workflow |
 | [x] | June 29-July 5 | Week 5 | Threat timeline generation logic and interactive timeline prototype |
-| [ ] | July 6-12 | Week 6 | End-to-end report generation and full upload-to-report workflow |
+| [x] | July 6-12 | Week 6 | End-to-end report generation and full upload-to-report workflow |
 | [ ] | July 13-19 | Week 7 | Integration testing, quality improvement, frontend polish, error handling |
 | [ ] | July 20-26 | Week 8 | Final hardening, documentation, demo data, presentation preparation |
 | [ ] | July 27-28 | Final Presentation | Final project presentation and live or recorded demonstration |
@@ -167,7 +167,7 @@ Recommended screenshots:
 
 | Done | Member | Task | Outputs Produced | Measurement |
 | --- | --- | --- | --- | --- |
-| [ ] | Derrick | Review report narrative and prompt quality | Improved summary wording and analyst recommendations | Report is clear and useful for incident review |
+| [x] | Derrick | Review report narrative and prompt quality | Improved summary wording, risk rationale, report timestamp, reset workflow, downloadable report output, parsed event preview, and analyst recommendations | Report is clear, consistent, and useful for incident review |
 | [x] | Zion | Build backend pipeline from upload to report data | Upload-to-parser-to-summary workflow | User can generate a report from a sample file |
 | [ ] | Oriah | Build HTML report generator layout | Report sections for summary, findings, IOCs, timeline, and actions | Final report is readable and organized |
 
@@ -305,4 +305,5 @@ As of July 9, 2026:
 - Week 5 Oriah task is complete: frontend timeline prototype evidence and report/timeline display work have been added to the project files.
 - Week 5 journal evidence has been added in `docs/reports/TEAM_WEEKLY_JOURNAL_WEEK5.md`.
 - `MILESTONE_TODOS.md`, `DEMO_WORKFLOW_INSTRUCTIONS.md`, and `DEPLOYMENT_AND_SUBMISSION_GUIDE.md` have been added for team tracking, demo preparation, and deployment/submission guidance.
-- Next focus is Week 6 end-to-end report generation: connecting upload, parser output, OpenAI summarization, timeline generation, and report rendering into one workflow.
+- Week 6 Derrick task is complete: report narrative quality, risk consistency, risk rationale, report timestamp, repeated-authentication grouping, reset workflow, downloadable JSON/HTML reports, and parsed event preview improvements have been added to the Flask/OpenAI prototype.
+- Next focus is Week 7 integration testing and quality improvement: testing the app with multiple log samples, improving error handling, and polishing the report/timeline user experience.
