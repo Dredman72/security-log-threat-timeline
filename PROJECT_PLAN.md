@@ -181,6 +181,10 @@ Derrick's parser output validation checklist is documented in `PARSER_OUTPUT_VAL
 - Document known limitations and unsupported log formats.
   
  **Week 6 Accomplishments:**
+ - Oriah reviewed the Week 6 report data fields provided by the team. The data structure includes one report-ready JSON object with sections for report_summary, risk_level, key_findings, timeline_events, assets_and_indicators, recommended_actions, raw_event_details, and known_limitations.
+ - Orah confirmed that the frontend report layout should support summary information such as executive summary, generated time, input file name, total events, and high or critical event counts.
+ - Oriah also confirmed that the timeline section should display each event with fields such as event ID, timestamp, source, host, user, source IP, destination IP, event type, severity, description, evidence, and raw event.
+ - 
  
 
 ### Week 7: July 13 - July 19, 2026
