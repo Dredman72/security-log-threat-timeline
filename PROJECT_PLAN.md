@@ -217,6 +217,11 @@ Derrick's parser output validation checklist is documented in `PARSER_OUTPUT_VAL
 - Refine timeline filtering or labels if time allows.
 - Review generated reports for accuracy, clarity, and professional tone.
 
+**Progress Update:**
+
+- Derrick completed the Week 7 prompt and summary consistency improvement. The OpenAI prompt now includes clearer severity definitions, consistent executive summary wording rules, contradiction checks between summary/risk/rationale fields, and consistent attack type naming guidance.
+- Derrick documented the Week 7 AI/LLM test notes in `docs/week7-prompt-summary-consistency.md`.
+
 ### Week 8: July 20 - July 26, 2026
 
 **Focus:** Final hardening, documentation, and presentation preparation.

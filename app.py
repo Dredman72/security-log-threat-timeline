@@ -540,6 +540,24 @@ Rules:
 - Key findings should be 3-5 concise bullets supported by the logs.
 - Recommended actions should be 3-5 prioritized analyst actions, starting with
   the most urgent containment, credential, or evidence-preservation step.
+- Consistency rules for the report summary:
+  - Use the same severity meaning across all log samples:
+    Low = informational or blocked activity with no compromise,
+    Medium = suspicious activity without confirmed compromise,
+    High = likely attack activity or repeated suspicious behavior,
+    Critical = confirmed compromise, privileged access, malware execution,
+    sensitive file access, or likely data exposure.
+  - Keep executive_summary wording consistent across tests: start with the
+    affected system or account, describe the main event sequence, then explain
+    the impact and risk level.
+  - Do not say the risk is one level in the executive_summary and a different
+    level in risk_level or risk_rationale.
+  - Use consistent attack_type names across similar logs. For example, repeated
+    failed SSH logins should be "Brute Force", successful root access should
+    include "Credential Access", sudo misuse should include "Privilege Escalation",
+    and suspicious encryption or malware alerts should include "Malware".
+  - Keep key findings and recommended actions aligned with the same incident
+    narrative used in the executive_summary.
 - Rules for the Threat Timeline:
   - Create a chronological threat timeline of the most important security events.
   - Every timeline event must include: timestamp, source, event, severity,
