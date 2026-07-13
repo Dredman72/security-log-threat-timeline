@@ -169,7 +169,7 @@ Recommended screenshots:
 | --- | --- | --- | --- | --- |
 | [x] | Derrick | Review report narrative and prompt quality | Improved summary wording, risk rationale, report timestamp, reset workflow, downloadable report output, parsed event preview, and analyst recommendations | Report is clear, consistent, and useful for incident review |
 | [x] | Zion | Build backend pipeline from upload to report data | Upload-to-parser-to-summary workflow | User can generate a report from a sample file |
-| [x] | Oriah | Build HTML report generator layout | Report sections for summary, findings, IOCs, timeline, and actions | Final report is readable and organized |
+| [ ] | Oriah | Build HTML report generator layout | Report sections for summary, findings, IOCs, timeline, and actions | Final report is readable and organized |
 
 ## Week 7: Integration Testing and Quality Improvement
 
@@ -306,6 +306,5 @@ As of July 9, 2026:
 - Week 5 journal evidence has been added in `docs/reports/TEAM_WEEKLY_JOURNAL_WEEK5.md`.
 - `MILESTONE_TODOS.md`, `DEMO_WORKFLOW_INSTRUCTIONS.md`, and `DEPLOYMENT_AND_SUBMISSION_GUIDE.md` have been added for team tracking, demo preparation, and deployment/submission guidance.
 - Week 6 Derrick task is complete: report narrative quality, risk consistency, risk rationale, report timestamp, repeated-authentication grouping, reset workflow, downloadable JSON/HTML reports, and parsed event preview improvements have been added to the Flask/OpenAI prototype.
-- Week 6 Zion task is complete: backend upload-to-report pipeline documentation is included in `docs/week6-backend-pipeline.md`.
-- Week 6 Oriah task is complete: report data fields and HTML report generator layout planning are included in `docs/week6-report-data-fields.md` with screenshot evidence in `docs/screenshots/`.
+- Week 6 Zion task is complete: backend upload-to-report pipeline documentation has been added in `docs/week6-backend-pipeline.md`, with report-ready pipeline example output in `examples/week6-upload-to-report-pipeline.json` and frontend/backend report data field contract in `docs/week6-report-data-fields.md`.
 - Next focus is Week 7 integration testing and quality improvement: testing the app with multiple log samples, improving error handling, and polishing the report/timeline user experience.

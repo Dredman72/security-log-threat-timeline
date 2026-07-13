@@ -181,6 +181,17 @@ Derrick's parser output validation checklist is documented in `PARSER_OUTPUT_VAL
 - Document known limitations and unsupported log formats.
   
  **Week 6 Accomplishments:**
+ - Oriah reviewed the Week 6 report data fields provided by the team. The data structure includes one report-ready JSON object with sections for report_summary, risk_level, key_findings, timeline_events, assets_and_indicators, recommended_actions, raw_event_details, and known_limitations.
+ - Orah confirmed that the frontend report layout should support summary information such as executive summary, generated time, input file name, total events, and high or critical event counts.
+ - Oriah also confirmed that the timeline section should display each event with fields such as event ID, timestamp, source, host, user, source IP, destination IP, event type, severity, description, evidence, and raw event.
+ - 
+ - Zion documented the Week 6 backend upload-to-report pipeline. The workflow connects file upload, log parsing, event normalization, timeline sorting, grouping, summary preparation, and report-ready output.
+
+- Zion added `docs/week6-backend-pipeline.md` to explain how uploaded sample log files move through the backend and become report-ready data for the frontend.
+
+- Zion added `examples/week6-upload-to-report-pipeline.json` as example output showing the completed backend pipeline, including parsed event counts, high/critical event counts, chronological timeline order, grouping fields, and report-ready sections.
+
+- Zion added `docs/week6-report-data-fields.md` to support Oriah’s HTML report generator work by defining the final report data fields for summary, risk level, key findings, timeline events, assets and indicators, recommended actions, raw event details, and known limitations.
  
 - Derrick completed Week 6 report narrative and prompt-quality improvements in the Flask/OpenAI prototype. Updates included improved summary wording, risk consistency checks, risk rationale output, report timestamp, repeated-authentication grouping, reset workflow support, downloadable JSON/HTML report output, parsed event preview improvements, and stronger analyst recommendations.
 - Zion completed the Week 6 backend upload-to-report pipeline documentation in `docs/week6-backend-pipeline.md`. The documented workflow connects uploaded log files to parsing, normalization, chronological sorting, grouping, summary/timeline preparation, and report rendering.
