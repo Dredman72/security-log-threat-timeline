@@ -92,7 +92,7 @@ This file tracks the team's weekly milestones, task ownership, and progress. It 
 | [x] | Zion | Connect upload, parser, and normalized output | Backend flow from uploaded file to normalized events | Uploaded sample logs are parsed correctly |
 | [ ] | Oriah | Build HTML report generator layout | Report sections for summary, findings, IOCs, timeline, and actions | Final report is readable and organized |
 =======
-| [ ] | Zion | Connect upload, parser, and normalized output | Backend flow from uploaded file to normalized events | Uploaded sample logs are parsed correctly |
+| [x] | Zion | Connect upload, parser, and normalized output | Backend flow from uploaded file to normalized events | Uploaded sample logs are parsed correctly |
 | [ X] | Oriah | Build HTML report generator layout | Report sections for summary, findings, IOCs, timeline, and actions | Final report is readable and organized |
 >>>>>>> d5e7231e5ed98d81ea40f6778a955bf56d5a9572
 
