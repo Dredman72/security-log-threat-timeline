@@ -179,6 +179,7 @@ Derrick's parser output validation checklist is documented in `PARSER_OUTPUT_VAL
 - Improve report readability and formatting.
 - Test the full flow with multiple sample log files.
 - Document known limitations and unsupported log formats.
+ **Week 6 Accomplishments:**
 
 ### Week 7: July 13 - July 19, 2026
 

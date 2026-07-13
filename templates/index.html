@@ -1,21 +1,22 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Security Log Threat Timeline</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Week 6 HTML Report Generator</title>
   <style>
     :root {
-      color-scheme: light;
-      --bg: #f5f7fb;
-      --panel: #ffffff;
-      --ink: #18202f;
-      --muted: #617087;
-      --line: #d9e0ea;
-      --accent: #0f766e;
-      --danger: #b42318;
-      --warn: #b54708;
-      --ok: #067647;
+      --bg: #eef2f6;
+      --surface: #ffffff;
+      --ink: #182235;
+      --muted: #5d697c;
+      --line: #d9e1ea;
+      --brand: #14324a;
+      --accent: #0f8b8d;
+      --low: #4f7f53;
+      --medium: #b7791f;
+      --high: #c05621;
+      --critical: #c53030;
     }
 
     * {
@@ -24,161 +25,70 @@
 
     body {
       margin: 0;
-      font-family: Arial, Helvetica, sans-serif;
       background: var(--bg);
       color: var(--ink);
+      font-family: Arial, Helvetica, sans-serif;
       line-height: 1.5;
     }
 
     header {
-      background: #172033;
-      color: white;
-      padding: 28px 5vw;
+      background: var(--brand);
+      color: #ffffff;
+      padding: 28px 40px;
     }
 
     header h1 {
-      margin: 0 0 8px;
-      font-size: clamp(1.6rem, 3vw, 2.4rem);
+      font-size: 30px;
       letter-spacing: 0;
+      margin: 0 0 6px;
     }
 
     header p {
+      color: #d9e6f2;
+      font-size: 14px;
       margin: 0;
-      color: #c9d4e5;
       max-width: 900px;
     }
 
     main {
-      width: min(1180px, 90vw);
-      margin: 28px auto 56px;
-      display: grid;
-      gap: 22px;
+      margin: 20px auto 44px;
+      width: min(1120px, calc(100% - 28px));
     }
 
-    .panel {
-      background: var(--panel);
+    .report-shell {
+      background: var(--surface);
       border: 1px solid var(--line);
       border-radius: 8px;
-      padding: 22px;
-      box-shadow: 0 12px 30px rgba(23, 32, 51, 0.07);
+      overflow: hidden;
+    }
+
+    .report-header,
+    .report-section {
+      padding: 22px 24px;
+    }
+
+    .report-section {
+      border-top: 1px solid var(--line);
+    }
+
+    .report-header {
+      display: grid;
+      gap: 18px;
+      grid-template-columns: minmax(0, 1fr) 220px;
     }
 
     h2 {
-      margin: 0 0 14px;
-      font-size: 1.2rem;
+      font-size: 21px;
+      margin: 0 0 12px;
     }
 
-    label {
-      display: block;
-      margin: 14px 0 8px;
-      font-weight: 700;
+    h3 {
+      font-size: 16px;
+      margin: 0 0 8px;
     }
 
-    textarea {
-      width: 100%;
-      min-height: 260px;
-      resize: vertical;
-      border: 1px solid var(--line);
-      border-radius: 8px;
-      padding: 14px;
-      font-family: Consolas, "Courier New", monospace;
-      font-size: 0.94rem;
-      color: var(--ink);
-      background: #fbfcfe;
-    }
-
-    input[type="file"] {
-      width: 100%;
-      padding: 12px;
-      border: 1px dashed #9aa8bb;
-      border-radius: 8px;
-      background: #fbfcfe;
-    }
-
-    .actions {
-      display: flex;
-      align-items: center;
-      gap: 14px;
-      flex-wrap: wrap;
-      margin-top: 18px;
-    }
-
-    button {
-      border: 0;
-      border-radius: 8px;
-      background: var(--accent);
-      color: white;
-      font-weight: 700;
-      padding: 12px 18px;
-      cursor: pointer;
-    }
-
-    button:hover {
-      filter: brightness(0.95);
-    }
-
-    .button-link {
-      display: inline-block;
-      border-radius: 8px;
-      background: #334155;
-      color: #ffffff;
-      font-weight: 700;
-      padding: 12px 18px;
-      text-decoration: none;
-    }
-
-    .button-link:hover {
-      filter: brightness(0.95);
-    }
-
-    .button-secondary {
-      background: #334155;
-    }
-
-    .hint {
-      color: var(--muted);
-      font-size: 0.92rem;
+    p {
       margin: 0;
-    }
-
-    .error {
-      border-color: #f2a8a1;
-      color: var(--danger);
-      background: #fff3f2;
-    }
-
-    .summary-grid {
-      display: grid;
-      grid-template-columns: 1fr 220px;
-      gap: 18px;
-      align-items: start;
-    }
-
-    .risk {
-      border: 1px solid var(--line);
-      border-radius: 8px;
-      padding: 16px;
-      text-align: center;
-      background: #fbfcfe;
-    }
-
-    .risk strong {
-      display: block;
-      font-size: 1.5rem;
-      margin-top: 8px;
-    }
-
-    .risk-critical,
-    .risk-high {
-      color: var(--danger);
-    }
-
-    .risk-medium {
-      color: var(--warn);
-    }
-
-    .risk-low {
-      color: var(--ok);
     }
 
     ul {
@@ -186,129 +96,298 @@
       padding-left: 20px;
     }
 
-    .timeline {
+    .meta-grid,
+    .two-column,
+    .three-column {
       display: grid;
       gap: 14px;
     }
 
-    .event {
-      border-left: 4px solid var(--accent);
-      background: #fbfcfe;
-      border-radius: 0 8px 8px 0;
-      padding: 14px 16px;
+    .meta-grid {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      margin-top: 18px;
     }
 
-    .event-meta {
-      display: flex;
-      gap: 10px;
-      flex-wrap: wrap;
+    .two-column {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .three-column {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .metric,
+    .risk-panel,
+    .list-panel,
+    .finding,
+    .action,
+    .limitation {
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 14px;
+    }
+
+    .metric span,
+    .risk-panel span {
       color: var(--muted);
-      font-size: 0.9rem;
-      margin-bottom: 6px;
+      display: block;
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
     }
 
-    .event h3 {
-      margin: 0 0 8px;
-      font-size: 1rem;
+    .metric strong,
+    .risk-panel strong {
+      display: block;
+      font-size: 22px;
+      margin-top: 4px;
+      overflow-wrap: anywhere;
+      word-break: break-word;
+    }
+
+    .risk-panel {
+      align-self: stretch;
+      display: grid;
+      place-items: center;
+      text-align: center;
+    }
+
+    .risk-critical {
+      color: var(--critical);
+    }
+
+    .risk-high {
+      color: var(--high);
+    }
+
+    .risk-medium {
+      color: var(--medium);
+    }
+
+    .severity-row {
+      align-items: center;
+      display: grid;
+      gap: 10px;
+      grid-template-columns: 86px minmax(0, 1fr) 34px;
+      margin-bottom: 10px;
+    }
+
+    .bar {
+      background: #edf1f5;
+      border-radius: 999px;
+      height: 10px;
+      overflow: hidden;
+    }
+
+    .bar span {
+      display: block;
+      height: 100%;
+    }
+
+    .bar .low {
+      background: var(--low);
+    }
+
+    .bar .medium {
+      background: var(--medium);
+    }
+
+    .bar .high {
+      background: var(--high);
+    }
+
+    .bar .critical {
+      background: var(--critical);
     }
 
     .badge {
-      display: inline-block;
       border-radius: 999px;
-      padding: 2px 9px;
-      background: #e8eef7;
-      color: #334155;
-      font-size: 0.82rem;
+      color: #ffffff;
+      display: inline-block;
+      font-size: 12px;
+      font-weight: 700;
+      padding: 4px 10px;
+    }
+
+    .badge.low {
+      background: var(--low);
+    }
+
+    .badge.medium {
+      background: var(--medium);
+    }
+
+    .badge.high {
+      background: var(--high);
+    }
+
+    .badge.critical {
+      background: var(--critical);
+    }
+
+    .finding,
+    .action,
+    .limitation {
+      margin-bottom: 12px;
+    }
+
+    .finding-title,
+    .action-title {
+      align-items: center;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      justify-content: space-between;
+      margin-bottom: 8px;
+    }
+
+    .controls {
+      display: grid;
+      gap: 12px;
+      grid-template-columns: minmax(0, 1fr) 170px;
+      margin-bottom: 18px;
+    }
+
+    input,
+    select {
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      color: var(--ink);
+      font: inherit;
+      padding: 11px 12px;
+      width: 100%;
+    }
+
+    .timeline {
+      border-left: 4px solid var(--accent);
+      margin-left: 10px;
+      padding-left: 18px;
+    }
+
+    .event-card {
+      background: #f8fafc;
+      border: 1px solid #e3ebf3;
+      border-left: 6px solid var(--line);
+      border-radius: 8px;
+      margin-bottom: 14px;
+      padding: 16px;
+      position: relative;
+    }
+
+    .event-card::before {
+      background: var(--accent);
+      border: 3px solid #ffffff;
+      border-radius: 50%;
+      content: "";
+      height: 13px;
+      left: -31px;
+      position: absolute;
+      top: 20px;
+      width: 13px;
+    }
+
+    .event-card.medium {
+      border-left-color: var(--medium);
+      background: #fffaf0;
+    }
+
+    .event-card.high {
+      border-left-color: var(--high);
+      background: #fff7ed;
+    }
+
+    .event-card.critical {
+      border-left-color: var(--critical);
+      background: #fff1f1;
+    }
+
+    .event-top {
+      align-items: flex-start;
+      display: flex;
+      gap: 12px;
+      justify-content: space-between;
+    }
+
+    .event-title {
+      font-size: 18px;
+      font-weight: 700;
+      margin-bottom: 4px;
+    }
+
+    .event-meta,
+    .muted {
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .event-description {
+      margin-top: 12px;
+    }
+
+    details {
+      margin-top: 12px;
+    }
+
+    summary {
+      color: var(--accent);
+      cursor: pointer;
       font-weight: 700;
     }
 
-    .detail-grid {
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 18px;
-    }
-
-    .detail-box {
+    pre {
+      background: #eef2f6;
       border: 1px solid var(--line);
       border-radius: 8px;
-      padding: 16px;
-      background: #fbfcfe;
-    }
-
-    .detail-box h3 {
-      margin: 0 0 10px;
-      font-size: 1rem;
-    }
-
-    .metric-list {
-      display: grid;
-      gap: 8px;
-      margin: 0;
-      padding: 0;
-      list-style: none;
-    }
-
-    .metric-list li {
-      display: flex;
-      justify-content: space-between;
-      gap: 12px;
-      border-bottom: 1px solid #edf1f7;
-      padding-bottom: 8px;
-    }
-
-    .metric-list li:last-child {
-      border-bottom: 0;
-      padding-bottom: 0;
-    }
-
-    .event-table-wrap {
       overflow-x: auto;
+      padding: 12px;
+      white-space: pre-wrap;
+      word-break: break-word;
     }
 
-    .event-table {
-      width: 100%;
+    table {
       border-collapse: collapse;
-      min-width: 1040px;
-      font-size: 0.92rem;
+      width: 100%;
     }
 
-    .event-table th,
-    .event-table td {
+    th,
+    td {
       border-bottom: 1px solid var(--line);
       padding: 10px;
       text-align: left;
       vertical-align: top;
     }
 
-    .event-table th {
-      background: #f0f4fa;
-      font-weight: 700;
-    }
-
-    .event-table td:last-child {
+    th {
       color: var(--muted);
+      font-size: 12px;
+      text-transform: uppercase;
     }
 
-    .evidence {
-      margin-top: 8px;
+    .table-wrap {
+      overflow-x: auto;
+    }
+
+    .empty-state {
       color: var(--muted);
-      font-size: 0.9rem;
+      padding: 18px;
+      text-align: center;
     }
 
-    @media (max-width: 760px) {
-      main {
-        width: min(94vw, 1180px);
+    @media (max-width: 820px) {
+      header {
+        padding: 24px 18px;
       }
 
-      .summary-grid {
+      .report-header,
+      .meta-grid,
+      .two-column,
+      .three-column,
+      .controls {
         grid-template-columns: 1fr;
       }
 
-      .detail-grid {
-        grid-template-columns: 1fr;
-      }
-
-      .panel {
+      .report-header,
+      .report-section {
         padding: 18px;
       }
     }
@@ -317,221 +396,435 @@
 <body>
   <header>
     <h1>Intelligent Security Log Summarization</h1>
-    <p>Upload or paste security logs to generate an executive summary, key findings, recommended actions, and a chronological threat timeline.</p>
+    <p>Week 6 HTML report generator for OpenAI summaries, risk scoring, timeline events, assets, recommended actions, raw evidence, and known limitations.</p>
   </header>
 
   <main>
-    <section class="panel">
-      <h2>Analyze Logs</h2>
-      <form method="post" enctype="multipart/form-data">
-        <label for="log_text">Paste log text</label>
-        <textarea id="log_text" name="log_text" placeholder="Paste Windows Event Logs, auth logs, firewall logs, EDR alerts, or Sysmon entries here...">{{ log_text }}</textarea>
-
-        <label for="log_file">Upload log file</label>
-        <input id="log_file" name="log_file" type="file" accept=".txt,.log,.csv,.json,.xml">
-
-        <div class="actions">
-          <button type="submit">Analyze Logs</button>
-          <a class="button-link" href="{{ url_for('index') }}">Reset</a>
-          <p class="hint">Model: {{ model_name }}. First {{ max_chars }} characters are analyzed. Upload .txt, .log, .csv, .json, or exported .xml logs.</p>
+    <div class="report-shell">
+      <div class="report-header">
+        <div>
+          <h2>Report Summary</h2>
+          <p id="executiveSummary"></p>
+          <div class="meta-grid" id="summaryMetrics"></div>
         </div>
-      </form>
-    </section>
-
-    {% if error %}
-      <section class="panel error">
-        <strong>Analysis failed:</strong> {{ error }}
-      </section>
-    {% endif %}
-
-    {% if report.executive_summary %}
-      <section class="panel">
-        <h2>Report Summary</h2>
-        {% if report.generated_at %}
-          <p class="hint">Report generated: {{ report.generated_at }}</p>
-        {% endif %}
-        <div class="summary-grid">
+        <aside class="risk-panel">
           <div>
-            <p>{{ report.executive_summary }}</p>
-            {% if report.attack_type %}
-              <p><strong>Attack Type:</strong> {{ report.attack_type }}</p>
-            {% endif %}
-            {% if report.risk_rationale %}
-              <p><strong>Risk Rationale:</strong> {{ report.risk_rationale }}</p>
-            {% endif %}
+            <span>Overall Risk</span>
+            <strong id="overallRisk"></strong>
+            <p class="muted" id="riskReason"></p>
           </div>
-          <div class="risk risk-{{ report.risk_level|lower|replace(' ', '-') }}">
-            Risk Level
-            <strong>{{ report.risk_level }}</strong>
+        </aside>
+      </div>
+
+      <section class="report-section" aria-labelledby="risk-heading">
+        <h2 id="risk-heading">Risk Level</h2>
+        <div class="two-column">
+          <div id="severityCounts"></div>
+          <div class="list-panel">
+            <h3>Highest Severity</h3>
+            <p id="highestSeverity"></p>
           </div>
         </div>
       </section>
 
-      <section class="panel">
-        <h2>Assets and Indicators</h2>
-        <div class="detail-grid">
-          <div class="detail-box">
-            <h3>Affected Assets</h3>
-            {% if report.affected_assets %}
-              <ul>
-                {% for asset in report.affected_assets %}
-                  <li>{{ asset }}</li>
-                {% endfor %}
-              </ul>
-            {% else %}
-              <p class="hint">No affected assets returned.</p>
-            {% endif %}
-          </div>
-          <div class="detail-box">
-            <h3>Indicators of Compromise</h3>
-            {% if report.indicators_of_compromise %}
-              <ul>
-                {% for indicator in report.indicators_of_compromise %}
-                  <li>{{ indicator }}</li>
-                {% endfor %}
-              </ul>
-            {% else %}
-              <p class="hint">No indicators returned.</p>
-            {% endif %}
-          </div>
+      <section class="report-section" aria-labelledby="findings-heading">
+        <h2 id="findings-heading">Key Findings</h2>
+        <div id="keyFindings"></div>
+      </section>
+
+      <section class="report-section" aria-labelledby="assets-heading">
+        <h2 id="assets-heading">Assets and Indicators</h2>
+        <div class="three-column" id="assetsAndIndicators"></div>
+      </section>
+
+      <section class="report-section" aria-labelledby="timeline-heading">
+        <h2 id="timeline-heading">Threat Timeline</h2>
+        <div class="controls">
+          <input id="timelineSearch" type="search" placeholder="Search timeline by host, user, IP, event type, or evidence" />
+          <select id="severityFilter" aria-label="Filter timeline by severity">
+            <option value="All">All Severities</option>
+            <option value="Low">Low</option>
+            <option value="Medium">Medium</option>
+            <option value="High">High</option>
+            <option value="Critical">Critical</option>
+          </select>
+        </div>
+        <div class="timeline" id="timeline"></div>
+      </section>
+
+      <section class="report-section" aria-labelledby="actions-heading">
+        <h2 id="actions-heading">Recommended Actions</h2>
+        <div id="recommendedActions"></div>
+      </section>
+
+      <section class="report-section" aria-labelledby="raw-heading">
+        <h2 id="raw-heading">Raw Event Details</h2>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Event ID</th>
+                <th>Raw Event</th>
+                <th>Parsed Fields</th>
+              </tr>
+            </thead>
+            <tbody id="rawEventDetails"></tbody>
+          </table>
         </div>
       </section>
 
-      <section class="panel">
-        <h2>Key Findings</h2>
-        {% if report.key_findings %}
-          <ul>
-            {% for finding in report.key_findings %}
-              <li>{{ finding }}</li>
-            {% endfor %}
-          </ul>
-        {% else %}
-          <p class="hint">No key findings returned.</p>
-        {% endif %}
+      <section class="report-section" aria-labelledby="limitations-heading">
+        <h2 id="limitations-heading">Known Limitations</h2>
+        <div id="knownLimitations"></div>
       </section>
-
-      {% if timeline_groups.total_events %}
-        <section class="panel">
-          <h2>Timeline Activity Summary</h2>
-          <div class="detail-grid">
-            <div class="detail-box">
-              <h3>By Severity</h3>
-              {% if timeline_groups.by_severity %}
-                <ul class="metric-list">
-                  {% for item in timeline_groups.by_severity %}
-                    <li><span>{{ item.name }}</span><strong>{{ item.count }}</strong></li>
-                  {% endfor %}
-                </ul>
-              {% else %}
-                <p class="hint">No severity grouping available.</p>
-              {% endif %}
-            </div>
-            <div class="detail-box">
-              <h3>By Source</h3>
-              {% if timeline_groups.by_source %}
-                <ul class="metric-list">
-                  {% for item in timeline_groups.by_source %}
-                    <li><span>{{ item.name }}</span><strong>{{ item.count }}</strong></li>
-                  {% endfor %}
-                </ul>
-              {% else %}
-                <p class="hint">No source grouping available.</p>
-              {% endif %}
-            </div>
-          </div>
-        </section>
-      {% endif %}
-
-      <section class="panel">
-        <h2>Threat Timeline</h2>
-        {% if report.timeline %}
-          <div class="timeline">
-            {% for item in report.timeline %}
-              <article class="event">
-                <div class="event-meta">
-                  <span>{{ item.timestamp or "Unknown" }}</span>
-                  <span>{{ item.source or "Unknown" }}</span>
-                  <span class="badge">{{ item.severity or "Unknown" }}</span>
-                </div>
-                <h3>{{ item.event or "Unknown event" }}</h3>
-                {% if item.details %}
-                  <p>{{ item.details }}</p>
-                {% endif %}
-                {% if item.evidence %}
-                  <p class="evidence"><strong>Evidence:</strong> {{ item.evidence }}</p>
-                {% endif %}
-              </article>
-            {% endfor %}
-          </div>
-        {% else %}
-          <p class="hint">No timeline events returned.</p>
-        {% endif %}
-      </section>
-
-      {% if parsed_events %}
-        <section class="panel">
-          <h2>Parsed Event Preview</h2>
-          <p class="hint">Local preview using the team parser schema. This helps confirm the backend fields support the LLM report and frontend timeline.</p>
-          <div class="event-table-wrap">
-            <table class="event-table">
-              <thead>
-                <tr>
-                  <th>Timestamp</th>
-                  <th>Source</th>
-                  <th>Host</th>
-                  <th>User</th>
-                  <th>Source IP</th>
-                  <th>Destination IP</th>
-                  <th>Event Type</th>
-                  <th>Severity</th>
-                  <th>Evidence</th>
-                </tr>
-              </thead>
-              <tbody>
-                {% for item in parsed_events %}
-                  <tr>
-                    <td>{{ item.timestamp }}</td>
-                    <td>{{ item.source }}</td>
-                    <td>{{ item.host }}</td>
-                    <td>{{ item.user }}</td>
-                    <td>{{ item.source_ip or "Unknown" }}</td>
-                    <td>{{ item.destination_ip or "Unknown" }}</td>
-                    <td>{{ item.event_type }}</td>
-                    <td><span class="badge">{{ item.severity }}</span></td>
-                    <td>{{ item.evidence }}</td>
-                  </tr>
-                {% endfor %}
-              </tbody>
-            </table>
-          </div>
-        </section>
-      {% endif %}
-
-      <section class="panel">
-        <h2>Recommended Actions</h2>
-        {% if report.recommended_actions %}
-          <ul>
-            {% for action in report.recommended_actions %}
-              <li>{{ action }}</li>
-            {% endfor %}
-          </ul>
-        {% else %}
-          <p class="hint">No recommended actions returned.</p>
-        {% endif %}
-      </section>
-
-      <section class="panel">
-        <h2>Download Report</h2>
-        <p class="hint">Save the generated report for submission notes, testing evidence, or later review.</p>
-        <form method="post" action="{{ url_for('download_report') }}">
-          <input type="hidden" name="report_json" value='{{ report|tojson }}'>
-          <div class="actions">
-            <button type="submit" name="format" value="json" class="button-secondary">Download JSON</button>
-            <button type="submit" name="format" value="html">Download HTML</button>
-          </div>
-        </form>
-      </section>
-    {% endif %}
+    </div>
   </main>
+
+  <script>
+    // Flask handoff option:
+    // const reportData = {{ report_data | tojson | safe }};
+    const reportData = {
+      report_summary: {
+        executive_summary: "The uploaded SSH log shows a likely intrusion sequence against the webserver. The activity begins with a failed login for an invalid admin user, followed by a successful root SSH login from the same external IP address and sudo access to /etc/shadow. This pattern suggests possible unauthorized access and credential theft risk.",
+        generated_at: "2026-07-12 18:00:00",
+        input_file: "ssh_auth_log_sample.txt",
+        total_events: 3,
+        high_or_critical_events: 2
+      },
+      risk_level: {
+        overall_risk: "Critical",
+        severity_counts: {
+          Low: 0,
+          Medium: 1,
+          High: 0,
+          Critical: 2
+        },
+        highest_severity: "Critical",
+        risk_reason: "Critical risk is assigned because the timeline includes a successful root SSH login from an external IP and access to /etc/shadow."
+      },
+      key_findings: [
+        {
+          title: "Possible SSH brute-force activity",
+          severity: "Medium",
+          description: "An external host attempted SSH authentication using an invalid admin account before later successful access.",
+          supporting_event_ids: ["EVT-001"]
+        },
+        {
+          title: "Successful root SSH login",
+          severity: "Critical",
+          description: "The root account authenticated from external IP 203.0.113.45, which may indicate unauthorized administrative access.",
+          supporting_event_ids: ["EVT-002"]
+        },
+        {
+          title: "Sensitive file accessed",
+          severity: "Critical",
+          description: "The root user executed a sudo command to read /etc/shadow, a sensitive file containing password hash data.",
+          supporting_event_ids: ["EVT-003"]
+        }
+      ],
+      timeline_events: [
+        {
+          event_id: "EVT-001",
+          timestamp: "Jun 17 10:14:22",
+          source: "auth",
+          host: "webserver",
+          user: "admin",
+          source_ip: "203.0.113.45",
+          destination_ip: "webserver",
+          event_type: "ssh_failed_login",
+          severity: "Medium",
+          description: "SSH failed login for invalid admin user.",
+          evidence: "Failed password for invalid user admin from 203.0.113.45 port 51422 ssh2",
+          raw_event: "Jun 17 10:14:22 webserver sshd[2214]: Failed password for invalid user admin from 203.0.113.45 port 51422 ssh2"
+        },
+        {
+          event_id: "EVT-002",
+          timestamp: "Jun 17 10:15:02",
+          source: "auth",
+          host: "webserver",
+          user: "root",
+          source_ip: "203.0.113.45",
+          destination_ip: "webserver",
+          event_type: "ssh_successful_root_login",
+          severity: "Critical",
+          description: "Successful root SSH login from external IP.",
+          evidence: "Accepted password for root from 203.0.113.45 port 51488 ssh2",
+          raw_event: "Jun 17 10:15:02 webserver sshd[2288]: Accepted password for root from 203.0.113.45 port 51488 ssh2"
+        },
+        {
+          event_id: "EVT-003",
+          timestamp: "Jun 17 10:16:10",
+          source: "sudo",
+          host: "webserver",
+          user: "root",
+          source_ip: "203.0.113.45",
+          destination_ip: "webserver",
+          event_type: "sensitive_file_access",
+          severity: "Critical",
+          description: "Sensitive file accessed through sudo.",
+          evidence: "root executed /usr/bin/cat /etc/shadow",
+          raw_event: "Jun 17 10:16:10 webserver sudo: root : TTY=pts/0 ; PWD=/root ; USER=root ; COMMAND=/usr/bin/cat /etc/shadow"
+        }
+      ],
+      assets_and_indicators: {
+        hosts: ["webserver"],
+        users: ["admin", "root"],
+        source_ips: ["203.0.113.45"],
+        destination_ips: ["webserver"],
+        event_types: ["ssh_failed_login", "ssh_successful_root_login", "sensitive_file_access"]
+      },
+      recommended_actions: [
+        {
+          priority: "High",
+          action: "Restrict SSH access from 203.0.113.45 and review firewall rules.",
+          reason: "The same external IP appears in failed and successful SSH authentication events."
+        },
+        {
+          priority: "High",
+          action: "Rotate credentials for affected accounts and review root login policy.",
+          reason: "A successful root login may indicate credential exposure or unauthorized access."
+        },
+        {
+          priority: "Medium",
+          action: "Investigate access to /etc/shadow and check for additional file access.",
+          reason: "Access to password hash data can support offline password cracking."
+        }
+      ],
+      raw_event_details: [
+        {
+          event_id: "EVT-001",
+          raw_event: "Jun 17 10:14:22 webserver sshd[2214]: Failed password for invalid user admin from 203.0.113.45 port 51422 ssh2",
+          parsed_fields: {
+            host: "webserver",
+            process: "sshd",
+            user: "admin",
+            source_ip: "203.0.113.45",
+            result: "failed"
+          }
+        },
+        {
+          event_id: "EVT-002",
+          raw_event: "Jun 17 10:15:02 webserver sshd[2288]: Accepted password for root from 203.0.113.45 port 51488 ssh2",
+          parsed_fields: {
+            host: "webserver",
+            process: "sshd",
+            user: "root",
+            source_ip: "203.0.113.45",
+            result: "accepted"
+          }
+        },
+        {
+          event_id: "EVT-003",
+          raw_event: "Jun 17 10:16:10 webserver sudo: root : TTY=pts/0 ; PWD=/root ; USER=root ; COMMAND=/usr/bin/cat /etc/shadow",
+          parsed_fields: {
+            host: "webserver",
+            process: "sudo",
+            user: "root",
+            command: "/usr/bin/cat /etc/shadow"
+          }
+        }
+      ],
+      known_limitations: [
+        {
+          limitation: "The current parser is tested with representative SSH log examples.",
+          impact: "Additional log formats may require parser updates before the report can fully support them."
+        },
+        {
+          limitation: "External IP reputation enrichment is not included yet.",
+          impact: "The report identifies suspicious IPs from logs but does not verify them against threat intelligence feeds."
+        }
+      ]
+    };
+
+    const severityOrder = ["Low", "Medium", "High", "Critical"];
+
+    function escapeHtml(value) {
+      return String(value ?? "")
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#039;");
+    }
+
+    function severityClass(value) {
+      return String(value || "low").toLowerCase();
+    }
+
+    function badge(value) {
+      const sev = escapeHtml(value || "Low");
+      return `<span class="badge ${severityClass(sev)}">${sev}</span>`;
+    }
+
+    function renderSummary() {
+      const summary = reportData.report_summary;
+      const risk = reportData.risk_level;
+      document.getElementById("executiveSummary").textContent = summary.executive_summary;
+      document.getElementById("overallRisk").textContent = risk.overall_risk;
+      document.getElementById("overallRisk").className = `risk-${severityClass(risk.overall_risk)}`;
+      document.getElementById("riskReason").textContent = risk.risk_reason;
+      document.getElementById("summaryMetrics").innerHTML = [
+        ["Generated", summary.generated_at],
+        ["Input File", summary.input_file],
+        ["Total Events", summary.total_events],
+        ["High/Critical", summary.high_or_critical_events]
+      ].map(([label, value]) => `
+        <div class="metric">
+          <span>${escapeHtml(label)}</span>
+          <strong>${escapeHtml(value)}</strong>
+        </div>
+      `).join("");
+    }
+
+    function renderRisk() {
+      const counts = reportData.risk_level.severity_counts;
+      const total = Math.max(1, Object.values(counts).reduce((sum, count) => sum + Number(count), 0));
+      document.getElementById("severityCounts").innerHTML = severityOrder.map((severity) => {
+        const count = Number(counts[severity] || 0);
+        const width = count === 0 ? 0 : Math.max(4, Math.round((count / total) * 100));
+        return `
+          <div class="severity-row">
+            <strong>${escapeHtml(severity)}</strong>
+            <div class="bar"><span class="${severityClass(severity)}" style="width: ${width}%"></span></div>
+            <span>${count}</span>
+          </div>
+        `;
+      }).join("");
+      document.getElementById("highestSeverity").innerHTML = badge(reportData.risk_level.highest_severity);
+    }
+
+    function renderFindings() {
+      document.getElementById("keyFindings").innerHTML = reportData.key_findings.map((finding) => `
+        <article class="finding">
+          <div class="finding-title">
+            <h3>${escapeHtml(finding.title)}</h3>
+            ${badge(finding.severity)}
+          </div>
+          <p>${escapeHtml(finding.description)}</p>
+          <p class="muted">Supporting events: ${escapeHtml(finding.supporting_event_ids.join(", "))}</p>
+        </article>
+      `).join("");
+    }
+
+    function renderAssets() {
+      const labels = {
+        hosts: "Hosts",
+        users: "Users",
+        source_ips: "Source IPs",
+        destination_ips: "Destination IPs",
+        event_types: "Event Types"
+      };
+      document.getElementById("assetsAndIndicators").innerHTML = Object.entries(labels).map(([key, label]) => `
+        <div class="list-panel">
+          <h3>${escapeHtml(label)}</h3>
+          <ul>
+            ${(reportData.assets_and_indicators[key] || []).map((item) => `<li>${escapeHtml(item)}</li>`).join("")}
+          </ul>
+        </div>
+      `).join("");
+    }
+
+    function timelineSearchText(event) {
+      return [
+        event.event_id,
+        event.timestamp,
+        event.source,
+        event.host,
+        event.user,
+        event.source_ip,
+        event.destination_ip,
+        event.event_type,
+        event.severity,
+        event.description,
+        event.evidence,
+        event.raw_event
+      ].join(" ").toLowerCase();
+    }
+
+    function renderTimeline() {
+      const query = document.getElementById("timelineSearch").value.trim().toLowerCase();
+      const severity = document.getElementById("severityFilter").value;
+      const events = reportData.timeline_events.filter((event) => {
+        const matchesSearch = !query || timelineSearchText(event).includes(query);
+        const matchesSeverity = severity === "All" || event.severity === severity;
+        return matchesSearch && matchesSeverity;
+      });
+      const timeline = document.getElementById("timeline");
+
+      if (!events.length) {
+        timeline.innerHTML = `<div class="empty-state">No timeline events match the current filters.</div>`;
+        return;
+      }
+
+      timeline.innerHTML = events.map((event) => `
+        <article class="event-card ${severityClass(event.severity)}">
+          <div class="event-top">
+            <div>
+              <div class="event-title">${escapeHtml(event.event_type.replaceAll("_", " "))}</div>
+              <div class="event-meta">
+                ${escapeHtml(event.event_id)} | ${escapeHtml(event.timestamp)} | ${escapeHtml(event.source)}
+              </div>
+            </div>
+            ${badge(event.severity)}
+          </div>
+          <p class="event-description">${escapeHtml(event.description)}</p>
+          <p class="muted">
+            Host: ${escapeHtml(event.host)} |
+            User: ${escapeHtml(event.user)} |
+            Source IP: ${escapeHtml(event.source_ip)} |
+            Destination: ${escapeHtml(event.destination_ip)}
+          </p>
+          <details>
+            <summary>View evidence and raw event</summary>
+            <p><strong>Evidence:</strong> ${escapeHtml(event.evidence)}</p>
+            <pre>${escapeHtml(event.raw_event)}</pre>
+          </details>
+        </article>
+      `).join("");
+    }
+
+    function renderActions() {
+      document.getElementById("recommendedActions").innerHTML = reportData.recommended_actions.map((action) => `
+        <article class="action">
+          <div class="action-title">
+            <h3>${escapeHtml(action.action)}</h3>
+            ${badge(action.priority)}
+          </div>
+          <p>${escapeHtml(action.reason)}</p>
+        </article>
+      `).join("");
+    }
+
+    function renderRawEvents() {
+      document.getElementById("rawEventDetails").innerHTML = reportData.raw_event_details.map((detail) => `
+        <tr>
+          <td>${escapeHtml(detail.event_id)}</td>
+          <td>${escapeHtml(detail.raw_event)}</td>
+          <td><pre>${escapeHtml(JSON.stringify(detail.parsed_fields, null, 2))}</pre></td>
+        </tr>
+      `).join("");
+    }
+
+    function renderLimitations() {
+      document.getElementById("knownLimitations").innerHTML = reportData.known_limitations.map((item) => `
+        <article class="limitation">
+          <h3>${escapeHtml(item.limitation)}</h3>
+          <p>${escapeHtml(item.impact)}</p>
+        </article>
+      `).join("");
+    }
+
+    document.getElementById("timelineSearch").addEventListener("input", renderTimeline);
+    document.getElementById("severityFilter").addEventListener("change", renderTimeline);
+
+    renderSummary();
+    renderRisk();
+    renderFindings();
+    renderAssets();
+    renderTimeline();
+    renderActions();
+    renderRawEvents();
+    renderLimitations();
+  </script>
 </body>
 </html>
