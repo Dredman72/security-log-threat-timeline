@@ -88,7 +88,7 @@ This file tracks the team's weekly milestones, task ownership, and progress. It 
 | Done | Member | Task | Output | Measurement |
 | --- | --- | --- | --- | --- |
 | [x] | Derrick | Review report narrative and prompt quality | Improved summary wording, risk rationale, report timestamp, reset workflow, downloadable report output, parsed event preview, and analyst recommendations | Report is clear, consistent, and useful for incident review |
-| [ ] | Zion | Connect upload, parser, and normalized output | Backend flow from uploaded file to normalized events | Uploaded sample logs are parsed correctly |
+| [x] | Zion | Connect upload, parser, and normalized output | Backend flow from uploaded file to normalized events | Uploaded sample logs are parsed correctly |
 | [ ] | Oriah | Build HTML report generator layout | Report sections for summary, findings, IOCs, timeline, and actions | Final report is readable and organized |
 
 ## Week 7: Integration Testing and Quality Improvement
