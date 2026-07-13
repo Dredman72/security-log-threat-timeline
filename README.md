@@ -306,4 +306,5 @@ As of July 9, 2026:
 - Week 5 journal evidence has been added in `docs/reports/TEAM_WEEKLY_JOURNAL_WEEK5.md`.
 - `MILESTONE_TODOS.md`, `DEMO_WORKFLOW_INSTRUCTIONS.md`, and `DEPLOYMENT_AND_SUBMISSION_GUIDE.md` have been added for team tracking, demo preparation, and deployment/submission guidance.
 - Week 6 Derrick task is complete: report narrative quality, risk consistency, risk rationale, report timestamp, repeated-authentication grouping, reset workflow, downloadable JSON/HTML reports, and parsed event preview improvements have been added to the Flask/OpenAI prototype.
+- Week 6 Zion task is complete: backend upload-to-report pipeline documentation has been added in `docs/week6-backend-pipeline.md`, with report-ready pipeline example output in `examples/week6-upload-to-report-pipeline.json` and frontend/backend report data field contract in `docs/week6-report-data-fields.md`.
 - Next focus is Week 7 integration testing and quality improvement: testing the app with multiple log samples, improving error handling, and polishing the report/timeline user experience.
