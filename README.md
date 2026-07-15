@@ -179,7 +179,7 @@ Recommended screenshots:
 | Done | Member | Task | Outputs Produced | Measurement |
 | --- | --- | --- | --- | --- |
 | [ ] | Derrick | Improve prompts and summary consistency | Revised prompts and test notes | Summaries are consistent across test logs |
-| [ ] | Zion | Stabilize integrated application build | Better backend error handling and parser reliability | App handles bad files and unsupported input clearly |
+| [x] | Zion | Stabilize integrated application build | Better backend error handling and parser reliability | App handles bad files and unsupported input clearly |
 | [ ] | Oriah | Polish timeline and report UI | Cleaner visual layout, labels, and report sections | User can scan the report quickly |
 
 ## Week 8: Final Hardening, Documentation, and Presentation Preparation
