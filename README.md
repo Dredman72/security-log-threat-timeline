@@ -178,8 +178,13 @@ Recommended screenshots:
 
 | Done | Member | Task | Outputs Produced | Measurement |
 | --- | --- | --- | --- | --- |
+<<<<<<< HEAD
 | [ ] | Derrick | Improve prompts and summary consistency | Revised prompts and test notes | Summaries are consistent across test logs |
 | [x] | Zion | Stabilize integrated application build | Better backend error handling and parser reliability | App handles bad files and unsupported input clearly |
+=======
+| [x] | Derrick | Improve prompts and summary consistency | `docs/week7-prompt-summary-consistency.md` and updated prompt consistency rules | Summaries are consistent across test logs |
+| [ ] | Zion | Stabilize integrated application build | Better backend error handling and parser reliability | App handles bad files and unsupported input clearly |
+>>>>>>> e64fe9800e92308a33e565772f25687c45946a93
 | [ ] | Oriah | Polish timeline and report UI | Cleaner visual layout, labels, and report sections | User can scan the report quickly |
 
 ## Week 8: Final Hardening, Documentation, and Presentation Preparation
@@ -307,4 +312,5 @@ As of July 9, 2026:
 - `MILESTONE_TODOS.md`, `DEMO_WORKFLOW_INSTRUCTIONS.md`, and `DEPLOYMENT_AND_SUBMISSION_GUIDE.md` have been added for team tracking, demo preparation, and deployment/submission guidance.
 - Week 6 Derrick task is complete: report narrative quality, risk consistency, risk rationale, report timestamp, repeated-authentication grouping, reset workflow, downloadable JSON/HTML reports, and parsed event preview improvements have been added to the Flask/OpenAI prototype.
 - Week 6 Zion task is complete: backend upload-to-report pipeline documentation has been added in `docs/week6-backend-pipeline.md`, with report-ready pipeline example output in `examples/week6-upload-to-report-pipeline.json` and frontend/backend report data field contract in `docs/week6-report-data-fields.md`.
-- Next focus is Week 7 integration testing and quality improvement: testing the app with multiple log samples, improving error handling, and polishing the report/timeline user experience.
+- Week 7 Derrick task is complete: prompt consistency rules and test notes were added so summaries, risk levels, risk rationales, attack types, key findings, timelines, and recommended actions stay aligned across different log samples.
+- Next focus is continuing Week 7 team integration testing: Zion can keep validating parser reliability and Oriah can continue polishing the report/timeline user experience.

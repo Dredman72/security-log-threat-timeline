@@ -540,6 +540,24 @@ Rules:
 - Key findings should be 3-5 concise bullets supported by the logs.
 - Recommended actions should be 3-5 prioritized analyst actions, starting with
   the most urgent containment, credential, or evidence-preservation step.
+- Consistency rules for the report summary:
+  - Use the same severity meaning across all log samples:
+    Low = informational or blocked activity with no compromise,
+    Medium = suspicious activity without confirmed compromise,
+    High = likely attack activity or repeated suspicious behavior,
+    Critical = confirmed compromise, privileged access, malware execution,
+    sensitive file access, or likely data exposure.
+  - Keep executive_summary wording consistent across tests: start with the
+    affected system or account, describe the main event sequence, then explain
+    the impact and risk level.
+  - Do not say the risk is one level in the executive_summary and a different
+    level in risk_level or risk_rationale.
+  - Use consistent attack_type names across similar logs. For example, repeated
+    failed SSH logins should be "Brute Force", successful root access should
+    include "Credential Access", sudo misuse should include "Privilege Escalation",
+    and suspicious encryption or malware alerts should include "Malware".
+  - Keep key findings and recommended actions aligned with the same incident
+    narrative used in the executive_summary.
 - Rules for the Threat Timeline:
   - Create a chronological threat timeline of the most important security events.
   - Every timeline event must include: timestamp, source, event, severity,
@@ -723,74 +741,241 @@ def build_downloadable_report_html(report: dict) -> str:
 
     def list_items(values: list[str]) -> str:
         if not values:
-            return "<p>No items returned.</p>"
+            return '<p class="empty">No items returned.</p>'
         return "<ul>" + "".join(f"<li>{esc(value)}</li>" for value in values) + "</ul>"
 
+    def severity_class(value) -> str:
+        severity = str(value or "").strip().lower()
+        if severity in {"low", "medium", "high", "critical"}:
+            return severity
+        return "unknown"
+
+    timeline = report.get("timeline", [])
+    high_critical_count = sum(
+        1
+        for item in timeline
+        if str(item.get("severity", "")).strip().lower() in {"high", "critical"}
+    )
+
     timeline_items = []
-    for item in report.get("timeline", []):
+    for item in timeline:
+        severity = esc(item.get("severity", "Unknown"))
         timeline_items.append(
             f"""
             <article class="event">
-              <p><strong>{esc(item.get("timestamp", "Unknown"))}</strong> |
-              {esc(item.get("source", "Unknown"))} |
-              {esc(item.get("severity", "Unknown"))}</p>
+              <div class="event-meta">
+                <span>{esc(item.get("timestamp", "Unknown"))}</span>
+                <span>{esc(item.get("source", "Unknown"))}</span>
+                <span class="badge {severity_class(severity)}">{severity}</span>
+              </div>
               <h3>{esc(item.get("event", "Unknown event"))}</h3>
               <p>{esc(item.get("details", ""))}</p>
-              <p><strong>Evidence:</strong> {esc(item.get("evidence", ""))}</p>
+              <p class="evidence"><strong>Evidence:</strong> {esc(item.get("evidence", ""))}</p>
             </article>
             """
         )
 
-    timeline_html = "\n".join(timeline_items) or "<p>No timeline events returned.</p>"
+    timeline_html = "\n".join(timeline_items) or '<p class="empty">No timeline events returned.</p>'
+    risk_level = esc(report.get("risk_level", "Unknown"))
+
     return f"""<!doctype html>
 <html lang="en">
 <head>
   <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Security Log Threat Report</title>
   <style>
-    body {{ font-family: Arial, sans-serif; line-height: 1.5; margin: 32px; color: #18202f; }}
-    h1, h2 {{ color: #172033; }}
-    section {{ border-top: 1px solid #d9e0ea; padding-top: 16px; margin-top: 22px; }}
-    .risk {{ font-size: 1.2rem; font-weight: bold; }}
-    .event {{ border-left: 4px solid #0f766e; padding: 10px 14px; margin: 12px 0; background: #f8fafc; }}
+    :root {{
+      --bg: #eef2f6;
+      --surface: #ffffff;
+      --ink: #111827;
+      --muted: #53627a;
+      --line: #d7e0ea;
+      --brand: #142136;
+      --accent: #0f766e;
+      --low: #4b5563;
+      --medium: #b7791f;
+      --high: #c05621;
+      --critical: #b91c1c;
+    }}
+    * {{ box-sizing: border-box; }}
+    body {{
+      margin: 0;
+      background: var(--bg);
+      color: var(--ink);
+      font-family: Arial, Helvetica, sans-serif;
+      line-height: 1.55;
+    }}
+    header {{
+      background: var(--brand);
+      color: #ffffff;
+      padding: 32px 44px;
+    }}
+    header h1 {{ margin: 0 0 8px; font-size: 2rem; }}
+    header p {{ margin: 0; max-width: 900px; }}
+    main {{ max-width: 1180px; margin: 28px auto; padding: 0 22px 42px; }}
+    section.panel {{
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      box-shadow: 0 14px 36px rgba(17, 24, 39, 0.06);
+      margin: 18px 0;
+      padding: 24px;
+    }}
+    h2 {{ margin-top: 0; color: #0f172a; }}
+    .summary-grid {{
+      display: grid;
+      grid-template-columns: 1fr 220px;
+      gap: 22px;
+      align-items: start;
+    }}
+    .risk-card {{
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 18px;
+      text-align: center;
+      background: #f8fafc;
+    }}
+    .risk-card .label {{
+      color: var(--muted);
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+    }}
+    .risk-card .risk {{
+      color: var(--critical);
+      display: block;
+      font-size: 1.55rem;
+      font-weight: 800;
+      margin-top: 8px;
+    }}
+    .metric-grid {{
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 14px;
+      margin-top: 18px;
+    }}
+    .metric {{
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 14px;
+      background: #fbfdff;
+    }}
+    .metric span {{
+      color: var(--muted);
+      display: block;
+      font-size: 0.78rem;
+      font-weight: 700;
+      margin-bottom: 6px;
+      text-transform: uppercase;
+    }}
+    .metric strong {{ font-size: 1.25rem; }}
+    .two-col {{
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 18px;
+    }}
+    .subcard {{
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 16px;
+      background: #fbfdff;
+    }}
+    .event {{
+      border-left: 4px solid var(--accent);
+      border-radius: 4px;
+      padding: 14px 18px;
+      margin: 14px 0;
+      background: #f8fafc;
+    }}
+    .event h3 {{ margin: 8px 0; }}
+    .event-meta {{
+      align-items: center;
+      color: var(--muted);
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      font-size: 0.92rem;
+    }}
+    .evidence {{ color: #475569; font-size: 0.94rem; }}
+    .badge {{
+      border-radius: 999px;
+      color: #ffffff;
+      display: inline-block;
+      font-size: 0.78rem;
+      font-weight: 700;
+      padding: 3px 10px;
+    }}
+    .badge.low {{ background: var(--low); }}
+    .badge.medium {{ background: var(--medium); }}
+    .badge.high {{ background: var(--high); }}
+    .badge.critical {{ background: var(--critical); }}
+    .badge.unknown {{ background: #64748b; }}
+    .empty {{ color: var(--muted); }}
+    ul {{ padding-left: 22px; }}
+    li {{ margin: 4px 0; }}
+    @media (max-width: 800px) {{
+      header {{ padding: 24px; }}
+      .summary-grid, .two-col, .metric-grid {{ grid-template-columns: 1fr; }}
+      main {{ padding: 0 14px 28px; }}
+    }}
   </style>
 </head>
 <body>
-  <h1>Security Log Threat Report</h1>
-  <p><strong>Report generated:</strong> {esc(report.get("generated_at", "Unknown"))}</p>
-
-  <section>
-    <h2>Executive Summary</h2>
-    <p>{esc(report.get("executive_summary", ""))}</p>
-    <p><strong>Risk Level:</strong> <span class="risk">{esc(report.get("risk_level", "Unknown"))}</span></p>
-    <p><strong>Risk Rationale:</strong> {esc(report.get("risk_rationale", ""))}</p>
-    <p><strong>Attack Type:</strong> {esc(report.get("attack_type", "Unknown"))}</p>
+  <header>
+    <h1>Intelligent Security Log Summarization</h1>
+    <p>Saved HTML threat report with summary, risk scoring, timeline events, evidence, and recommended actions.</p>
+  </header>
+  <main>
+  <section class="panel">
+    <div class="summary-grid">
+      <div>
+        <h2>Report Summary</h2>
+        <p>{esc(report.get("executive_summary", ""))}</p>
+        <div class="metric-grid">
+          <div class="metric"><span>Generated</span><strong>{esc(report.get("generated_at", "Unknown"))}</strong></div>
+          <div class="metric"><span>Attack Type</span><strong>{esc(report.get("attack_type", "Unknown"))}</strong></div>
+          <div class="metric"><span>High/Critical</span><strong>{high_critical_count}</strong></div>
+        </div>
+        <p><strong>Risk Rationale:</strong> {esc(report.get("risk_rationale", ""))}</p>
+      </div>
+      <aside class="risk-card">
+        <span class="label">Overall Risk</span>
+        <span class="risk">{risk_level}</span>
+      </aside>
+    </div>
   </section>
 
-  <section>
-    <h2>Affected Assets</h2>
-    {list_items(report.get("affected_assets", []))}
+  <section class="panel">
+    <h2>Assets and Indicators</h2>
+    <div class="two-col">
+      <div class="subcard">
+        <h3>Affected Assets</h3>
+        {list_items(report.get("affected_assets", []))}
+      </div>
+      <div class="subcard">
+        <h3>Indicators of Compromise</h3>
+        {list_items(report.get("indicators_of_compromise", []))}
+      </div>
+    </div>
   </section>
 
-  <section>
-    <h2>Indicators of Compromise</h2>
-    {list_items(report.get("indicators_of_compromise", []))}
-  </section>
-
-  <section>
+  <section class="panel">
     <h2>Key Findings</h2>
     {list_items(report.get("key_findings", []))}
   </section>
 
-  <section>
+  <section class="panel">
     <h2>Threat Timeline</h2>
     {timeline_html}
   </section>
 
-  <section>
+  <section class="panel">
     <h2>Recommended Actions</h2>
     {list_items(report.get("recommended_actions", []))}
   </section>
+  </main>
 </body>
 </html>
 """
