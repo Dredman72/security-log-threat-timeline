@@ -34,6 +34,16 @@ The OpenAI output should continue to include:
 
 ## Test Notes
 
+The following reusable sample logs were added under `examples/test_logs/` for Week 7 testing:
+
+| Test Log | Scenario | Expected Risk | Expected Attack Type | Expected Summary Behavior | Status |
+| --- | --- | --- | --- | --- | --- |
+| `examples/test_logs/ssh_bruteforce_root_access.log` | SSH brute force followed by successful root login and `/etc/shadow` access | Critical | Brute Force / Credential Access / Privilege Escalation | Summary should mention repeated failed SSH attempts, successful root access, sensitive file access, and high-impact risk. | Ready to test |
+| `examples/test_logs/firewall_block_only.log` | Firewall blocks inbound RDP and SSH attempts | Low or Medium | Firewall/Network Block or Reconnaissance | Summary should describe blocked probing without claiming compromise. | Ready to test |
+| `examples/test_logs/windows_powershell_suspicious.log` | Suspicious PowerShell command, network connection, and script drop | High | Malware or Suspicious Process | Summary should mention suspicious PowerShell behavior, encoded command, network connection, and dropped script. | Ready to test |
+| `examples/test_logs/edr_malware_alert.log` | EDR malware and rapid file encryption alerts | Critical | Malware | Summary should mention malware indicator, encryption behavior, affected host/user, and containment evidence. | Ready to test |
+| `examples/test_logs/mixed_auth_firewall_edr.log` | VPN auth success after failures, lateral access, and suspicious file activity | Critical | Credential Access / Lateral Movement / Data Access | Summary should connect VPN login, internal SMB access, suspicious command activity, and payroll file access. | Ready to test |
+
 ### Test 1: SSH Brute Force and Root Login
 
 Expected behavior:

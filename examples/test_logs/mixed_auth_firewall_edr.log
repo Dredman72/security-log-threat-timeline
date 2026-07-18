@@ -1,0 +1,6 @@
+Jul 13 14:02:11 vpn01 openvpn[4421]: AUTH_FAILED user=svc_backup source_ip=198.51.100.90 reason=bad password
+Jul 13 14:02:18 vpn01 openvpn[4421]: AUTH_FAILED user=svc_backup source_ip=198.51.100.90 reason=bad password
+Jul 13 14:03:41 vpn01 openvpn[4421]: AUTH_SUCCESS user=svc_backup source_ip=198.51.100.90 assigned_ip=10.8.0.77
+Jul 13 14:05:10 firewall01 ufw[5010]: ALLOW IN=tun0 OUT=eth1 SRC=10.8.0.77 DST=10.0.5.22 PROTO=TCP SPT=49122 DPT=445
+Jul 13 14:06:44 edr-agent host=FILESERVER-02 user=svc_backup alert=suspicious_process severity=High process=C:\Windows\System32\cmd.exe command="net use \\10.0.5.22\C$ /user:svc_backup"
+Jul 13 14:08:19 edr-agent host=FILESERVER-02 user=svc_backup alert=data_access severity=Critical path=C:\Finance\Payroll\ action="large file read activity"

