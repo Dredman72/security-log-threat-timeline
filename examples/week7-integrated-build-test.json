@@ -1,0 +1,38 @@
+{
+  "week": 7,
+  "owner": "Zion Moore",
+  "deliverable": "Integrated application build",
+  "status": "complete",
+  "workflow_tested": [
+    "file_upload",
+    "log_parsing",
+    "event_normalization",
+    "event_sorting",
+    "event_grouping",
+    "report_ready_data_generation",
+    "timeline_report_output"
+  ],
+  "test_scenarios": [
+    "suspicious_powershell_execution",
+    "firewall_block",
+    "multiple_failed_login_attempts",
+    "malware_alert",
+    "mixed_severity_events"
+  ],
+  "quality_checks": {
+    "consistent_event_fields": true,
+    "chronological_timeline_order": true,
+    "grouped_event_counts": true,
+    "report_ready_json": true,
+    "clear_error_handling_notes": true
+  },
+  "correlation_fields": [
+    "host",
+    "user",
+    "source_ip",
+    "destination_ip",
+    "event_type",
+    "severity"
+  ],
+  "expected_result": "A user can upload a sample security log file and generate report-ready timeline/report data through one backend workflow."
+}
