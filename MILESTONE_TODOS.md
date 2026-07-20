@@ -109,7 +109,7 @@ This file tracks the team's weekly milestones, task ownership, and progress. It 
 
 | Done | Member | Task | Output | Measurement |
 | --- | --- | --- | --- | --- |
-| [ ] | Derrick | Finalize README, prompt notes, and demo explanation | Updated documentation and AI workflow explanation | Instructor can understand how the LLM is used |
+| [x] | Derrick | Finalize README, prompt notes, and demo explanation | Updated README, final report draft, documentation, and AI workflow explanation | Instructor can understand how the LLM is used and how to run/review the prototype |
 | [ ] | Zion | Prepare parser/backend walkthrough | Backend explanation and sample parser output | Team can explain how logs are normalized |
 | [ ] | Oriah | Prepare presentation visuals and frontend walkthrough | Screenshots, UI explanation, and report/timeline visuals | Presentation clearly shows the user workflow |
 | [ ] | Entire Team | Complete final testing | Demo checklist and bug fixes | Project is ready for final presentation |

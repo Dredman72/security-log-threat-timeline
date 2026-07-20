@@ -189,7 +189,7 @@ Recommended screenshots:
 
 | Done | Member | Task | Outputs Produced | Measurement |
 | --- | --- | --- | --- | --- |
-| [ ] | Derrick | Prepare final README and demo explanation | Final setup guide, project explanation, and demo script | Instructor can understand and run the project |
+| [x] | Derrick | Prepare final README and demo explanation | Updated README, final report draft in `docs/reports/TEAM_FINAL_REPORT.md`, setup guide, project explanation, and demo notes | Instructor can understand the project status and run the prototype |
 | [ ] | Zion | Prepare final demo dataset and backend notes | Final sample logs and backend explanation | Demo data works reliably |
 | [ ] | Oriah | Prepare presentation visuals and frontend walkthrough | Screenshots, UI explanation, and report/timeline visuals | Presentation clearly shows the user workflow |
 | [ ] | Entire Team | Complete final testing | Demo checklist and bug fixes | Project is ready for final presentation |
@@ -287,27 +287,12 @@ Do not commit `.env` to GitHub.
 
 ## Current Status
 
-As of July 9, 2026:
+As of July 20, 2026:
 
-- Public GitHub repository has been created.
-- Initial Flask/OpenAI prototype has been uploaded.
-- Week 1 project setup is complete.
-- Week 2 LLM output structure and backend schema planning are complete.
-- Week 3 parser output validation checklist is complete.
-- Zion's parser prototype has been reviewed against the validation checklist.
-- Oriah's Week 3 parsed-event frontend placeholder planning is complete.
-- Week 4 is complete for Derrick, Zion, and Oriah.
-- Week 4 Derrick tasks are complete: OpenAI prompt refinement and fallback handling for incomplete or invalid model output.
-- Week 4 Zion task is complete: parser output has been documented in an AI-ready input format for the LLM workflow.
-- Week 4 Oriah task is complete: frontend/report section design for executive summary, risk, findings, timeline, and recommendations.
-- Week 5 Derrick task is complete: timeline event wording and evidence requirements are documented in `docs/week5-timeline-event-requirements.md`.
-- Week 5 Zion task is complete: sorting/grouping logic is documented in `docs/week5-sorting-grouping-logic.md` with example output in `examples/week5-grouped-timeline.json`.
-- Week 5 Oriah task is complete: frontend timeline prototype evidence and report/timeline display work have been added to the project files.
-- Week 5 journal evidence has been added in `docs/reports/TEAM_WEEKLY_JOURNAL_WEEK5.md`.
-- `MILESTONE_TODOS.md`, `DEMO_WORKFLOW_INSTRUCTIONS.md`, and `DEPLOYMENT_AND_SUBMISSION_GUIDE.md` have been added for team tracking, demo preparation, and deployment/submission guidance.
-- Week 6 Derrick task is complete: report narrative quality, risk consistency, risk rationale, report timestamp, repeated-authentication grouping, reset workflow, downloadable JSON/HTML reports, and parsed event preview improvements have been added to the Flask/OpenAI prototype.
-- Week 6 Zion task is complete: backend upload-to-report pipeline documentation has been added in `docs/week6-backend-pipeline.md`, with report-ready pipeline example output in `examples/week6-upload-to-report-pipeline.json` and frontend/backend report data field contract in `docs/week6-report-data-fields.md`.
-- Week 6 Oriah task is complete: HTML report generator layout and report section structure are complete, including summary, findings, IOCs, timeline, recommended actions, raw evidence, and known limitations.
-- Week 7 Derrick task is complete: prompt consistency rules, reusable test logs, and test notes were added so summaries, risk levels, risk rationales, attack types, key findings, timelines, and recommended actions stay aligned across different log samples.
-- Week 7 Zion task is complete: integrated backend build evidence was added in `docs/week7-integrated-application-build.md` and `examples/week7-integrated-build-test.json`, covering upload, parsing, normalization, sorting/grouping, report-ready output, and error/correlation checks.
-- Next focus is continuing Week 7 team integration testing: Oriah can continue polishing the report/timeline user experience while the team reviews final test evidence and prepares Week 8 hardening/documentation.
+- Public GitHub repository is active and used for team collaboration.
+- Weeks 1-7 core work is documented in the README, milestone checklist, and supporting docs.
+- The Flask prototype supports pasted/uploaded logs, structured OpenAI report output, risk rationale, timeline evidence, parsed event preview, reset workflow, and downloadable JSON/HTML reports.
+- Derrick's Week 8 final documentation work has started with this README update and the draft final report in `docs/reports/TEAM_FINAL_REPORT.md`.
+- Zion's latest backend evidence documents integrated upload, parsing, normalization, sorting/grouping, report-ready JSON, and backend quality checks.
+- Oriah's frontend/report planning documents the HTML report sections, field requirements, and visual layout needs.
+- Remaining Week 8 work: collect final evidence from Zion and Oriah, complete final demo testing, finish presentation materials, and collect all team signatures before submission.
