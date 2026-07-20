@@ -169,7 +169,7 @@ Recommended screenshots:
 | --- | --- | --- | --- | --- |
 | [x] | Derrick | Review report narrative and prompt quality | Improved summary wording, risk rationale, report timestamp, reset workflow, downloadable report output, parsed event preview, and analyst recommendations | Report is clear, consistent, and useful for incident review |
 | [x] | Zion | Build backend pipeline from upload to report data | Upload-to-parser-to-summary workflow | User can generate a report from a sample file |
-| [ ] | Oriah | Build HTML report generator layout | Report sections for summary, findings, IOCs, timeline, and actions | Final report is readable and organized |
+| [x] | Oriah | Build HTML report generator layout | Report sections for summary, findings, IOCs, timeline, and actions | Final report is readable and organized |
 
 ## Week 7: Integration Testing and Quality Improvement
 
@@ -179,7 +179,7 @@ Recommended screenshots:
 | Done | Member | Task | Outputs Produced | Measurement |
 | --- | --- | --- | --- | --- |
 | [x] | Derrick | Improve prompts and summary consistency | `docs/week7-prompt-summary-consistency.md`, `examples/test_logs/`, and updated prompt consistency rules | Summaries are consistent across test logs |
-| [ ] | Zion | Stabilize integrated application build | Better backend error handling and parser reliability | App handles bad files and unsupported input clearly |
+| [x] | Zion | Stabilize integrated application build | `docs/week7-integrated-application-build.md` and `examples/week7-integrated-build-test.json` | Backend evidence covers upload, parsing, normalization, sorting/grouping, report-ready output, and error/correlation checks |
 | [ ] | Oriah | Polish timeline and report UI | Cleaner visual layout, labels, and report sections | User can scan the report quickly |
 
 ## Week 8: Final Hardening, Documentation, and Presentation Preparation
@@ -307,5 +307,7 @@ As of July 9, 2026:
 - `MILESTONE_TODOS.md`, `DEMO_WORKFLOW_INSTRUCTIONS.md`, and `DEPLOYMENT_AND_SUBMISSION_GUIDE.md` have been added for team tracking, demo preparation, and deployment/submission guidance.
 - Week 6 Derrick task is complete: report narrative quality, risk consistency, risk rationale, report timestamp, repeated-authentication grouping, reset workflow, downloadable JSON/HTML reports, and parsed event preview improvements have been added to the Flask/OpenAI prototype.
 - Week 6 Zion task is complete: backend upload-to-report pipeline documentation has been added in `docs/week6-backend-pipeline.md`, with report-ready pipeline example output in `examples/week6-upload-to-report-pipeline.json` and frontend/backend report data field contract in `docs/week6-report-data-fields.md`.
+- Week 6 Oriah task is complete: HTML report generator layout and report section structure are complete, including summary, findings, IOCs, timeline, recommended actions, raw evidence, and known limitations.
 - Week 7 Derrick task is complete: prompt consistency rules, reusable test logs, and test notes were added so summaries, risk levels, risk rationales, attack types, key findings, timelines, and recommended actions stay aligned across different log samples.
-- Next focus is continuing Week 7 team integration testing: Zion can keep validating parser reliability and Oriah can continue polishing the report/timeline user experience.
+- Week 7 Zion task is complete: integrated backend build evidence was added in `docs/week7-integrated-application-build.md` and `examples/week7-integrated-build-test.json`, covering upload, parsing, normalization, sorting/grouping, report-ready output, and error/correlation checks.
+- Next focus is continuing Week 7 team integration testing: Oriah can continue polishing the report/timeline user experience while the team reviews final test evidence and prepares Week 8 hardening/documentation.
