@@ -1,184 +1,116 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Security Log Threat Timeline</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Intelligent Security Log Summarization</title>
   <style>
     :root {
-      color-scheme: light;
-      --bg: #f5f7fb;
-      --panel: #ffffff;
-      --ink: #18202f;
-      --muted: #617087;
-      --line: #d9e0ea;
-      --accent: #0f766e;
-      --danger: #b42318;
-      --warn: #b54708;
-      --ok: #067647;
+      --bg: #eef2f6;
+      --surface: #ffffff;
+      --surface-soft: #f8fafc;
+      --ink: #172033;
+      --muted: #5d697c;
+      --line: #d8e0ea;
+      --brand: #15334a;
+      --accent: #0f8b8d;
+      --low: #4f7f53;
+      --medium: #b7791f;
+      --high: #c05621;
+      --critical: #c53030;
+      --shadow: 0 14px 34px rgba(22, 32, 51, 0.08);
     }
 
     * {
       box-sizing: border-box;
     }
 
+    html {
+      scroll-behavior: smooth;
+    }
+
     body {
-      margin: 0;
-      font-family: Arial, Helvetica, sans-serif;
       background: var(--bg);
       color: var(--ink);
+      font-family: Arial, Helvetica, sans-serif;
       line-height: 1.5;
+      margin: 0;
     }
 
     header {
-      background: #172033;
-      color: white;
-      padding: 28px 5vw;
+      background: var(--brand);
+      color: #ffffff;
+      padding: 30px 40px;
     }
 
-    header h1 {
-      margin: 0 0 8px;
-      font-size: clamp(1.6rem, 3vw, 2.4rem);
+    .header-inner,
+    main {
+      margin: 0 auto;
+      width: min(1180px, calc(100% - 32px));
+    }
+
+    h1 {
+      font-size: 32px;
       letter-spacing: 0;
+      margin: 0 0 6px;
     }
 
     header p {
+      color: #d8e6f2;
+      font-size: 14px;
       margin: 0;
-      color: #c9d4e5;
-      max-width: 900px;
+      max-width: 820px;
     }
 
     main {
-      width: min(1180px, 90vw);
-      margin: 28px auto 56px;
-      display: grid;
-      gap: 22px;
+      margin-top: 22px;
+      margin-bottom: 46px;
+    }
+
+    .panel,
+    .report-shell {
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      box-shadow: var(--shadow);
     }
 
     .panel {
-      background: var(--panel);
-      border: 1px solid var(--line);
-      border-radius: 8px;
-      padding: 22px;
-      box-shadow: 0 12px 30px rgba(23, 32, 51, 0.07);
+      margin-bottom: 18px;
+      padding: 20px;
+    }
+
+    .report-shell {
+      overflow: hidden;
+    }
+
+    .report-section,
+    .report-header {
+      padding: 22px 24px;
+    }
+
+    .report-section {
+      border-top: 1px solid var(--line);
+    }
+
+    .report-header {
+      display: grid;
+      gap: 18px;
+      grid-template-columns: minmax(0, 1fr) 240px;
     }
 
     h2 {
-      margin: 0 0 14px;
-      font-size: 1.2rem;
+      font-size: 21px;
+      margin: 0 0 12px;
     }
 
-    label {
-      display: block;
-      margin: 14px 0 8px;
-      font-weight: 700;
+    h3 {
+      font-size: 16px;
+      margin: 0 0 8px;
     }
 
-    textarea {
-      width: 100%;
-      min-height: 260px;
-      resize: vertical;
-      border: 1px solid var(--line);
-      border-radius: 8px;
-      padding: 14px;
-      font-family: Consolas, "Courier New", monospace;
-      font-size: 0.94rem;
-      color: var(--ink);
-      background: #fbfcfe;
-    }
-
-    input[type="file"] {
-      width: 100%;
-      padding: 12px;
-      border: 1px dashed #9aa8bb;
-      border-radius: 8px;
-      background: #fbfcfe;
-    }
-
-    .actions {
-      display: flex;
-      align-items: center;
-      gap: 14px;
-      flex-wrap: wrap;
-      margin-top: 18px;
-    }
-
-    button {
-      border: 0;
-      border-radius: 8px;
-      background: var(--accent);
-      color: white;
-      font-weight: 700;
-      padding: 12px 18px;
-      cursor: pointer;
-    }
-
-    button:hover {
-      filter: brightness(0.95);
-    }
-
-    .button-link {
-      display: inline-block;
-      border-radius: 8px;
-      background: #334155;
-      color: #ffffff;
-      font-weight: 700;
-      padding: 12px 18px;
-      text-decoration: none;
-    }
-
-    .button-link:hover {
-      filter: brightness(0.95);
-    }
-
-    .button-secondary {
-      background: #334155;
-    }
-
-    .hint {
-      color: var(--muted);
-      font-size: 0.92rem;
+    p {
       margin: 0;
-    }
-
-    .error {
-      border-color: #f2a8a1;
-      color: var(--danger);
-      background: #fff3f2;
-    }
-
-    .summary-grid {
-      display: grid;
-      grid-template-columns: 1fr 220px;
-      gap: 18px;
-      align-items: start;
-    }
-
-    .risk {
-      border: 1px solid var(--line);
-      border-radius: 8px;
-      padding: 16px;
-      text-align: center;
-      background: #fbfcfe;
-    }
-
-    .risk strong {
-      display: block;
-      font-size: 1.5rem;
-      margin-top: 8px;
-    }
-
-    .risk-critical,
-    .risk-high {
-      color: var(--danger);
-    }
-
-    .risk-medium {
-      color: var(--warn);
-    }
-
-    .risk-low {
-      color: var(--ok);
     }
 
     ul {
@@ -186,191 +118,545 @@
       padding-left: 20px;
     }
 
-    .timeline {
+    li + li {
+      margin-top: 4px;
+    }
+
+    label {
+      color: var(--ink);
+      display: block;
+      font-size: 13px;
+      font-weight: 700;
+      margin: 12px 0 6px;
+    }
+
+    textarea,
+    input,
+    select {
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      color: var(--ink);
+      font: inherit;
+      padding: 11px 12px;
+      width: 100%;
+    }
+
+    textarea {
+      min-height: 150px;
+      resize: vertical;
+    }
+
+    button,
+    .button {
+      background: var(--accent);
+      border: 0;
+      border-radius: 8px;
+      color: #ffffff;
+      cursor: pointer;
+      display: inline-flex;
+      font: inherit;
+      font-weight: 700;
+      justify-content: center;
+      padding: 10px 14px;
+      text-decoration: none;
+    }
+
+    .button-secondary {
+      background: #284760;
+    }
+
+    .form-actions {
+      align-items: center;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 14px;
+    }
+
+    .model-note,
+    .muted {
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .alert {
+      background: #fff1f1;
+      border: 1px solid #f0b5b5;
+      border-radius: 8px;
+      color: #8f1d1d;
+      margin-bottom: 18px;
+      padding: 14px 16px;
+    }
+
+    .nav-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 18px;
+    }
+
+    .nav-row a {
+      background: #ffffff;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      color: var(--brand);
+      font-size: 13px;
+      font-weight: 700;
+      padding: 7px 12px;
+      text-decoration: none;
+    }
+
+    .meta-grid,
+    .two-column,
+    .three-column {
       display: grid;
       gap: 14px;
     }
 
-    .event {
-      border-left: 4px solid var(--accent);
-      background: #fbfcfe;
-      border-radius: 0 8px 8px 0;
-      padding: 14px 16px;
+    .meta-grid {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      margin-top: 18px;
     }
 
-    .event-meta {
-      display: flex;
-      gap: 10px;
-      flex-wrap: wrap;
+    .two-column {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .three-column {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .metric,
+    .risk-panel,
+    .list-panel,
+    .finding,
+    .action,
+    .limitation,
+    .group-card {
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 14px;
+    }
+
+    .metric {
+      background: var(--surface-soft);
+    }
+
+    .metric span,
+    .risk-panel span {
       color: var(--muted);
-      font-size: 0.9rem;
-      margin-bottom: 6px;
+      display: block;
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
     }
 
-    .event h3 {
-      margin: 0 0 8px;
-      font-size: 1rem;
+    .metric strong,
+    .risk-panel strong {
+      display: block;
+      font-size: 22px;
+      margin-top: 4px;
+      overflow-wrap: anywhere;
+      word-break: break-word;
+    }
+
+    .risk-panel {
+      align-self: stretch;
+      display: grid;
+      place-items: center;
+      text-align: center;
+    }
+
+    .risk-low {
+      color: var(--low);
+    }
+
+    .risk-medium {
+      color: var(--medium);
+    }
+
+    .risk-high {
+      color: var(--high);
+    }
+
+    .risk-critical {
+      color: var(--critical);
     }
 
     .badge {
-      display: inline-block;
       border-radius: 999px;
-      padding: 2px 9px;
-      background: #e8eef7;
-      color: #334155;
-      font-size: 0.82rem;
+      color: #ffffff;
+      display: inline-block;
+      font-size: 12px;
+      font-weight: 700;
+      line-height: 1;
+      padding: 5px 10px;
+      white-space: nowrap;
+    }
+
+    .badge.low {
+      background: var(--low);
+    }
+
+    .badge.medium {
+      background: var(--medium);
+    }
+
+    .badge.high {
+      background: var(--high);
+    }
+
+    .badge.critical {
+      background: var(--critical);
+    }
+
+    .badge.unknown {
+      background: #687385;
+    }
+
+    .finding,
+    .action,
+    .limitation {
+      background: var(--surface-soft);
+      margin-bottom: 12px;
+    }
+
+    .finding-title,
+    .action-title {
+      align-items: center;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      justify-content: space-between;
+      margin-bottom: 8px;
+    }
+
+    .controls {
+      display: grid;
+      gap: 12px;
+      grid-template-columns: minmax(0, 1fr) 170px 120px;
+      margin-bottom: 18px;
+    }
+
+    .timeline {
+      border-left: 4px solid var(--accent);
+      margin-left: 10px;
+      padding-left: 18px;
+    }
+
+    .event-card {
+      background: #f8fafc;
+      border: 1px solid #e3ebf3;
+      border-left: 6px solid var(--line);
+      border-radius: 8px;
+      margin-bottom: 14px;
+      padding: 16px;
+      position: relative;
+    }
+
+    .event-card::before {
+      background: var(--accent);
+      border: 3px solid #ffffff;
+      border-radius: 50%;
+      content: "";
+      height: 13px;
+      left: -31px;
+      position: absolute;
+      top: 20px;
+      width: 13px;
+    }
+
+    .event-card.low {
+      border-left-color: var(--low);
+    }
+
+    .event-card.medium {
+      background: #fffaf0;
+      border-left-color: var(--medium);
+    }
+
+    .event-card.high {
+      background: #fff7ed;
+      border-left-color: var(--high);
+    }
+
+    .event-card.critical {
+      background: #fff1f1;
+      border-left-color: var(--critical);
+    }
+
+    .event-top {
+      align-items: flex-start;
+      display: flex;
+      gap: 12px;
+      justify-content: space-between;
+    }
+
+    .event-title {
+      font-size: 18px;
+      font-weight: 700;
+      margin-bottom: 4px;
+      text-transform: capitalize;
+    }
+
+    .event-description {
+      margin-top: 12px;
+    }
+
+    details {
+      margin-top: 12px;
+    }
+
+    summary {
+      color: var(--accent);
+      cursor: pointer;
       font-weight: 700;
     }
 
-    .detail-grid {
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 18px;
-    }
-
-    .detail-box {
+    pre {
+      background: #eef2f6;
       border: 1px solid var(--line);
       border-radius: 8px;
-      padding: 16px;
-      background: #fbfcfe;
-    }
-
-    .detail-box h3 {
-      margin: 0 0 10px;
-      font-size: 1rem;
-    }
-
-    .metric-list {
-      display: grid;
-      gap: 8px;
-      margin: 0;
-      padding: 0;
-      list-style: none;
-    }
-
-    .metric-list li {
-      display: flex;
-      justify-content: space-between;
-      gap: 12px;
-      border-bottom: 1px solid #edf1f7;
-      padding-bottom: 8px;
-    }
-
-    .metric-list li:last-child {
-      border-bottom: 0;
-      padding-bottom: 0;
-    }
-
-    .event-table-wrap {
       overflow-x: auto;
+      padding: 12px;
+      white-space: pre-wrap;
+      word-break: break-word;
     }
 
-    .event-table {
-      width: 100%;
+    table {
       border-collapse: collapse;
-      min-width: 1040px;
-      font-size: 0.92rem;
+      width: 100%;
     }
 
-    .event-table th,
-    .event-table td {
+    th,
+    td {
       border-bottom: 1px solid var(--line);
       padding: 10px;
       text-align: left;
       vertical-align: top;
     }
 
-    .event-table th {
-      background: #f0f4fa;
-      font-weight: 700;
-    }
-
-    .event-table td:last-child {
+    th {
       color: var(--muted);
+      font-size: 12px;
+      text-transform: uppercase;
     }
 
-    .evidence {
-      margin-top: 8px;
+    .table-wrap {
+      overflow-x: auto;
+    }
+
+    .empty-state {
+      background: var(--surface-soft);
+      border: 1px dashed var(--line);
+      border-radius: 8px;
       color: var(--muted);
-      font-size: 0.9rem;
+      padding: 18px;
+      text-align: center;
     }
 
-    @media (max-width: 760px) {
+    .download-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 14px;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    @media (max-width: 880px) {
+      header {
+        padding: 24px 18px;
+      }
+
+      .header-inner,
       main {
-        width: min(94vw, 1180px);
+        width: min(100% - 20px, 1180px);
       }
 
-      .summary-grid {
+      .report-header,
+      .meta-grid,
+      .two-column,
+      .three-column,
+      .controls {
         grid-template-columns: 1fr;
       }
 
-      .detail-grid {
-        grid-template-columns: 1fr;
-      }
-
+      .report-header,
+      .report-section,
       .panel {
         padding: 18px;
+      }
+    }
+
+    @media print {
+      body {
+        background: #ffffff;
+      }
+
+      header,
+      .panel,
+      .nav-row,
+      .controls,
+      .download-row {
+        display: none;
+      }
+
+      main {
+        margin: 0;
+        width: 100%;
+      }
+
+      .report-shell {
+        border: 0;
+        box-shadow: none;
       }
     }
   </style>
 </head>
 <body>
+  {% set has_report = report.executive_summary or report.timeline or report.key_findings or report.recommended_actions %}
+
   <header>
-    <h1>Intelligent Security Log Summarization</h1>
-    <p>Upload or paste security logs to generate an executive summary, key findings, recommended actions, and a chronological threat timeline.</p>
+    <div class="header-inner">
+      <h1>Intelligent Security Log Summarization</h1>
+      <p>Security report dashboard for analyst summaries, risk review, timeline evidence, and recommended response actions.</p>
+    </div>
   </header>
 
   <main>
-    <section class="panel">
-      <h2>Analyze Logs</h2>
+    <section class="panel" aria-labelledby="analyze-heading">
+      <h2 id="analyze-heading">Analyze Logs</h2>
+      {% if error %}
+        <div class="alert">{{ error }}</div>
+      {% endif %}
       <form method="post" enctype="multipart/form-data">
         <label for="log_text">Paste log text</label>
-        <textarea id="log_text" name="log_text" placeholder="Paste Windows Event Logs, auth logs, firewall logs, EDR alerts, or Sysmon entries here...">{{ log_text }}</textarea>
+        <textarea id="log_text" name="log_text" placeholder="Paste raw security logs here">{{ log_text }}</textarea>
 
         <label for="log_file">Upload log file</label>
-        <input id="log_file" name="log_file" type="file" accept=".txt,.log,.csv,.json,.xml">
+        <input id="log_file" name="log_file" type="file" />
 
-        <div class="actions">
+        <div class="form-actions">
           <button type="submit">Analyze Logs</button>
-          <a class="button-link" href="{{ url_for('index') }}">Reset</a>
-          <p class="hint">Model: {{ model_name }}. First {{ max_chars }} characters are analyzed. Upload .txt, .log, .csv, .json, or exported .xml logs.</p>
+          <a class="button button-secondary" href="{{ url_for('index') }}">Reset</a>
+          <span class="model-note">Model: {{ model_name }} | Max characters analyzed: {{ max_chars }}</span>
         </div>
       </form>
     </section>
 
-    {% if error %}
-      <section class="panel error">
-        <strong>Analysis failed:</strong> {{ error }}
-      </section>
-    {% endif %}
+    <nav class="nav-row" aria-label="Report sections">
+      <a href="#summary">Summary</a>
+      <a href="#risk">Risk</a>
+      <a href="#findings">Findings</a>
+      <a href="#timeline">Timeline</a>
+      <a href="#indicators">Indicators</a>
+      <a href="#actions">Actions</a>
+      <a href="#raw-events">Raw Events</a>
+      <a href="#limitations">Limitations</a>
+    </nav>
 
-    {% if report.executive_summary %}
-      <section class="panel">
-        <h2>Report Summary</h2>
-        {% if report.generated_at %}
-          <p class="hint">Report generated: {{ report.generated_at }}</p>
-        {% endif %}
-        <div class="summary-grid">
-          <div>
+    <div class="report-shell">
+      <section class="report-header" id="summary" aria-labelledby="summary-heading">
+        <div>
+          <h2 id="summary-heading">Report Summary</h2>
+          {% if report.executive_summary %}
             <p>{{ report.executive_summary }}</p>
-            {% if report.attack_type %}
-              <p><strong>Attack Type:</strong> {{ report.attack_type }}</p>
-            {% endif %}
-            {% if report.risk_rationale %}
-              <p><strong>Risk Rationale:</strong> {{ report.risk_rationale }}</p>
+          {% else %}
+            <div class="empty-state">No report summary has been generated yet.</div>
+          {% endif %}
+
+          <div class="meta-grid">
+            <div class="metric">
+              <span>Generated</span>
+              <strong>{{ report.generated_at or "Pending" }}</strong>
+            </div>
+            <div class="metric">
+              <span>Attack Type</span>
+              <strong>{{ report.attack_type or "Unknown" }}</strong>
+            </div>
+            <div class="metric">
+              <span>Timeline Events</span>
+              <strong>{{ timeline_groups.total_events }}</strong>
+            </div>
+            <div class="metric">
+              <span>Parsed Preview</span>
+              <strong>{{ parsed_events | length }}</strong>
+            </div>
+          </div>
+        </div>
+
+        <aside class="risk-panel">
+          <div>
+            <span>Overall Risk</span>
+            <strong class="risk-{{ (report.risk_level or 'unknown') | lower }}">{{ report.risk_level or "Unknown" }}</strong>
+            <p class="muted">{{ report.risk_rationale or "Risk rationale will appear after analysis." }}</p>
+          </div>
+        </aside>
+      </section>
+
+      <section class="report-section" id="risk" aria-labelledby="risk-heading">
+        <h2 id="risk-heading">Risk Level</h2>
+        <div class="two-column">
+          <div class="group-card">
+            <h3>Severity Counts</h3>
+            {% if timeline_groups.by_severity %}
+              <ul>
+                {% for row in timeline_groups.by_severity %}
+                  <li><strong>{{ row.label }}:</strong> {{ row.count }}</li>
+                {% endfor %}
+              </ul>
+            {% else %}
+              <p class="muted">Severity counts will appear after timeline events are generated.</p>
             {% endif %}
           </div>
-          <div class="risk risk-{{ report.risk_level|lower|replace(' ', '-') }}">
-            Risk Level
-            <strong>{{ report.risk_level }}</strong>
+          <div class="group-card">
+            <h3>Risk Rationale</h3>
+            <p>{{ report.risk_rationale or "No rationale available yet." }}</p>
           </div>
         </div>
       </section>
 
-      <section class="panel">
-        <h2>Assets and Indicators</h2>
-        <div class="detail-grid">
-          <div class="detail-box">
+      <section class="report-section" id="findings" aria-labelledby="findings-heading">
+        <h2 id="findings-heading">Key Findings</h2>
+        {% if report.key_findings %}
+          {% for finding in report.key_findings %}
+            <article class="finding">
+              <div class="finding-title">
+                <h3>Finding {{ loop.index }}</h3>
+                {% if report.risk_level %}<span class="badge {{ report.risk_level | lower }}">{{ report.risk_level }}</span>{% endif %}
+              </div>
+              <p>{{ finding }}</p>
+            </article>
+          {% endfor %}
+        {% else %}
+          <div class="empty-state">No key findings have been generated yet.</div>
+        {% endif %}
+      </section>
+
+      <section class="report-section" id="timeline" aria-labelledby="timeline-heading">
+        <h2 id="timeline-heading">Threat Timeline</h2>
+        <div class="controls">
+          <input id="timelineSearch" type="search" placeholder="Search timeline by source, event, details, or evidence" />
+          <select id="severityFilter" aria-label="Filter timeline by severity">
+            <option value="All">All Severities</option>
+            <option value="Low">Low</option>
+            <option value="Medium">Medium</option>
+            <option value="High">High</option>
+            <option value="Critical">Critical</option>
+            <option value="Unknown">Unknown</option>
+          </select>
+          <button id="clearFilters" type="button" class="button-secondary">Clear</button>
+        </div>
+        <div class="timeline" id="timelineList"></div>
+      </section>
+
+      <section class="report-section" id="indicators" aria-labelledby="indicators-heading">
+        <h2 id="indicators-heading">Assets and Indicators</h2>
+        <div class="three-column">
+          <div class="list-panel">
             <h3>Affected Assets</h3>
             {% if report.affected_assets %}
               <ul>
@@ -379,10 +665,10 @@
                 {% endfor %}
               </ul>
             {% else %}
-              <p class="hint">No affected assets returned.</p>
+              <p class="muted">No affected assets listed yet.</p>
             {% endif %}
           </div>
-          <div class="detail-box">
+          <div class="list-panel">
             <h3>Indicators of Compromise</h3>
             {% if report.indicators_of_compromise %}
               <ul>
@@ -391,147 +677,189 @@
                 {% endfor %}
               </ul>
             {% else %}
-              <p class="hint">No indicators returned.</p>
+              <p class="muted">No indicators listed yet.</p>
+            {% endif %}
+          </div>
+          <div class="list-panel">
+            <h3>Timeline Groups</h3>
+            {% if timeline_groups.by_event %}
+              <ul>
+                {% for row in timeline_groups.by_event[:5] %}
+                  <li><strong>{{ row.label }}:</strong> {{ row.count }}</li>
+                {% endfor %}
+              </ul>
+            {% else %}
+              <p class="muted">Grouped event counts will appear after analysis.</p>
             {% endif %}
           </div>
         </div>
       </section>
 
-      <section class="panel">
-        <h2>Key Findings</h2>
-        {% if report.key_findings %}
-          <ul>
-            {% for finding in report.key_findings %}
-              <li>{{ finding }}</li>
-            {% endfor %}
-          </ul>
+      <section class="report-section" id="actions" aria-labelledby="actions-heading">
+        <h2 id="actions-heading">Recommended Actions</h2>
+        {% if report.recommended_actions %}
+          {% for action in report.recommended_actions %}
+            <article class="action">
+              <div class="action-title">
+                <h3>Action {{ loop.index }}</h3>
+                <span class="badge high">Review</span>
+              </div>
+              <p>{{ action }}</p>
+            </article>
+          {% endfor %}
         {% else %}
-          <p class="hint">No key findings returned.</p>
+          <div class="empty-state">No recommended actions have been generated yet.</div>
+        {% endif %}
+
+        {% if has_report %}
+          <div class="download-row">
+            <form action="{{ url_for('download_report') }}" method="post">
+              <input type="hidden" name="report_json" value='{{ report | tojson }}' />
+              <input type="hidden" name="format" value="json" />
+              <button type="submit">Download JSON</button>
+            </form>
+            <form action="{{ url_for('download_report') }}" method="post">
+              <input type="hidden" name="report_json" value='{{ report | tojson }}' />
+              <input type="hidden" name="format" value="html" />
+              <button type="submit" class="button-secondary">Download HTML</button>
+            </form>
+          </div>
         {% endif %}
       </section>
 
-      {% if timeline_groups.total_events %}
-        <section class="panel">
-          <h2>Timeline Activity Summary</h2>
-          <div class="detail-grid">
-            <div class="detail-box">
-              <h3>By Severity</h3>
-              {% if timeline_groups.by_severity %}
-                <ul class="metric-list">
-                  {% for item in timeline_groups.by_severity %}
-                    <li><span>{{ item.name }}</span><strong>{{ item.count }}</strong></li>
-                  {% endfor %}
-                </ul>
-              {% else %}
-                <p class="hint">No severity grouping available.</p>
-              {% endif %}
-            </div>
-            <div class="detail-box">
-              <h3>By Source</h3>
-              {% if timeline_groups.by_source %}
-                <ul class="metric-list">
-                  {% for item in timeline_groups.by_source %}
-                    <li><span>{{ item.name }}</span><strong>{{ item.count }}</strong></li>
-                  {% endfor %}
-                </ul>
-              {% else %}
-                <p class="hint">No source grouping available.</p>
-              {% endif %}
-            </div>
-          </div>
-        </section>
-      {% endif %}
-
-      <section class="panel">
-        <h2>Threat Timeline</h2>
-        {% if report.timeline %}
-          <div class="timeline">
-            {% for item in report.timeline %}
-              <article class="event">
-                <div class="event-meta">
-                  <span>{{ item.timestamp or "Unknown" }}</span>
-                  <span>{{ item.source or "Unknown" }}</span>
-                  <span class="badge">{{ item.severity or "Unknown" }}</span>
-                </div>
-                <h3>{{ item.event or "Unknown event" }}</h3>
-                {% if item.details %}
-                  <p>{{ item.details }}</p>
-                {% endif %}
-                {% if item.evidence %}
-                  <p class="evidence"><strong>Evidence:</strong> {{ item.evidence }}</p>
-                {% endif %}
-              </article>
-            {% endfor %}
-          </div>
-        {% else %}
-          <p class="hint">No timeline events returned.</p>
-        {% endif %}
-      </section>
-
-      {% if parsed_events %}
-        <section class="panel">
-          <h2>Parsed Event Preview</h2>
-          <p class="hint">Local preview using the team parser schema. This helps confirm the backend fields support the LLM report and frontend timeline.</p>
-          <div class="event-table-wrap">
-            <table class="event-table">
+      <section class="report-section" id="raw-events" aria-labelledby="raw-heading">
+        <h2 id="raw-heading">Raw Event Details</h2>
+        {% if parsed_events %}
+          <div class="table-wrap">
+            <table>
               <thead>
                 <tr>
-                  <th>Timestamp</th>
-                  <th>Source</th>
+                  <th>Time</th>
+                  <th>Severity</th>
+                  <th>Type</th>
                   <th>Host</th>
                   <th>User</th>
-                  <th>Source IP</th>
-                  <th>Destination IP</th>
-                  <th>Event Type</th>
-                  <th>Severity</th>
                   <th>Evidence</th>
                 </tr>
               </thead>
               <tbody>
-                {% for item in parsed_events %}
+                {% for event in parsed_events %}
                   <tr>
-                    <td>{{ item.timestamp }}</td>
-                    <td>{{ item.source }}</td>
-                    <td>{{ item.host }}</td>
-                    <td>{{ item.user }}</td>
-                    <td>{{ item.source_ip or "Unknown" }}</td>
-                    <td>{{ item.destination_ip or "Unknown" }}</td>
-                    <td>{{ item.event_type }}</td>
-                    <td><span class="badge">{{ item.severity }}</span></td>
-                    <td>{{ item.evidence }}</td>
+                    <td>{{ event.timestamp }}</td>
+                    <td><span class="badge {{ (event.severity or 'unknown') | lower }}">{{ event.severity or "Unknown" }}</span></td>
+                    <td>{{ event.event_type }}</td>
+                    <td>{{ event.host }}</td>
+                    <td>{{ event.user }}</td>
+                    <td>{{ event.evidence }}</td>
                   </tr>
                 {% endfor %}
               </tbody>
             </table>
           </div>
-        </section>
-      {% endif %}
-
-      <section class="panel">
-        <h2>Recommended Actions</h2>
-        {% if report.recommended_actions %}
-          <ul>
-            {% for action in report.recommended_actions %}
-              <li>{{ action }}</li>
-            {% endfor %}
-          </ul>
         {% else %}
-          <p class="hint">No recommended actions returned.</p>
+          <div class="empty-state">Parsed event details will appear after logs are submitted.</div>
         {% endif %}
       </section>
 
-      <section class="panel">
-        <h2>Download Report</h2>
-        <p class="hint">Save the generated report for submission notes, testing evidence, or later review.</p>
-        <form method="post" action="{{ url_for('download_report') }}">
-          <input type="hidden" name="report_json" value='{{ report|tojson }}'>
-          <div class="actions">
-            <button type="submit" name="format" value="json" class="button-secondary">Download JSON</button>
-            <button type="submit" name="format" value="html">Download HTML</button>
-          </div>
-        </form>
+      <section class="report-section" id="limitations" aria-labelledby="limitations-heading">
+        <h2 id="limitations-heading">Known Limitations</h2>
+        <article class="limitation">
+          <h3>Prototype parser coverage</h3>
+          <p>The current prototype supports representative text, log, CSV, JSON, and XML-style inputs. Additional source formats may require parser updates.</p>
+        </article>
+        <article class="limitation">
+          <h3>External enrichment</h3>
+          <p>The report identifies suspicious values from uploaded logs but does not verify them against live threat intelligence feeds.</p>
+        </article>
       </section>
-    {% endif %}
+    </div>
   </main>
+
+  <script>
+    const timelineEvents = {{ (report.timeline or []) | tojson }};
+
+    function escapeHtml(value) {
+      return String(value ?? "")
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#039;");
+    }
+
+    function severityClass(value) {
+      const severity = String(value || "Unknown").toLowerCase();
+      return ["low", "medium", "high", "critical"].includes(severity) ? severity : "unknown";
+    }
+
+    function badge(value) {
+      const severity = value || "Unknown";
+      return `<span class="badge ${severityClass(severity)}">${escapeHtml(severity)}</span>`;
+    }
+
+    function displayEventName(event) {
+      return String(event.event || event.event_type || "Unknown event").replaceAll("_", " ");
+    }
+
+    function displayDetails(event) {
+      return event.details || event.description || "No event details provided.";
+    }
+
+    function searchText(event) {
+      return [
+        event.timestamp,
+        event.source,
+        event.event,
+        event.event_type,
+        event.severity,
+        event.details,
+        event.description,
+        event.evidence
+      ].join(" ").toLowerCase();
+    }
+
+    function renderTimeline() {
+      const search = document.getElementById("timelineSearch").value.trim().toLowerCase();
+      const severity = document.getElementById("severityFilter").value;
+      const timeline = document.getElementById("timelineList");
+      const filtered = timelineEvents.filter((event) => {
+        const matchesSearch = !search || searchText(event).includes(search);
+        const matchesSeverity = severity === "All" || String(event.severity || "Unknown") === severity;
+        return matchesSearch && matchesSeverity;
+      });
+
+      if (!filtered.length) {
+        timeline.innerHTML = `<div class="empty-state">No timeline events match the current filters.</div>`;
+        return;
+      }
+
+      timeline.innerHTML = filtered.map((event, index) => `
+        <article class="event-card ${severityClass(event.severity)}">
+          <div class="event-top">
+            <div>
+              <div class="event-title">${escapeHtml(displayEventName(event))}</div>
+              <div class="muted">${escapeHtml(event.timestamp || "Unknown time")} | ${escapeHtml(event.source || "Unknown source")}</div>
+            </div>
+            ${badge(event.severity)}
+          </div>
+          <p class="event-description">${escapeHtml(displayDetails(event))}</p>
+          <details>
+            <summary>Evidence</summary>
+            <pre>${escapeHtml(event.evidence || "No supporting evidence provided.")}</pre>
+          </details>
+        </article>
+      `).join("");
+    }
+
+    document.getElementById("timelineSearch").addEventListener("input", renderTimeline);
+    document.getElementById("severityFilter").addEventListener("change", renderTimeline);
+    document.getElementById("clearFilters").addEventListener("click", () => {
+      document.getElementById("timelineSearch").value = "";
+      document.getElementById("severityFilter").value = "All";
+      renderTimeline();
+    });
+
+    renderTimeline();
+  </script>
 </body>
 </html>
