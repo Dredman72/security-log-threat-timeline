@@ -111,7 +111,7 @@ This file tracks the team's weekly milestones, task ownership, and progress. It 
 | --- | --- | --- | --- | --- |
 | [x] | Derrick | Finalize README, prompt notes, and demo explanation | Updated README, final report draft, documentation, and AI workflow explanation | Instructor can understand how the LLM is used and how to run/review the prototype |
 | [ ] | Zion | Prepare parser/backend walkthrough | Backend explanation and sample parser output | Team can explain how logs are normalized |
-| [ ] | Oriah | Prepare presentation visuals and frontend walkthrough | Use `docs/screenshots/week7-ui.png`, explain the upload form, report summary, risk panel, timeline search/filter controls, raw event preview, downloads, and known limitations | Presentation clearly shows the user workflow |
+| [x] | Oriah | Prepare presentation visuals and frontend walkthrough | Added `docs/week8-oriah-frontend-walkthrough.md` using `docs/screenshots/week7-ui.png`; walkthrough explains the upload form, report summary, risk panel, key findings, assets/indicators, timeline search/filter controls, raw event preview, recommendations, downloads, and known limitations | Presentation clearly shows the user workflow |
 | [ ] | Entire Team | Complete final testing | Demo checklist and bug fixes | Project is ready for final presentation |
 
 ## Final Presentation and Demonstration

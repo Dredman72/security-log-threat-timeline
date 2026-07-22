@@ -88,7 +88,7 @@ CapstoneProject/
 | Week 5 | Complete | Threat timeline wording/evidence rules, sorting/grouping logic, grouped timeline example output, and frontend timeline prototype evidence |
 | Week 6 | Complete | End-to-end report generation, report-data field handoff, upload-to-report pipeline documentation, and HTML report generator layout |
 | Week 7 | Complete | Prompt consistency testing, integrated backend build review, and Oriah's polished report/timeline UI update |
-| Week 8 | In progress | Final hardening, final documentation, demo screenshots, presentation visuals, and frontend walkthrough preparation |
+| Week 8 | In progress | Final hardening, final documentation, demo screenshots, Oriah's frontend walkthrough notes, and presentation preparation |
 
 ## Timeline
 
@@ -116,6 +116,7 @@ Recommended screenshots:
 - Sample parsed events or normalized JSON output.
 - Example generated report showing summary, risk level, indicators, timeline, evidence, and recommended actions.
 - Oriah's Week 7 polished frontend/report UI: `docs/screenshots/week7-ui.png`.
+- Oriah's Week 8 frontend walkthrough notes: `docs/week8-oriah-frontend-walkthrough.md`.
 
 ![Week 7 Polished Report UI](docs/screenshots/week7-ui.png)
 
@@ -213,7 +214,7 @@ Recommended screenshots:
 | --- | --- | --- | --- | --- |
 | [x] | Derrick | Prepare final README and demo explanation | Updated README, final report draft in `docs/reports/TEAM_FINAL_REPORT.md`, setup guide, project explanation, and demo notes | Instructor can understand the project status and run the prototype |
 | [ ] | Zion | Prepare final demo dataset and backend notes | Final sample logs and backend explanation | Demo data works reliably |
-| [ ] | Oriah | Prepare presentation visuals and frontend walkthrough | Use `docs/screenshots/week7-ui.png`, explain the upload form, report summary, risk panel, timeline search/filter controls, raw event preview, downloads, and known limitations | Presentation clearly shows the user workflow |
+| [x] | Oriah | Prepare presentation visuals and frontend walkthrough | Added `docs/week8-oriah-frontend-walkthrough.md` using `docs/screenshots/week7-ui.png`; walkthrough explains the upload form, report summary, risk panel, key findings, assets/indicators, timeline search/filter controls, raw event preview, recommendations, downloads, and known limitations | Presentation clearly shows the user workflow |
 | [ ] | Entire Team | Complete final testing | Demo checklist and bug fixes | Project is ready for final presentation |
 
 ## Final Presentation and Demonstration
@@ -317,5 +318,5 @@ As of July 22, 2026:
 - Derrick's Week 8 final documentation work has started with this README update and the draft final report in `docs/reports/TEAM_FINAL_REPORT.md`.
 - Zion's latest backend evidence documents integrated upload, parsing, normalization, sorting/grouping, report-ready JSON, and backend quality checks.
 - Oriah completed the Week 7 frontend/report UI polish in `templates/index.html` and added screenshot evidence at `docs/screenshots/week7-ui.png`.
-- Oriah's Week 8 focus is preparing presentation visuals and a frontend walkthrough that explains the report layout, risk panel, timeline search/filter controls, raw event preview, download buttons, and known limitations.
-- Remaining Week 8 work: collect final evidence from Zion, complete final demo testing, finish presentation materials, and collect all team signatures before submission.
+- Oriah completed her Week 8 frontend walkthrough notes in `docs/week8-oriah-frontend-walkthrough.md` using the polished UI screenshot from `docs/screenshots/week7-ui.png`.
+- Remaining Week 8 work: collect final evidence from Zion, complete final demo testing, finish team presentation materials, and collect all team signatures before submission.

@@ -78,7 +78,7 @@ Use this simple explanation:
 | --- | --- | --- |
 | Derrick | AI/LLM workflow and team coordination | Explain the OpenAI prompt, structured output format, report sections, and GitHub project organization. |
 | Zion | Backend/parser workflow | Explain how raw logs are parsed into normalized fields such as timestamp, source, host, user, event type, severity, evidence, and raw event. |
-| Oriah | Frontend/report display | Explain the report layout, timeline design, user-facing sections, and future frontend improvements. |
+| Oriah | Frontend/report display | Use `docs/week8-oriah-frontend-walkthrough.md` to explain the upload form, report summary, risk panel, key findings, assets/indicators, timeline search/filter controls, raw event preview, recommended actions, downloads, and known limitations. |
 
 ## 8. Screenshots to Capture as Evidence
 
@@ -94,7 +94,7 @@ Capture these screenshots for journals, progress reports, and the final presenta
 | [ ] | Threat timeline section | Shows chronological event display. |
 | [ ] | OpenAI usage page | Shows API activity without exposing the API key. |
 | [ ] | Parser output or backend test result | Shows Zion's parser work. |
-| [ ] | Frontend wireframe or placeholder | Shows Oriah's frontend/report planning. |
+| [ ] | Polished frontend/report UI | Shows Oriah's final report layout, timeline controls, and frontend walkthrough evidence. |
 
 ## 9. Common Demo Issues and Fixes
 

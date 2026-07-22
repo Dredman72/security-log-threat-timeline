@@ -23,8 +23,8 @@ The goal of this project is to build a Flask web application that accepts pasted
 | [x] | Week 4 | LLM integration and structured summarization | Derrick improved the OpenAI prompt and fallback behavior. Zion created AI-ready parser input documentation. Oriah documented report section labels and frontend display expectations. |
 | [x] | Week 5 | Threat timeline generation | Derrick refined timeline event wording, evidence rules, and prompt requirements. Zion documented sorting/grouping logic. Oriah continued timeline/report visualization planning. |
 | [x] | Week 6 | End-to-end report generation | The app supported pasted/uploaded logs, report timestamp, risk rationale, reset workflow, downloadable JSON/HTML reports, parsed event preview, and improved report sections. |
-| [x] | Week 7 | Integration testing and quality improvement | Derrick added reusable sample logs and prompt consistency checks. Zion added integrated backend build evidence. The team reviewed the application workflow and prepared for final hardening. |
-| [ ] | Week 8 | Final hardening, documentation, and presentation preparation | Final report drafting has started. Remaining work is final evidence review, presentation/demo polish, and team signatures. |
+| [x] | Week 7 | Integration testing and quality improvement | Derrick added reusable sample logs and prompt consistency checks. Zion added integrated backend build evidence. Oriah polished the frontend report UI and added screenshot evidence. |
+| [ ] | Week 8 | Final hardening, documentation, and presentation preparation | Final report drafting has started. Oriah completed frontend walkthrough notes for the final demo. Remaining work is final evidence review, presentation/demo polish, and team signatures. |
 
 ## Subtasks Completed
 
@@ -38,7 +38,7 @@ Zion created the canonical backend event schema, sample parser logs, parser prot
 
 ### Oriah Molton-Bowman - Frontend and Visualization Lead
 
-Oriah created the report and timeline wireframe, planned the frontend report sections, identified required data fields for display, and documented the HTML report layout expectations. Her work supports the user-facing report structure, timeline display, and final presentation visuals.
+Oriah created the report and timeline wireframe, planned the frontend report sections, identified required data fields for display, polished `templates/index.html`, added screenshot evidence, and prepared Week 8 frontend walkthrough notes. Her work supports the user-facing report structure, timeline display, and final presentation visuals.
 
 ## Testing of Subtasks With Evidence
 
@@ -118,6 +118,15 @@ Oriah created the report and timeline wireframe, planned the frontend report sec
 **Expected Result:** The repository should contain app source code, templates, README, milestone TODOs, parser validation, demo/deployment guides, examples, and documentation.  
 **Result:** Passed.
 
+### Test 9: Week 8 Frontend Walkthrough Preparation
+
+**Purpose:** Confirm Oriah's Week 8 frontend walkthrough is ready for the final presentation.  
+**Procedure:** Oriah prepared `docs/week8-oriah-frontend-walkthrough.md` using the polished report UI screenshot and the updated `templates/index.html` interface.  
+**Expected Result:** The walkthrough should explain the upload form, report summary, risk panel, key findings, assets/indicators, timeline search/filter controls, raw event preview, recommended actions, downloads, and known limitations.  
+**Result:** Passed.
+
+![Week 7 polished report UI](../screenshots/week7-ui.png)
+
 ![GitHub repository screenshot](../screenshots/GitHub%20Repository%20Screenshot.png)
 
 ## Lessons Learned
@@ -134,7 +143,7 @@ Oriah created the report and timeline wireframe, planned the frontend report sec
 | --- | --- | --- |
 | Derrick Redman | Team Lead and AI/LLM Specialist | Led project coordination, created and refined the Flask/OpenAI prototype, designed the structured JSON output, improved timeline prompt rules, added risk rationale, added reset/download features, tested sample logs, maintained README/milestone documentation, and drafted final report documentation. |
 | Zion Moore | Backend and Log Processing Lead | Created the backend event schema, parser prototype, sample logs, normalized JSON output, AI-ready parser input, upload-to-report pipeline documentation, and Week 7 integrated backend build evidence. |
-| Oriah Molton-Bowman | Frontend and Visualization Lead | Created the report/timeline wireframe, planned frontend report sections, identified required display fields, and documented frontend/report layout expectations for the final HTML report. |
+| Oriah Molton-Bowman | Frontend and Visualization Lead | Created the report/timeline wireframe, planned frontend report sections, identified required display fields, polished the final HTML report UI, added screenshot evidence, and prepared Week 8 frontend walkthrough notes for the final demo. |
 
 ## Team Meeting Attendance
 
@@ -156,7 +165,7 @@ Oriah created the report and timeline wireframe, planned the frontend report sec
 
 The team has progressed according to the project plan overall. The core project is functional locally and supports the main workflow: users can paste or upload logs, analyze them with OpenAI, review structured report sections, inspect a chronological timeline, view parsed event previews, and download JSON/HTML report evidence.
 
-The main remaining Week 8 items are final documentation polish, final presentation preparation, final evidence collection from Zion and Oriah, and signatures from every team member before submission.
+The main remaining Week 8 items are final documentation polish, final presentation preparation, final backend evidence collection from Zion, and signatures from every team member before submission.
 
 ## Plan Adjustment
 
