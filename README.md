@@ -39,6 +39,22 @@ The final application should help a security analyst or instructor quickly under
 | Zion Moore | Backend & Log Processing Lead | Log ingestion, parsing logic, normalized event schema, parser validation, backend workflow, sample log testing |
 | Oriah Molton-Bowman | Frontend & Visualization Lead | Web interface, report layout, timeline visualization, user experience, frontend polish |
 
+## Oriah Frontend Work
+
+Oriah Molton-Bowman is responsible for the user-facing report and timeline experience. Her frontend work focuses on making the generated report easy to scan during incident review and clear enough for the final capstone demo.
+
+Completed frontend contributions:
+
+- Planned the report and timeline layout during Weeks 2-4.
+- Built the interactive timeline prototype during Week 5.
+- Helped define the Week 6 HTML report generator sections and data needs.
+- Polished `templates/index.html` during Week 7 with cleaner report sections, navigation, search/filter controls, reset/download actions, raw event details, known limitations, and screenshot evidence.
+
+Week 8 frontend focus:
+
+- Prepare presentation visuals and a frontend walkthrough using the polished report UI.
+- Explain the upload form, report summary, risk panel, timeline search/filter controls, raw event preview, download buttons, and known limitations during the final demo.
+
 ## Current Prototype Structure
 
 ```text
@@ -70,6 +86,9 @@ CapstoneProject/
 | Week 3 | Complete | Parser output validation checklist, first backend parser prototype review, normalized JSON review, starter report validation, and parsed-event frontend placeholder planning |
 | Week 4 | Complete | OpenAI prompt refinement, fallback handling, AI-ready parser input documentation, and frontend report section design |
 | Week 5 | Complete | Threat timeline wording/evidence rules, sorting/grouping logic, grouped timeline example output, and frontend timeline prototype evidence |
+| Week 6 | Complete | End-to-end report generation, report-data field handoff, upload-to-report pipeline documentation, and HTML report generator layout |
+| Week 7 | Complete | Prompt consistency testing, integrated backend build review, and Oriah's polished report/timeline UI update |
+| Week 8 | In progress | Final hardening, final documentation, demo screenshots, presentation visuals, and frontend walkthrough preparation |
 
 ## Timeline
 
@@ -81,7 +100,7 @@ CapstoneProject/
 | [x] | June 22-28 | Week 4 | OpenAI API integration refinement, structured summarization, backend-to-LLM workflow |
 | [x] | June 29-July 5 | Week 5 | Threat timeline generation logic and interactive timeline prototype |
 | [x] | July 6-12 | Week 6 | End-to-end report generation and full upload-to-report workflow |
-| [ ] | July 13-19 | Week 7 | Integration testing, quality improvement, frontend polish, error handling |
+| [x] | July 13-19 | Week 7 | Integration testing, quality improvement, frontend polish, error handling |
 | [ ] | July 20-26 | Week 8 | Final hardening, documentation, demo data, presentation preparation |
 | [ ] | July 27-28 | Final Presentation | Final project presentation and live or recorded demonstration |
 
@@ -96,6 +115,9 @@ Recommended screenshots:
 - Flask homepage showing the log input form.
 - Sample parsed events or normalized JSON output.
 - Example generated report showing summary, risk level, indicators, timeline, evidence, and recommended actions.
+- Oriah's Week 7 polished frontend/report UI: `docs/screenshots/week7-ui.png`.
+
+![Week 7 Polished Report UI](docs/screenshots/week7-ui.png)
 
 ## Milestone Task Plan
 
@@ -180,7 +202,7 @@ Recommended screenshots:
 | --- | --- | --- | --- | --- |
 | [x] | Derrick | Improve prompts and summary consistency | `docs/week7-prompt-summary-consistency.md`, `examples/test_logs/`, and updated prompt consistency rules | Summaries are consistent across test logs |
 | [x] | Zion | Stabilize integrated application build | `docs/week7-integrated-application-build.md` and `examples/week7-integrated-build-test.json` | Backend evidence covers upload, parsing, normalization, sorting/grouping, report-ready output, and error/correlation checks |
-| [ ] | Oriah | Polish timeline and report UI | Cleaner visual layout, labels, and report sections | User can scan the report quickly |
+| [x] | Oriah | Polish timeline and report UI | Updated `templates/index.html` with polished report sections, navigation, timeline search/filter controls, reset/download actions, clear empty states, raw event details, known limitations, and screenshot evidence in `docs/screenshots/week7-ui.png` | User can scan the report quickly and review timeline evidence more easily |
 
 ## Week 8: Final Hardening, Documentation, and Presentation Preparation
 
@@ -191,7 +213,7 @@ Recommended screenshots:
 | --- | --- | --- | --- | --- |
 | [x] | Derrick | Prepare final README and demo explanation | Updated README, final report draft in `docs/reports/TEAM_FINAL_REPORT.md`, setup guide, project explanation, and demo notes | Instructor can understand the project status and run the prototype |
 | [ ] | Zion | Prepare final demo dataset and backend notes | Final sample logs and backend explanation | Demo data works reliably |
-| [ ] | Oriah | Prepare presentation visuals and frontend walkthrough | Screenshots, UI explanation, and report/timeline visuals | Presentation clearly shows the user workflow |
+| [ ] | Oriah | Prepare presentation visuals and frontend walkthrough | Use `docs/screenshots/week7-ui.png`, explain the upload form, report summary, risk panel, timeline search/filter controls, raw event preview, downloads, and known limitations | Presentation clearly shows the user workflow |
 | [ ] | Entire Team | Complete final testing | Demo checklist and bug fixes | Project is ready for final presentation |
 
 ## Final Presentation and Demonstration
@@ -287,12 +309,13 @@ Do not commit `.env` to GitHub.
 
 ## Current Status
 
-As of July 20, 2026:
+As of July 22, 2026:
 
 - Public GitHub repository is active and used for team collaboration.
 - Weeks 1-7 core work is documented in the README, milestone checklist, and supporting docs.
 - The Flask prototype supports pasted/uploaded logs, structured OpenAI report output, risk rationale, timeline evidence, parsed event preview, reset workflow, and downloadable JSON/HTML reports.
 - Derrick's Week 8 final documentation work has started with this README update and the draft final report in `docs/reports/TEAM_FINAL_REPORT.md`.
 - Zion's latest backend evidence documents integrated upload, parsing, normalization, sorting/grouping, report-ready JSON, and backend quality checks.
-- Oriah's frontend/report planning documents the HTML report sections, field requirements, and visual layout needs.
-- Remaining Week 8 work: collect final evidence from Zion and Oriah, complete final demo testing, finish presentation materials, and collect all team signatures before submission.
+- Oriah completed the Week 7 frontend/report UI polish in `templates/index.html` and added screenshot evidence at `docs/screenshots/week7-ui.png`.
+- Oriah's Week 8 focus is preparing presentation visuals and a frontend walkthrough that explains the report layout, risk panel, timeline search/filter controls, raw event preview, download buttons, and known limitations.
+- Remaining Week 8 work: collect final evidence from Zion, complete final demo testing, finish presentation materials, and collect all team signatures before submission.
