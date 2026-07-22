@@ -17,7 +17,7 @@ This file tracks the team's weekly milestones, task ownership, and progress. It 
 | [x] | June 22-28 | Week 4 | OpenAI API integration refinement, structured summarization, backend-to-LLM workflow |
 | [x] | June 29-July 5 | Week 5 | Threat timeline generation logic and interactive timeline prototype |
 | [x] | July 6-12 | Week 6 | End-to-end report generation and full upload-to-report workflow |
-| [ ] | July 13-19 | Week 7 | Integration testing, quality improvement, frontend polish, error handling |
+| [x] | July 13-19 | Week 7 | Integration testing, quality improvement, frontend polish, error handling |
 | [ ] | July 20-26 | Week 8 | Final hardening, documentation, demo data, presentation preparation |
 | [ ] | July 27-28 | Final Presentation | Final project presentation and live or recorded demonstration |
 
@@ -100,7 +100,7 @@ This file tracks the team's weekly milestones, task ownership, and progress. It 
 | --- | --- | --- | --- | --- |
 | [x] | Derrick | Test OpenAI summaries against sample scenarios | `docs/week7-prompt-summary-consistency.md`, `examples/test_logs/`, and updated prompt consistency rules | Summaries are accurate, clear, and useful |
 | [x] | Zion | Test parser with multiple log samples | `docs/week7-integrated-application-build.md` and `examples/week7-integrated-build-test.json` | Backend evidence covers upload, parsing, normalization, grouping, report-ready output, and error/correlation checks |
-| [ ] | Oriah | Polish timeline and report UI | Cleaner visual layout, labels, and report sections | User can scan the report quickly |
+| [x] | Oriah | Polish timeline and report UI | Updated `templates/index.html` with polished report sections, navigation, timeline search/filter controls, reset/download actions, clear empty states, and screenshot evidence in `docs/screenshots/week7-ui.png` | User can scan the report quickly and review timeline evidence more easily |
 
 ## Week 8: Final Hardening, Documentation, and Presentation Preparation
 
@@ -111,7 +111,7 @@ This file tracks the team's weekly milestones, task ownership, and progress. It 
 | --- | --- | --- | --- | --- |
 | [x] | Derrick | Finalize README, prompt notes, and demo explanation | Updated README, final report draft, documentation, and AI workflow explanation | Instructor can understand how the LLM is used and how to run/review the prototype |
 | [ ] | Zion | Prepare parser/backend walkthrough | Backend explanation and sample parser output | Team can explain how logs are normalized |
-| [ ] | Oriah | Prepare presentation visuals and frontend walkthrough | Screenshots, UI explanation, and report/timeline visuals | Presentation clearly shows the user workflow |
+| [ ] | Oriah | Prepare presentation visuals and frontend walkthrough | Use `docs/screenshots/week7-ui.png`, explain the upload form, report summary, risk panel, timeline search/filter controls, raw event preview, downloads, and known limitations | Presentation clearly shows the user workflow |
 | [ ] | Entire Team | Complete final testing | Demo checklist and bug fixes | Project is ready for final presentation |
 
 ## Final Presentation and Demonstration

@@ -6,7 +6,7 @@
 **Team Members:** Derrick Redman, Zion Moore, Oriah Molton-Bowman  
 **Week:** Week 7, July 13-July 19, 2026  
 **GitHub Repository:** https://github.com/Dredman72/security-log-threat-timeline  
-**Status:** Updated draft - Derrick's Week 7 AI/LLM prompt consistency work and Zion's Week 7 integrated backend build evidence are included. Oriah's Week 7 frontend/UI polish update is still pending in the local files.
+**Status:** Completed draft - Derrick's Week 7 AI/LLM prompt consistency work, Zion's Week 7 integrated backend build evidence, and Oriah's Week 7 frontend/UI polish update are included.
 
 ## Milestones Achieved
 
@@ -34,9 +34,11 @@ Zion completed Week 7 integrated backend build evidence. His update documents th
 
 This supports the project goal because the backend must move uploaded logs into report-ready data that can support the LLM summary and frontend timeline.
 
-### Milestone 5: Oriah Frontend/UI Polish Pending Locally
+### Milestone 5: Oriah Frontend/UI Polish Completed
 
-No separate Week 7 frontend/UI polish update from Oriah was found in the local files during this update. Her section should be completed after her Week 7 frontend evidence is submitted or synced.
+Oriah completed the Week 7 frontend/UI polish by updating `templates/index.html`. The polished interface includes the upload/paste log form, report section navigation, report summary, risk panel, key findings, assets and indicators, searchable/filterable threat timeline, recommended actions, raw event details, known limitations, reset behavior, and download buttons.
+
+This supports the project goal because the final report is easier to scan and the timeline evidence is easier for a user to review during the demo.
 
 ## Subtasks Completed
 
@@ -47,7 +49,7 @@ No separate Week 7 frontend/UI polish update from Oriah was found in the local f
 | Completed | Derrick | Reviewed Flask report output | Confirmed the application still produces the expected report sections after analyzing sample security logs. |
 | Completed | Derrick | Reviewed downloadable report output | Confirmed JSON and HTML report downloads support testing evidence and report review. |
 | Completed | Zion | Completed integrated backend build review | Documented upload-to-report backend workflow, test scenarios, correlation fields, error handling checks, and report-ready JSON evidence. |
-| Pending | Oriah | Polish timeline and report UI | Pending teammate update. Expected focus: cleaner visual layout, labels, and report sections. |
+| Completed | Oriah | Polish timeline and report UI | Updated the report UI with cleaner layout, section navigation, readable labels, timeline search/filter controls, clear empty states, and screenshot evidence. |
 
 ## Testing of Subtasks With Evidence
 
@@ -98,14 +100,15 @@ No separate Week 7 frontend/UI polish update from Oriah was found in the local f
 **Screenshot Evidence:** 
 
 
-### Test 6: Oriah Frontend/UI Polish Review Pending
+### Test 6: Oriah Frontend/UI Polish Review
 
 **Purpose:** Confirm Oriah's Week 7 frontend work improves report readability and timeline scanning.  
-**Procedure:** The team will review Oriah's Week 7 frontend/report UI polish once her update is available locally.  
+**Procedure:** The team reviewed Oriah's polished `templates/index.html` frontend and screenshot evidence.  
 **Expected Result:** The report should be easier to scan, with clear labels, organized sections, and readable timeline/report layout.  
-**Result:** Pending. No separate Oriah Week 7 frontend/UI polish evidence was found in the local files during this update.
+**Result:** Passed. The updated interface includes the upload form, section navigation, summary panel, risk panel, key findings, timeline search/filter controls, recommended actions, raw event details, known limitations, reset behavior, and download buttons.
 
-**Screenshot Evidence:** Insert screenshot of Oriah's Week 7 report/timeline UI polish after it is submitted or synced.
+**Screenshot Evidence:**  
+![Week 7 Polished Report UI](../screenshots/week7-ui.png)
 
 ## Lessons Learned
 
@@ -125,7 +128,7 @@ Zion completed Week 7 integrated backend build evidence. His work documents the 
 
 ### Oriah Molton-Bowman - Frontend and Visualization Lead
 
-Oriah's Week 7 contribution is still pending in the local files at the time of this update. Her planned Week 7 responsibility is to polish the timeline and report UI so the final report is easier to scan and understand. This section should be updated after Oriah submits or syncs her Week 7 frontend evidence.
+Oriah completed the Week 7 frontend/report UI polish. She updated `templates/index.html` so the application has a cleaner user interface, organized report sections, section navigation, readable risk and finding areas, timeline search/filter controls, raw event preview, known limitations, reset behavior, and report download actions. She also added screenshot evidence showing the polished UI.
 
 ## Team Meeting Attendance
 
@@ -135,15 +138,11 @@ Oriah's Week 7 contribution is still pending in the local files at the time of t
 
 ## Progress Compared to Project Plan
 
-The team is progressing according to the Week 7 project plan. Derrick's AI/LLM prompt consistency work is complete, and Zion's integrated backend build evidence is complete.
-
-Week 7 is not fully finalized until Oriah's frontend/report UI polish evidence is submitted or synced into the local project files.
+The team progressed according to the Week 7 project plan. Derrick's AI/LLM prompt consistency work is complete, Zion's integrated backend build evidence is complete, and Oriah's frontend/report UI polish is complete.
 
 ## Plan Adjustment
 
-No major plan adjustment is needed right now. The team should continue using the shared Flask/HTML prototype as the main integration target.
-
-If Oriah's frontend update is delayed, the journal should remain an updated draft until her Week 7 evidence is added. Derrick and Zion's completed Week 7 work can remain documented as current progress.
+No major plan adjustment is needed. The team should continue using the shared Flask/HTML prototype as the main integration target and move into Week 8 final hardening, screenshots, documentation, and presentation preparation.
 
 ## Next Steps
 
@@ -151,7 +150,7 @@ If Oriah's frontend update is delayed, the journal should remain an updated draf
 | --- | --- |
 | Derrick | Add final screenshots and keep Week 7 prompt consistency evidence organized. |
 | Zion | Confirm whether any additional Week 7 backend screenshots should be added to the journal. |
-| Oriah | Submit or sync Week 7 frontend/timeline/report UI polish evidence. |
+| Oriah | Prepare Week 8 presentation visuals and frontend walkthrough using the polished report UI screenshot. |
 | Team | Review the combined Week 7 work and confirm the prototype remains demo-ready. |
 
 ## Team Sign-Off
