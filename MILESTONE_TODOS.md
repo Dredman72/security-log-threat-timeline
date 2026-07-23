@@ -18,7 +18,7 @@ This file tracks the team's weekly milestones, task ownership, and progress. It 
 | [x] | June 29-July 5 | Week 5 | Threat timeline generation logic and interactive timeline prototype |
 | [x] | July 6-12 | Week 6 | End-to-end report generation and full upload-to-report workflow |
 | [x] | July 13-19 | Week 7 | Integration testing, quality improvement, frontend polish, error handling |
-| [ ] | July 20-26 | Week 8 | Final documentation, Zion backend walkthrough, Oriah frontend walkthrough, demo data review, presentation preparation, and final testing |
+| [x] | July 20-26 | Week 8 | Final documentation, Zion backend walkthrough, Oriah frontend walkthrough, demo data review, presentation preparation, and final testing |
 | [ ] | July 27-28 | Final Presentation | Final project presentation and live or recorded demonstration |
 
 ## Week 1: Project Kickoff and Requirements
@@ -112,7 +112,7 @@ This file tracks the team's weekly milestones, task ownership, and progress. It 
 | [x] | Derrick | Finalize README, prompt notes, and demo explanation | Updated README, final report draft, documentation, and AI workflow explanation | Instructor can understand how the LLM is used and how to run/review the prototype |
 | [x] | Zion | Prepare parser/backend walkthrough | Added `docs/week8-zion-backend-walkthrough.md` with backend workflow, parser output fields, demo dataset notes, evidence files, and presentation talking points | Team can explain how logs are normalized and how parser output supports the report |
 | [x] | Oriah | Prepare presentation visuals and frontend walkthrough | Added `docs/week8-oriah-frontend-walkthrough.md` using `docs/screenshots/week7-ui.png`; walkthrough explains the upload form, report summary, risk panel, key findings, assets/indicators, timeline search/filter controls, raw event preview, recommendations, downloads, and known limitations | Presentation clearly shows the user workflow |
-| [ ] | Entire Team | Complete final testing | Demo checklist and bug fixes | Project is ready for final presentation |
+| [x] | Entire Team | Complete final testing | Demo checklist and final review | Project is ready for final presentation |
 
 ## Final Presentation and Demonstration
 

@@ -88,7 +88,7 @@ CapstoneProject/
 | Week 5 | Complete | Threat timeline wording/evidence rules, sorting/grouping logic, grouped timeline example output, and frontend timeline prototype evidence |
 | Week 6 | Complete | End-to-end report generation, report-data field handoff, upload-to-report pipeline documentation, and HTML report generator layout |
 | Week 7 | Complete | Prompt consistency testing, integrated backend build review, and Oriah's polished report/timeline UI update |
-| Week 8 | In progress | Final hardening, final documentation, demo screenshots, Zion's backend walkthrough notes, Oriah's frontend walkthrough notes, and presentation preparation |
+| Week 8 | Complete | Final documentation, demo screenshots, Zion's backend walkthrough notes, Oriah's frontend walkthrough notes, demo data review, presentation preparation, and final testing |
 
 ## Timeline
 
@@ -101,7 +101,7 @@ CapstoneProject/
 | [x] | June 29-July 5 | Week 5 | Threat timeline generation logic and interactive timeline prototype |
 | [x] | July 6-12 | Week 6 | End-to-end report generation and full upload-to-report workflow |
 | [x] | July 13-19 | Week 7 | Integration testing, quality improvement, frontend polish, error handling |
-| [ ] | July 20-26 | Week 8 | Final documentation, Zion backend walkthrough, Oriah frontend walkthrough, demo data review, presentation preparation, and final testing |
+| [x] | July 20-26 | Week 8 | Final documentation, Zion backend walkthrough, Oriah frontend walkthrough, demo data review, presentation preparation, and final testing |
 | [ ] | July 27-28 | Final Presentation | Final project presentation and live or recorded demonstration |
 
 The timeline above gives a quick project overview. The detailed milestone task plan below breaks the same work into team member responsibilities, outputs, and measurements.
@@ -216,7 +216,7 @@ Recommended screenshots:
 | [x] | Derrick | Prepare final README and demo explanation | Updated README, final report draft in `docs/reports/TEAM_FINAL_REPORT.md`, setup guide, project explanation, and demo notes | Instructor can understand the project status and run the prototype |
 | [x] | Zion | Prepare final demo dataset and backend notes | Added `docs/week8-zion-backend-walkthrough.md` with backend workflow, parser output fields, demo dataset notes, evidence files, and presentation talking points | Demo data works reliably and the backend workflow can be explained during the final presentation |
 | [x] | Oriah | Prepare presentation visuals and frontend walkthrough | Added `docs/week8-oriah-frontend-walkthrough.md` using `docs/screenshots/week7-ui.png`; walkthrough explains the upload form, report summary, risk panel, key findings, assets/indicators, timeline search/filter controls, raw event preview, recommendations, downloads, and known limitations | Presentation clearly shows the user workflow |
-| [ ] | Entire Team | Complete final testing | Demo checklist and bug fixes | Project is ready for final presentation |
+| [x] | Entire Team | Complete final testing | Demo checklist and final review | Project is ready for final presentation |
 
 ## Final Presentation and Demonstration
 
@@ -320,4 +320,4 @@ As of July 23, 2026:
 - Zion completed his Week 8 backend walkthrough notes in `docs/week8-zion-backend-walkthrough.md`, documenting the parser workflow, normalized output fields, demo dataset, evidence files, and presentation talking points.
 - Oriah completed the Week 7 frontend/report UI polish in `templates/index.html` and added screenshot evidence at `docs/screenshots/week7-ui.png`.
 - Oriah completed her Week 8 frontend walkthrough notes in `docs/week8-oriah-frontend-walkthrough.md` using the polished UI screenshot from `docs/screenshots/week7-ui.png`.
-- Remaining Week 8 work: complete final demo testing, finish team presentation materials, and collect all team signatures before submission.
+- Remaining final presentation work: finish team presentation materials and collect all team signatures before submission.
