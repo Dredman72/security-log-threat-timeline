@@ -101,7 +101,7 @@ CapstoneProject/
 | [x] | June 29-July 5 | Week 5 | Threat timeline generation logic and interactive timeline prototype |
 | [x] | July 6-12 | Week 6 | End-to-end report generation and full upload-to-report workflow |
 | [x] | July 13-19 | Week 7 | Integration testing, quality improvement, frontend polish, error handling |
-| [ ] | July 20-26 | Week 8 | Final hardening, documentation, demo data, presentation preparation |
+| [ ] | July 20-26 | Week 8 | Final documentation, Zion backend walkthrough, Oriah frontend walkthrough, demo data review, presentation preparation, and final testing |
 | [ ] | July 27-28 | Final Presentation | Final project presentation and live or recorded demonstration |
 
 The timeline above gives a quick project overview. The detailed milestone task plan below breaks the same work into team member responsibilities, outputs, and measurements.
