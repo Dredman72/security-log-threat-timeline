@@ -744,6 +744,16 @@ def build_downloadable_report_html(report: dict) -> str:
             return '<p class="empty">No items returned.</p>'
         return "<ul>" + "".join(f"<li>{esc(value)}</li>" for value in values) + "</ul>"
 
+    def count_items(counter: Counter) -> str:
+        rows = [
+            f"<li><strong>{esc(name)}:</strong> {count}</li>"
+            for name, count in counter.most_common()
+            if name and name != "Unknown"
+        ]
+        if not rows:
+            return '<p class="empty">No grouped counts returned.</p>'
+        return "<ul>" + "".join(rows) + "</ul>"
+
     def severity_class(value) -> str:
         severity = str(value or "").strip().lower()
         if severity in {"low", "medium", "high", "critical"}:
@@ -756,6 +766,8 @@ def build_downloadable_report_html(report: dict) -> str:
         for item in timeline
         if str(item.get("severity", "")).strip().lower() in {"high", "critical"}
     )
+    severity_counts = Counter(str(item.get("severity", "Unknown")).strip() for item in timeline)
+    event_counts = Counter(str(item.get("event", "Unknown")).strip() for item in timeline)
 
     timeline_items = []
     for item in timeline:
@@ -962,6 +974,20 @@ def build_downloadable_report_html(report: dict) -> str:
   </section>
 
   <section class="panel">
+    <h2>Timeline Groups</h2>
+    <div class="two-col">
+      <div class="subcard">
+        <h3>Severity Counts</h3>
+        {count_items(severity_counts)}
+      </div>
+      <div class="subcard">
+        <h3>Event Counts</h3>
+        {count_items(event_counts)}
+      </div>
+    </div>
+  </section>
+
+  <section class="panel">
     <h2>Key Findings</h2>
     {list_items(report.get("key_findings", []))}
   </section>
@@ -974,6 +1000,15 @@ def build_downloadable_report_html(report: dict) -> str:
   <section class="panel">
     <h2>Recommended Actions</h2>
     {list_items(report.get("recommended_actions", []))}
+  </section>
+
+  <section class="panel">
+    <h2>Known Limitations</h2>
+    <ul>
+      <li>This prototype summarizes the uploaded log evidence and does not verify indicators against live threat intelligence feeds.</li>
+      <li>Raw EVTX parsing is not included; Windows Event Logs should be exported as text or XML before upload.</li>
+      <li>Analysts should validate the timeline against original log sources before taking final incident-response action.</li>
+    </ul>
   </section>
   </main>
 </body>
