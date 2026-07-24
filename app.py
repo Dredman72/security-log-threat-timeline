@@ -257,7 +257,7 @@ def build_analysis_input(raw_log_text: str, parsed_events: list[dict]) -> str:
 
 def counter_rows(counter: Counter) -> list[dict]:
     return [
-        {"name": name, "count": count}
+        {"label": name, "count": count}
         for name, count in counter.most_common()
         if name and name != "Unknown"
     ]

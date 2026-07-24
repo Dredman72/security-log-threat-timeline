@@ -605,7 +605,7 @@
             {% if timeline_groups.by_severity %}
               <ul>
                 {% for row in timeline_groups.by_severity %}
-                  <li><strong>{{ row.label }}:</strong> {{ row.count }}</li>
+                  <li><strong>{{ row.label or row.name or "Uncategorized" }}:</strong> {{ row.count }}</li>
                 {% endfor %}
               </ul>
             {% else %}
@@ -685,7 +685,7 @@
             {% if timeline_groups.by_event %}
               <ul>
                 {% for row in timeline_groups.by_event[:5] %}
-                  <li><strong>{{ row.label }}:</strong> {{ row.count }}</li>
+                  <li><strong>{{ row.label or row.name or "Uncategorized" }}:</strong> {{ row.count }}</li>
                 {% endfor %}
               </ul>
             {% else %}
